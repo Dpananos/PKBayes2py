@@ -2,6 +2,7 @@ import cmdstanpy
 import numpy as np
 from scipy.stats import gamma
 import pickle
+import warnings
 
 # Dictionary of parameters to be used in models.  Prevents me from having to 
 # Manually enter prior params. See step 01
@@ -49,9 +50,7 @@ class SimulatedSubject():
         if not self._scheduled_flag:
             raise ValueError('Doses not yet scheduled')
         
-        times = observed_times.copy()
-        if not isinstance(times, np.ndarray):
-            times = np.array([times]).ravel()
+        times = validate_input(observed_times)
 
 
         true_concentrations = self.observe_func(times, self.dose_times, self.doses)
@@ -64,14 +63,9 @@ class SimulatedSubject():
 
     def make_model_data(self, t, y):
 
-        times = t.copy()
-        if not isinstance(times, np.ndarray):
-            times = np.array([times]).ravel()
+        times = validate_input(t)
 
-
-        yobs = y.copy()
-        if not isinstance(yobs, np.ndarray):
-            yobs = np.array([yobs]).ravel()
+        yobs = validate_input(y)
 
         self.model_data = _params.copy()
 
@@ -93,9 +87,7 @@ class SimulatedSubject():
 
     def make_prediction_data(self, prediction_times):
      
-        times = prediction_times.copy()
-        if not isinstance(times, np.ndarray):
-            times = np.array([times]).ravel()
+        times = validate_input(prediction_times)
 
         self.prediction_data = self.model_data.copy()
 
@@ -114,6 +106,20 @@ class SimulatedSubject():
         self.make_prediction_data(t)
 
         return _conditioning_model.generate_quantities(self.prediction_data, self.model_fit).generated_quantities
+
+    def prior_predict(self, t):
+
+        self.make_prediction_data(t)
+
+        return _prior_model.sample(self.prediction_data, fixed_param = True, iter_sampling = 500).stan_variable("C")
+
+
+def validate_input(x):
+    xc = x.copy()
+    if not isinstance(xc, np.ndarray):
+            xc = np.array([xc]).ravel()
+    return xc
+
 
 def concentration_function(D: float , t: np.array, cl: float, ke: float, ka: float)->np.array:
 

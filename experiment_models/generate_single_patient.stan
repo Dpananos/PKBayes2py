@@ -138,10 +138,10 @@ generated quantities{
   real sigma = gamma_rng(shape_sigma, rate_sigma);
   
   vector[nt] C = rep_vector(0.0, nt);
-  vector[nt] C_obs;
+  // vector[nt] C_obs;
   
   for(i in 1:n_doses){
     C += conc(doses[i], prediction_times - dose_times[i], cl, ka, ke);
   }
-  C_obs = to_vector(lognormal_rng( log(C) , sigma ));  
+  // C_obs = to_vector(lognormal_rng( log(C) , sigma ));  
 }
