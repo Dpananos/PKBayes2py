@@ -41,8 +41,8 @@ class SimulatedSubject():
 
     def schedule_doses(self, dose_times, doses):
 
-        self.dose_times = dose_times
-        self.doses = doses
+        self.dose_times = validate_input(dose_times)
+        self.doses = validate_input(doses)
         self._scheduled_flag = True
 
     def observe(self, observed_times):
@@ -51,7 +51,6 @@ class SimulatedSubject():
             raise ValueError('Doses not yet scheduled')
         
         times = validate_input(observed_times)
-
 
         true_concentrations = self.observe_func(times, self.dose_times, self.doses)
 
