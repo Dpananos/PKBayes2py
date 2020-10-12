@@ -1,33 +1,33 @@
-//This is a vectorized version to generate patients.  If I wanted to generate 1000 patients in one go, I could use this.
-//Would need to pass patient covariates as a vector in order for them to be generated.
-
 functions{
-  vector pk_ode(real t, vector y, real Cl, real ke, real ka,  int n_doses, vector doses, vector dose_times){
+  vector heaviside(vector t){
     
-    vector[1] dydt;
-    dydt[1] = -ke*y[1];
-    
-    for(i in 1:n_doses){
-      if(t>dose_times[i]){
-        dydt[1] = dydt[1] + 0.5*doses[i] * ke * ka * exp( -ka * (t-dose_times[i]) ) / Cl;
-      }
+    vector[size(t)] y;
+    for(i in 1:size(t)){
+      y[i] = t[i]<0 ? 0 : 1;
     }
+    return y;
+  }
+  
+  
+  vector conc(real D, vector t, real Cl, real ka, real ke){
     
-    return dydt;
+    return heaviside(t) .* (exp(-ka*t) - exp(-ke*t)) * (0.5 * D * ke * ka ) / (Cl *(ke - ka));
   }
 }
 
 data{
   
+  // Patient covariates.  We need these to make predictions prior to seeing data.
   real sex;
   real weight;
   real creatinine;
   real age;
   
+  // This will be given at prediction time
+  int nt;
+  vector[nt] prediction_times;
   
   int n_doses;
-  int n_pred;
-  real t_obs[n_pred];
   vector[n_doses] doses;
   vector[n_doses] dose_times;
 
@@ -137,9 +137,11 @@ generated quantities{
   
   real sigma = gamma_rng(shape_sigma, rate_sigma);
   
-  vector[n_pred] C;
-  vector[n_pred] C_obs;
+  vector[nt] C = rep_vector(0.0, nt);
+  vector[nt] C_obs;
   
-  C = to_vector(ode_rk45(pk_ode, y0, t0, t_obs, cl, ke, ka,  n_doses, doses,  dose_times )[,1]);
+  for(i in 1:n_doses){
+    C += conc(doses[i], prediction_times - dose_times[i], cl, ka, ke);
+  }
   C_obs = to_vector(lognormal_rng( log(C) , sigma ));  
 }

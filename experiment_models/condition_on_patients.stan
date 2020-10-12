@@ -17,21 +17,21 @@ functions{
 }
 data{
   int n;
-  vector[n] C_obs;
-  vector[n] times;
+  vector[n] observed_concentrations;
+  vector[n] observed_times;
+
   real sex;
   real age;
   real weight;
   real creatinine;
   
-  
+  int nt;
+  vector[nt] prediction_times;
   
   int n_doses;
   vector[n_doses] doses;
   vector[n_doses] dose_times;
   
-  int nt;
-  vector[nt] tpred;
   
   real mean_beta_a_1;
   real mean_beta_a_2;
@@ -124,7 +124,7 @@ transformed parameters{
   real<lower=0, upper = ka> ke = alpha*ka;
   vector<lower=0>[n] C = rep_vector(0.0, n);
   for(i in 1:n_doses){
-    C += conc(doses[i], times - dose_times[i], cl, ka, ke);
+    C += conc(doses[i], observed_times - dose_times[i], cl, ka, ke);
   }
 }
 model{
@@ -138,7 +138,7 @@ model{
   
   
   mu_t ~ normal(mean_mu_tmax, sd_mu_tmax);
-  s_t ~ gamma(rate_s_t, shape_s_t);
+  s_t ~ gamma(shape_s_t, rate_s_t);
   beta_t[1] ~ normal(mean_beta_t_1, sd_beta_t_1);
   beta_t[2] ~ normal(mean_beta_t_2, sd_beta_t_2);
   beta_t[3] ~ normal(mean_beta_t_3, sd_beta_t_3);
@@ -147,21 +147,21 @@ model{
   
   
   mu_alpha ~ normal(mean_mu_alpha, sd_mu_alpha);
-  s_alpha  ~ gamma(rate_s_alpha, shape_s_alpha);
+  s_alpha  ~ gamma(shape_s_alpha, rate_s_alpha);
   beta_alpha[1] ~ normal(mean_beta_a_1, sd_beta_a_1);
   beta_alpha[2] ~ normal(mean_beta_a_2, sd_beta_a_2);
   beta_alpha[3] ~ normal(mean_beta_a_3, sd_beta_a_3);
   beta_alpha[4] ~ normal(mean_beta_a_4, sd_beta_a_4);
   z_a ~ std_normal();
   
-  sigma ~  gamma(rate_sigma, shape_sigma);
-  C_obs ~ lognormal(log(C), sigma);
+  sigma ~  gamma(shape_sigma, rate_sigma);
+  observed_concentrations ~ lognormal(log(C), sigma);
   
 }
 generated quantities{
   vector[nt] ypred = rep_vector(0.0, nt);
   
   for(i in 1:n_doses){
-    ypred += conc(doses[i], tpred - dose_times[i], cl, ka, ke);
+    ypred += conc(doses[i], prediction_times - dose_times[i], cl, ka, ke);
   }
 }
