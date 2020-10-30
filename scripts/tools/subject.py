@@ -10,19 +10,15 @@ with open('data/param_summary.pkl','rb') as file:
     _params = pickle.load(file)
 
 # This model is the prior predictive check.  Give it covariates and it will give you predictions
-_prior_model = cmdstanpy.CmdStanModel(exe_file = 'experiment_models/generate_single_patient')
+_prior_model = cmdstanpy.CmdStanModel(exe_file = 'experiment_models/prior_predictive')
 
 # This model fits to simulated data.  Give it covariates and observed data and it will give you predictions.
 _conditioning_model = cmdstanpy.CmdStanModel(exe_file = 'experiment_models/condition_on_patients')
 
-class SimulatedSubject():
+class SimulatedSubject_2():
 
     def __init__(self, pk_params):
 
-        '''
-        pk_params: dict - Dictionary housing patient covariates in addition to simulated PK parameters (see step 02)
-
-        '''
         self.age = pk_params['age']
         self.sex = pk_params['sex']
         self.weight = pk_params['weight']
@@ -34,9 +30,12 @@ class SimulatedSubject():
         # likelihood.  Gives concentrations for repeated doses
         self.observe_func = repeated_dose_concentration(self.cl, self.ke, self.ka)
 
-        #Flags
-
-        self._scheduled_flag = False
+        # Data used in prior models and conditioning models
+        self.model_data = _params.copy()
+        self.model_data['sex'] = self.sex
+        self.model_data['age'] = self.age
+        self.model_data['weight'] = self.weight
+        self.model_data['creatinine'] = self.creatinine
 
 
     def schedule_doses(self, dose_times, doses):
@@ -45,7 +44,11 @@ class SimulatedSubject():
         self.doses = validate_input(doses)
         self._scheduled_flag = True
 
-    def observe(self, observed_times):
+        self.model_data['n_doses'] = self.dose_times.size
+        self.model_data['dose_times'] = self.dose_times.tolist()
+        self.model_data['doses'] = self.doses.tolist()
+
+    def observe(self, observed_times, return_true = True):
 
         if not self._scheduled_flag:
             raise ValueError('Doses not yet scheduled')
@@ -54,63 +57,54 @@ class SimulatedSubject():
 
         true_concentrations = self.observe_func(times, self.dose_times, self.doses)
 
-        sigma = gamma(a=_params['shape_sigma'], scale=1.0/_params['rate_sigma']).rvs(1, random_state =0)
+        # The data generating process needs to be fixed.
+        # Sample from the prior with a set seed for reproducibility
+        # Then generate lognormal random variables (the hard way)
+        # Where the true concentrations are the mean on the natural scale (log concentration is mean on log scale)
+        sigma = gamma(a=_params['shape_sigma'], scale=1.0/_params['rate_sigma']).rvs(1, random_state=0)
 
         observed_concentrations = np.exp(np.log(true_concentrations) + np.random.normal(size = times.size)*sigma)
 
-        return observed_concentrations, true_concentrations
-
-    def make_model_data(self, t, y):
-
-        times = validate_input(t)
-
-        yobs = validate_input(y)
-
-        self.model_data = _params.copy()
-
-        self.model_data['n'] = times.size
-        self.model_data['observed_times'] = times.tolist()
-        self.model_data['observed_concentrations'] = yobs.tolist()
-
-        self.model_data['sex'] = self.sex
-        self.model_data['age'] = self.age
-        self.model_data['weight'] = self.weight
-        self.model_data['creatinine'] = self.creatinine
-
-        self.model_data['nt'] = times.size
-        self.model_data['prediction_times'] = times
-
-        self.model_data['n_doses'] = self.dose_times.size
-        self.model_data['dose_times'] = self.dose_times.tolist()
-        self.model_data['doses'] = self.doses.tolist()
-
-    def make_prediction_data(self, prediction_times):
-     
-        times = validate_input(prediction_times)
-
-        self.prediction_data = self.model_data.copy()
-
-        self.prediction_data['nt'] = times.size
-        self.prediction_data['prediction_times'] = times.tolist()
+        if return_true:
+            return observed_concentrations, true_concentrations
+        else:
+            return observed_concentrations
 
     def fit(self, t, y):
+        
+        times = validate_input(t)
+        yobs = validate_input(y)
+
+        self.fit_data = self.model_data.copy()
+
+        self.fit_data['n'] = times.size
+        self.fit_data['observed_times'] = times.tolist()
+
+        self.fit_data['observed_concentrations'] = yobs.tolist()
+        self.fit_data['nt'] = times.size
+        self.fit_data['prediction_times'] = times
 
 
-        self.make_model_data(t, y)
-
-        self.model_fit = _conditioning_model.sample(self.model_data, adapt_delta=0.99)
+        self.model_fit = _conditioning_model.sample(self.fit_data)
 
     def predict(self, t):
 
-        self.make_prediction_data(t)
+        self.prediction_data = self.fit_data.copy()
+
+        times = validate_input(t)
+        self.prediction_data['nt'] = times.size
+        self.prediction_data['prediction_times'] = times.tolist()
 
         return _conditioning_model.generate_quantities(self.prediction_data, self.model_fit).generated_quantities
 
     def prior_predict(self, t):
 
-        self.make_prediction_data(t)
+        self.prediction_data = self.model_data.copy()
+        times = validate_input(t)
+        self.prediction_data['nt'] = times.size
+        self.prediction_data['prediction_times'] = times.tolist()
 
-        return _prior_model.sample(self.prediction_data, fixed_param = True, iter_sampling = 500).stan_variable("C")
+        return _prior_model.sample(self.prediction_data, fixed_param = True, iter_sampling=2000).stan_variable("C")
 
 
 def validate_input(x):

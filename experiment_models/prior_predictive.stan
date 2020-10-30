@@ -93,9 +93,6 @@ data{
   
 }
 transformed data{
-  real t0 = 0;
-  vector[1] y0 = [0]';
-  
   real scaled_weight = (weight - weight_mean)/weight_sd;
   real scaled_age = (age - age_mean)/age_sd;
   real scaled_creatinine = (creatinine - creatinine_mean)/creatinine_sd;
@@ -134,14 +131,12 @@ generated quantities{
   real alpha =  inv_logit(normal_rng(mu_alpha + X*beta_alpha, s_alpha));
   real ka = log(alpha)/(tmax * (alpha-1));
   real ke = alpha * ka;
+  vector[nt]  C = rep_vector(0.0, nt);
   
-  real sigma = gamma_rng(shape_sigma, rate_sigma);
+
+    for(k in 1:n_doses){
+      C += conc(doses[k], prediction_times - dose_times[k], cl, ka, ke);
+    }
+    
   
-  vector[nt] C = rep_vector(0.0, nt);
-  // vector[nt] C_obs;
-  
-  for(i in 1:n_doses){
-    C += conc(doses[i], prediction_times - dose_times[i], cl, ka, ke);
-  }
-  // C_obs = to_vector(lognormal_rng( log(C) , sigma ));  
 }

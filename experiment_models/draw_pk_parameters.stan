@@ -1,3 +1,20 @@
+functions{
+  vector heaviside(vector t){
+    
+    vector[size(t)] y;
+    for(i in 1:size(t)){
+      y[i] = t[i]<0 ? 0 : 1;
+    }
+    return y;
+  }
+  
+  
+  vector conc(real D, vector t, real Cl, real ka, real ke){
+    
+    return heaviside(t) .* (exp(-ka*t) - exp(-ke*t)) * (0.5 * D * ke * ka ) / (Cl *(ke - ka));
+  }
+  
+}
 data{
   int n_subjects;
   vector[n_subjects] sex;
@@ -62,12 +79,8 @@ data{
   real weight_sd;
   real age_sd;
   real creatinine_sd;
-  
-  
 }
 transformed data{
-  real t0 = 0;
-  vector[1] y0 = [0]';
   
   vector[n_subjects] scaled_weight = (weight - weight_mean)/weight_sd;
   vector[n_subjects] scaled_age = (age - age_mean)/age_sd;
@@ -105,6 +118,6 @@ generated quantities{
   vector[n_subjects] cl = to_vector(exp(normal_rng(mu_cl + X*beta_cl, s_cl)));
   vector[n_subjects] tmax = to_vector(exp(normal_rng(mu_tmax + X*beta_t, s_tmax)));
   vector[n_subjects] alpha =  to_vector(inv_logit(normal_rng(mu_alpha + X*beta_alpha, s_alpha)));
-  vector[n_subjects] ka = log(alpha)./(tmax .* (alpha-1));
-  vector[n_subjects] ke = alpha .* ka;
+  vector[n_subjects] ka = log(alpha) ./ (tmax .* (alpha-1));
+  vector[n_subjects] ke = alpha .* ka;   
 }

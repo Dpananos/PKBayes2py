@@ -6,7 +6,7 @@ import numpy as np
 
 # This model is capable of generating PK parameters for subjects given the psoterior from the 
 # original model in step 01.  
-generative_model = cmdstanpy.CmdStanModel(stan_file='experiment_models/generate_patients.stan')
+generative_model = cmdstanpy.CmdStanModel(stan_file='experiment_models/draw_pk_parameters.stan')
 
 # Load the parameters I computed from step 01.
 with open('data/param_summary.pkl', 'rb') as file:
@@ -19,6 +19,7 @@ sampled_covars = (
     pd.read_csv('data/experiment.csv').
     drop_duplicates(['subjectids']).
     loc[:,['age','sex','weight','creatinine']].
+    iloc[[0],].
     sample(100, replace = True, random_state = 19920908)
 )
 
@@ -35,6 +36,7 @@ fit = generative_model.sample(params, fixed_param=True, iter_sampling=1, seed = 
 sampled_covars['cl'] = fit.stan_variable('cl').squeeze()
 sampled_covars['ke'] = fit.stan_variable('ke').squeeze()
 sampled_covars['ka'] = fit.stan_variable('ka').squeeze()
+sampled_covars['alpha'] = fit.stan_variable('alpha').squeeze()
 
 # Save for later
 sampled_covars.to_csv('data/sampled_covars_and_pk.csv', index = False)
