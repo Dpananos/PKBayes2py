@@ -1,5 +1,4 @@
 import pandas as pd
-
 # Prepare some of the data to be modeled.
 
 df = pd.read_csv('data/rommels_apixiban_data.csv')
@@ -18,3 +17,8 @@ D = 2.5
 new_df = pd.DataFrame(new_cols)
 
 new_df.to_csv("data/experiment.csv", index = False)
+
+
+
+
+

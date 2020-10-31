@@ -109,7 +109,7 @@ class SimulatedSubject():
 
         return _conditioning_model.generate_quantities(self.prediction_data, self.model_fit).generated_quantities
 
-    def prior_predict(self, t):
+    def prior_predict(self, t, with_noise = False):
 
         if not self._scheduled_flag:
             raise ValueError('Doses not yet scheduled')
@@ -119,7 +119,11 @@ class SimulatedSubject():
         self.prediction_data['nt'] = times.size
         self.prediction_data['prediction_times'] = times.tolist()
 
-        return _prior_model.sample(self.prediction_data, fixed_param = True, iter_sampling=2000).stan_variable("C")
+        if with_noise:
+            return _prior_model.sample(self.prediction_data, fixed_param = True, iter_sampling=2000).stan_variable("C_noise")
+        else:
+            return _prior_model.sample(self.prediction_data, fixed_param = True, iter_sampling=2000).stan_variable("C")
+
 
 
 def validate_input(x):

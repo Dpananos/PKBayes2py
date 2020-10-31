@@ -140,11 +140,18 @@ generated quantities{
   real ka = log(alpha)/(tmax * (alpha-1));
   real ke = alpha * ka;
   vector[nt]  C = rep_vector(0.0, nt);
-  
+  vector[nt] C_noise = rep_vector(0.0, nt);
+  real sigma = gamma_rng(shape_sigma, rate_sigma);
 
     for(k in 1:n_doses){
       C += conc(doses[k], prediction_times - dose_times[k], cl, ka, ke);
     }
+
+  for (i in 1:nt){
+    C_noise[i] = lognormal_rng(log(C[i]), sigma );
+  }
+  
+
     
   
 }
