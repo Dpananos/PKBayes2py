@@ -4,29 +4,10 @@ import pickle
 import numpy as np
 import pandas as pd
 
-from tools.summarize_posterior import *
+from tools.summarize_posterior import fit_gamma, fit_norm
+from tools.fit_original_model import fit_original_model
 
-concentration_data = pd.read_csv("data/experiment.csv")
-
-subject_data = concentration_data.drop_duplicates(['subjectids'])
-
-model_data = dict(
-    sex = subject_data.sex.tolist(),
-    weight = subject_data.weight.tolist(),
-    age = subject_data.age.tolist(),
-    creatinine = subject_data.creatinine.tolist(),
-    n_subjectids = subject_data.shape[0],
-    D = subject_data.D.tolist(),
-
-    subjectids = concentration_data.subjectids.tolist(),
-    time = concentration_data.time.tolist(),
-    yobs = concentration_data.yobs.tolist(),
-    n = concentration_data.shape[0]
-)
-
-model = cmdstanpy.CmdStanModel(stan_file = 'experiment_models/original_model.stan')
-
-fit = model.sample(model_data, chains = 12, parallel_chains = 4, seed = 19920908, show_progress=True)
+fit, model_data = fit_original_model()
 
 df = fit.draws_as_dataframe()
 

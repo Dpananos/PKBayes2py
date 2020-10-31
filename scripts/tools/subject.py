@@ -15,7 +15,7 @@ _prior_model = cmdstanpy.CmdStanModel(exe_file = 'experiment_models/prior_predic
 # This model fits to simulated data.  Give it covariates and observed data and it will give you predictions.
 _conditioning_model = cmdstanpy.CmdStanModel(exe_file = 'experiment_models/condition_on_patients')
 
-class SimulatedSubject_2():
+class SimulatedSubject():
 
     def __init__(self, pk_params):
 
@@ -37,6 +37,8 @@ class SimulatedSubject_2():
         self.model_data['weight'] = self.weight
         self.model_data['creatinine'] = self.creatinine
 
+        self._scheduled_flag = False
+
 
     def schedule_doses(self, dose_times, doses):
 
@@ -47,6 +49,10 @@ class SimulatedSubject_2():
         self.model_data['n_doses'] = self.dose_times.size
         self.model_data['dose_times'] = self.dose_times.tolist()
         self.model_data['doses'] = self.doses.tolist()
+
+        self.flag = True
+
+        return self
 
     def observe(self, observed_times, return_true = True):
 
@@ -71,6 +77,9 @@ class SimulatedSubject_2():
             return observed_concentrations
 
     def fit(self, t, y):
+
+        if not self._scheduled_flag:
+            raise ValueError('Doses not yet scheduled')
         
         times = validate_input(t)
         yobs = validate_input(y)
@@ -89,6 +98,9 @@ class SimulatedSubject_2():
 
     def predict(self, t):
 
+        if not self._scheduled_flag:
+            raise ValueError('Doses not yet scheduled')
+
         self.prediction_data = self.fit_data.copy()
 
         times = validate_input(t)
@@ -98,6 +110,9 @@ class SimulatedSubject_2():
         return _conditioning_model.generate_quantities(self.prediction_data, self.model_fit).generated_quantities
 
     def prior_predict(self, t):
+
+        if not self._scheduled_flag:
+            raise ValueError('Doses not yet scheduled')
 
         self.prediction_data = self.model_data.copy()
         times = validate_input(t)

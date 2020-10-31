@@ -89,8 +89,7 @@ data{
   real weight_sd;
   real age_sd;
   real creatinine_sd;
-  
-  
+ 
 }
 transformed data{
   real scaled_weight = (weight - weight_mean)/weight_sd;
@@ -100,9 +99,18 @@ transformed data{
 }
 generated quantities{
   
+
   real mu_cl = normal_rng(mean_mu_cl, sd_mu_cl);
   real mu_tmax = normal_rng(mean_mu_tmax, sd_mu_tmax);
   real mu_alpha = normal_rng(mean_mu_alpha, sd_mu_alpha);
+  
+  //real psi[3] = {mean_mu_cl, mean_mu_tmax, mean_mu_alpha};
+  //real S[3] = {sd_mu_cl, sd_mu_tmax, sd_mu_alpha};
+  //vector[3] theta = multi_normal_rng(to_vector(psi), BIGMA);
+  //real mu_cl = theta[1];
+  //real mu_tmax = theta[2];
+  //real mu_alpha = theta[3];
+  
   
   real s_cl = gamma_rng(shape_s_cl, rate_s_cl);
   real s_tmax = gamma_rng(shape_s_t, rate_s_t);

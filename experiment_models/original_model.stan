@@ -81,7 +81,7 @@ model{
   yobs ~ lognormal(log(C), sigma);
 }
 generated quantities{
-  row_vector[4] X_check = [sex[1], scaled_weight[1], scaled_creatinine[1], scaled_age[1]];
+  row_vector[4] X_check = [1,1,1,1];
   real cl_check = exp(normal_rng(mu_cl + X_check*beta_cl, s_cl) );
   real t_check = exp(normal_rng(mu_tmax + X_check*beta_t, s_t) );
   real a_check = inv_logit(normal_rng(mu_alpha + X_check*beta_a, s_alpha) );

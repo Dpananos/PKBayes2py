@@ -19,7 +19,6 @@ sampled_covars = (
     pd.read_csv('data/experiment.csv').
     drop_duplicates(['subjectids']).
     loc[:,['age','sex','weight','creatinine']].
-    iloc[[0],].
     sample(100, replace = True, random_state = 19920908)
 )
 
