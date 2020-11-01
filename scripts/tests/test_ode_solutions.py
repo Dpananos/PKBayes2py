@@ -29,7 +29,7 @@ def test_analytical_repeated_dose_function():
         doses = 2.5*np.ones_like(dose_times)
         dy = -ke*y
         for tau,D in zip(dose_times, doses):
-            dy += np.heaviside(t - tau, 0)*(D/cl)*ke*ka*np.exp(-ka*(t-tau))
+            dy += np.heaviside(t - tau, 0)*(0.5*D/cl)*ke*ka*np.exp(-ka*(t-tau))
 
         return dy
 

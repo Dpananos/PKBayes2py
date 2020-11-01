@@ -94,7 +94,7 @@ class SimulatedSubject():
         self.fit_data['prediction_times'] = times
 
 
-        self.model_fit = _conditioning_model.sample(self.fit_data)
+        self.model_fit = _conditioning_model.sample(self.fit_data, show_progress=False)
 
     def predict(self, t):
 
@@ -147,7 +147,7 @@ def concentration_function(D: float , t: np.array, cl: float, ke: float, ka: flo
     ka: float - Absorptionrate in units 1/hour
     '''
 
-    y = (D * ke * ka)/(cl*(ke - ka)) * (np.exp(-ka*t) - np.exp(-ke*t))
+    y = (0.5*D * ke * ka)/(cl*(ke - ka)) * (np.exp(-ka*t) - np.exp(-ke*t))
 
     return np.heaviside(t, 0)*y
 
