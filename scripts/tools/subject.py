@@ -100,10 +100,19 @@ class SimulatedSubject(object):
 
         if not self._scheduled_flag:
             raise ValueError('Doses not yet scheduled')
-
-        self.prediction_data = self.fit_data.copy()
-
         times = validate_input(t)
+        
+        # Problem is here.  When I update dose schedule, .predict does not see this.
+        self.prediction_data = self.model_data.copy()
+
+        # These are not used by the generated quantities block
+        # _condition_model expects then to be passed, but the prediction does not use these
+        # Pass something so the model can atleast run.
+        self.prediction_data['n'] = times.size
+        self.prediction_data['observed_times'] = times.tolist()
+        self.prediction_data['observed_concentrations'] = times.tolist()
+
+        # The prediction DOES use this stuff, so it us important these are correct.
         self.prediction_data['nt'] = times.size
         self.prediction_data['prediction_times'] = times.tolist()
 
