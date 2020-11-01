@@ -15,7 +15,7 @@ _prior_model = cmdstanpy.CmdStanModel(exe_file = 'experiment_models/prior_predic
 # This model fits to simulated data.  Give it covariates and observed data and it will give you predictions.
 _conditioning_model = cmdstanpy.CmdStanModel(exe_file = 'experiment_models/condition_on_patients')
 
-class SimulatedSubject():
+class SimulatedSubject(object):
 
     def __init__(self, pk_params):
 

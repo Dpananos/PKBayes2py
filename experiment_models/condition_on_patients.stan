@@ -3,7 +3,7 @@ functions{
     
     vector[size(t)] y;
     for(i in 1:size(t)){
-      y[i] = t[i]<0 ? 0 : 1;
+      y[i] = t[i]<=0 ? 0 : 1;
     }
     return y;
   }
