@@ -52,8 +52,6 @@ class SimulatedSubject(object):
 
         self.flag = True
 
-        return self
-
     def observe(self, observed_times, return_true = True):
 
         if not self._scheduled_flag:
@@ -129,9 +127,9 @@ class SimulatedSubject(object):
         self.prediction_data['prediction_times'] = times.tolist()
 
         if with_noise:
-            return _prior_model.sample(self.prediction_data, fixed_param = True, iter_sampling=2000).stan_variable("C_noise")
+            return _prior_model.sample(self.prediction_data, fixed_param = True, iter_sampling=2000, seed = 19920908).stan_variable("C_noise")
         else:
-            return _prior_model.sample(self.prediction_data, fixed_param = True, iter_sampling=2000).stan_variable("C")
+            return _prior_model.sample(self.prediction_data, fixed_param = True, iter_sampling=2000, seed = 19920908).stan_variable("C")
 
 
 
@@ -153,7 +151,7 @@ def concentration_function(D: float , t: np.array, cl: float, ke: float, ka: flo
     t: np.array - Times at which to evaluate the solution
     cl: float - Clearance rate in units L/hour
     ke: float - Elimination rate in units 1/hour
-    ka: float - Absorptionrate in units 1/hour
+    ka: float - Absorption rate in units 1/hour
     '''
 
     y = (0.5*D * ke * ka)/(cl*(ke - ka)) * (np.exp(-ka*t) - np.exp(-ke*t))
