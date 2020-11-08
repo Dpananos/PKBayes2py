@@ -1,7 +1,10 @@
 import cmdstanpy
 import numpy as np
-from scipy.stats import gamma
 import pickle
+import warnings
+
+from scipy.stats import gamma
+from typing import List, Dict
 
 
 # Dictionary of parameters to be used in models.  Prevents me from having to 
@@ -57,7 +60,7 @@ def repeated_dose_concentration(cl: float, ke: float, ka:float) -> callable:
         return y
     return func
 
-def prior_predict(t: List, theta: Dictionary, dose_times: List, dose_size: :List, with_noise = False)->np.ndarray:
+def prior_predict(t:List, theta: Dict, dose_times:List, dose_size:List, with_noise = False)->np.ndarray:
 
     '''
     Generate retrodictions given times, covariates, and a dosing schedule.
@@ -67,6 +70,9 @@ def prior_predict(t: List, theta: Dictionary, dose_times: List, dose_size: :List
     times = validate_input(t)
     dose_timings = validate_input(dose_times)
     doses = validate_input(dose_size)
+
+    if np.any(times<=0):
+        raise ValueError('All times for prior predictions must be greater than 0.  Check input t to veryify this requirement.')
 
     # Create state
     model_data = _params.copy()
@@ -81,6 +87,7 @@ def prior_predict(t: List, theta: Dictionary, dose_times: List, dose_size: :List
     
     model_data['nt'] = times.size
     model_data['prediction_times'] = times.tolist()
+
     
     if with_noise:
         return _prior_model.sample(model_data, fixed_param = True, iter_sampling=2000, seed = 19920908).stan_variable("C_noise")
@@ -88,7 +95,7 @@ def prior_predict(t: List, theta: Dictionary, dose_times: List, dose_size: :List
         return _prior_model.sample(model_data, fixed_param = True, iter_sampling=2000, seed = 19920908).stan_variable("C")
     
     
-def observe(t: List, theta: Dictionary, dose_times:list , dose_size:list, return_truth = True)->tuple:
+def observe(t: List, theta: Dict, dose_times:list , dose_size:list, return_truth = True)->tuple:
 
     '''
     Draw an observation from a simulated patient given a time, covariates, and a dosing schedule.
@@ -114,11 +121,11 @@ def observe(t: List, theta: Dictionary, dose_times:list , dose_size:list, return
     else:
         return observed_concentrations
         
-def fit(t: List, y: List, theta: Dictionary, dose_times: List, dose_size: List)->callable:
+def fit(t: List, y: List, theta: Dict, dose_times: List, dose_size: List)->callable:
     
     times = validate_input(t)
     yobs = validate_input(y)
-    dose_timings = validate_input(dose_time)
+    dose_timings = validate_input(dose_times)
     doses = validate_input(dose_size)
     
     model_data = _params.copy()
@@ -143,7 +150,7 @@ def fit(t: List, y: List, theta: Dictionary, dose_times: List, dose_size: List)-
     def pred_func(tpred: List, new_dose_times: List, new_dose_size:List,  with_noise = False)->np.ndarray:
         
         time_pred = validate_input(tpred)
-        new_doses = validate_input(new_doses_size)
+        new_doses = validate_input(new_dose_size)
         new_dose_timings = validate_input(new_dose_times)
 
         model_data['nt'] = time_pred.size
