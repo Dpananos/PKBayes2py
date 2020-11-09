@@ -10,7 +10,7 @@ def plot_course(tobs, theta, dose_times, dose_size):
     ax.grid(True, zorder = 0)
 
     # Times over which to plot the predictions.
-    t_predictions = np.arange(0.05, max(dose_times), 0.05)
+    t_predictions = np.arange(0.05, max(dose_times), 0.25)
 
     # What do we expect before observing?
     prior_predictions = prior_predict(t_predictions, theta, dose_times, dose_size)
