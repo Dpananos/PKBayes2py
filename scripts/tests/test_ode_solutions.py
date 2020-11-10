@@ -39,7 +39,7 @@ def test_analytical_repeated_dose_function():
     np.testing.assert_allclose(asol, sol, rtol = 1e-4)
 
 
-def test_stan_ode_solution():
+def test_stan_concentration_function():
 
     # Test if my stan model and my analytical calculation fo the concentration function match up
     model_code='''
