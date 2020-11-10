@@ -1,8 +1,10 @@
 import numpy as np
 from scipy.optimize import minimize
+from typing import Tuple
+
 from .simulation_tools import *
 
-def Y(predictions, ll=0.10, ul=.30):
+def Yn(predictions: np.ndarray, ll: float=0.10, ul: float=.30) -> np.ndarray:
     '''
     Function to measure how long subject stays in range.
     Returns booleans if observation is in range.
@@ -13,11 +15,42 @@ def Y(predictions, ll=0.10, ul=.30):
     
     return reward
 
-)
+def Y(predictions: np.ndarray, ll: float =0.10, ul: float =.30, beta: int = 5) -> np.ndarray:
+    '''
+    Differentiable version of our loss.  Want concentrations to be between ll and ul for as long as possible.  This function gives approximately 0 loss
+    for observations between ll and ul, and loss = 1 else.
 
-def Q_2(A_2, S_2):
+    Inputs:
+    predictions - Samples of predictions from the Bayesian PK model
+    ll - Lower limit of desired threshold
+    ul - Upper limit of desired threshold
+    beta - Controls how close the approximation is to the loss we want.  Larger beta means better approximation
+
+    Outputs:
+    reward - How long, as a proportion, of the time we spend within range
+    '''
+    if beta<1:
+        raise ValueError('beta must be a positive integer.')
+
+    mid = (ll + ul)/2
+    radius = (ll - ul)/2
+
+    arg = 1.0/radius * (predictions-mid)
+    kernel = -1 * np.power(arg, 2*beta)
+
+    reward = np.exp(kernel)
+    return reward
+
+def Q_2(A_2: Tuple, S_2: Tuple) -> float:
     '''
     Q function for second stage.  A_2 first because this is what we optimize over.
+
+    Inputs:
+    A_2 - proposed new dose (in mg).
+    S_2 - "State" of the environment.  Includes: Times to predict over, prediction function, dose times and dose sizes (i.e. the dose regiment).
+
+    Output:
+    E_Y - Expected reward under proposed dose + state.
     '''
     
     # S_2 is the state, which fully determines the prediction function, so just pass the prediction function
@@ -25,10 +58,10 @@ def Q_2(A_2, S_2):
     tpred, pred_func, new_dose_times, new_dose_size = S_2
     proposed_dose_mg = A_2
     
-    
+    # I think I should make this into a function so that I can test it.
     proposed_dose_times = new_dose_times.copy()
     proposed_dose_size = new_dose_size.copy()
-    proposed_dose_size[np.argwhere(proposed_dose_times>tpred[0])] = proposed_dose_mg
+    proposed_dose_size[np.argwhere(proposed_dose_times>=tpred[0])] = proposed_dose_mg
     
     # This is a slow down.  I think I can optimize this by leveraging the fact that the
     # Concentration function is sums of concentration functions and that each time point has some factor of D[i] in it
@@ -38,7 +71,9 @@ def Q_2(A_2, S_2):
     
     # Negative because we are going to minimize
     # This should compute E(Y|A_2, S_2)
-    return -1*Y(predictions).mean()
+    E_Y =  -1*Y(predictions).mean()
+
+    return E_Y
 
 
 def stage_2_optimization(S_2):
@@ -55,12 +90,13 @@ def stage_2_optimization(S_2):
     # TODO: make specifying dose schedule more flexible
     new_dose_times = dose_times.copy()
     new_dose_size = dose_size.copy()
-    tpred = np.arange(tobs[-1], 49)
+    # Predict over the last 4 days
+    tpred = np.arange(96, 192.05, 0.5)
 
     
     dose_bnds = [(0, None)]
     # Use powell method since the objective function is not differentiable
-    optim = minimize(Q_2, x0=5.0, args=([tpred, pred_func, new_dose_times, new_dose_size]), bounds=dose_bnds, method='powell')
+    optim = minimize(Q_2, x0=5.0, args=([tpred, pred_func, new_dose_times, new_dose_size]), bounds=dose_bnds, method = 'L-BFGS-B')
     
     π_2 = optim.x[0]
     
@@ -90,8 +126,9 @@ def Q_1(A_1, S_1):
         expected_v_2+= V_2 * p
         
     
-    #Now reward under this dose
-    tpred = np.arange(0.5, tobs[-1])
+    # Now reward under this dose for the first 4 days
+    # 24 * 4 = 96
+    tpred = np.arange(0.5, 96.5, 0.5)
     prior_predictions = prior_predict(tpred, theta, dose_times, dose_size)
       
     return Y(prior_predictions).mean() + expected_v_2
