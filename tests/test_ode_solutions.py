@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from scipy.integrate import odeint
-from ..tools.simulation_tools import repeated_dose_concentration
+from scripts.tools.simulation_tools import repeated_dose_concentration, observe, fit
 
 def test_analytical_repeated_dose_function():
     
@@ -103,3 +103,44 @@ def test_stan_concentration_function():
     conc_from_analytical = repeat_dose_conc(np.array(t), np.array(dose_times), np.array(doses)) 
 
     np.testing.assert_allclose(conc_from_analytical, conc_from_stan, rtol = 1e-4, atol = 1e-4)
+
+def test_prediction_function():
+
+    # Doses twice per day over two days
+    num_days = 2
+    doses_per_day = 2
+    hours_per_dose = 12
+
+    # Covars for subject.
+    theta = dict(age=40, sex=0, weight=87, creatinine=95, cl=2.07, ke=0.13, ka=0.68)
+
+    # Set up dose times
+    dose_times = np.arange(0, num_days*doses_per_day*hours_per_dose, hours_per_dose)
+    # Dose to take.
+    D = 5
+    dose_size = np.tile(D, dose_times.size)
+
+    
+    tobs = [16]
+    yobs = observe(tobs, theta, dose_times, dose_size, return_truth = False)
+
+    predict = fit(tobs, yobs, theta, dose_times, dose_size)
+
+    # Ok, here is what we are testing.  I can predict one of two ways:
+    # The first way would be to predict to a time t from t=0.  
+    # Here we assume C0 = 0 i.e. no drug in the blood.
+    tt = np.arange(12, 36, 0.25)
+    y_pred_1 = predict(tt, dose_times, dose_size)
+    # In order to facilitate the optimization, predict returns a tuple for concentration-time profiles for the inital condition (c0*exp(-ke*t))
+    # and another profile for  the concentration function D*F*ke*ka/ (Cl*(ke - ka))(exp(-ka*t) - exp(-ke*t)).
+    # Note that the sum of these two profiles constitutes a solution to the initial value problem y' = f(t,y) y(0) = c_0
+    # This is important because I can epress different doses with different initial conditions, we we do next.
+    y_pred_1 = (y_pred_1[0] + y_pred_1[1]).mean(0)
+
+    #Note here that the dose schedule is 1 mg, but since I have decomposed the solution into two parts, the latter of which is linear in D
+    # then I can simply multiply both parts by the appropriate dose size and recover the same solution.
+    dose_size = np.ones_like(dose_times)
+    y_pred_2 = predict(tt-12, dose_times, dose_size, 12) # tt-12 to start at 0, when we give a dose
+    y_pred_2 = (5*y_pred_2[0] + 5*y_pred_2[1]).mean(0)
+
+    np.testing.assert_allclose(y_pred_1, y_pred_2, rtol=1e-3)

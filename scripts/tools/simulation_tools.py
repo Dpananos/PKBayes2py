@@ -144,10 +144,11 @@ def fit(t: List, y: List, theta: Dict, dose_times: List, dose_size: List)->calla
     
     model_data['nt'] = times.size
     model_data['prediction_times'] = times.tolist()
+    model_data['c0_time'] = [0]
     
     conditioned_model = _conditioning_model.sample(model_data)
     
-    def pred_func(tpred: List, new_dose_times: List, new_dose_size:List,  with_noise = False)->np.ndarray:
+    def pred_func(tpred: List, new_dose_times: List, new_dose_size:List, c0_time: float = 0,  with_noise = False)->np.ndarray:
         
         time_pred = validate_input(tpred)
         new_doses = validate_input(new_dose_size)
@@ -158,8 +159,34 @@ def fit(t: List, y: List, theta: Dict, dose_times: List, dose_size: List)->calla
         model_data['n_doses'] = new_doses.size
         model_data['dose_times'] = new_dose_timings.tolist()
         model_data['doses'] = new_doses.tolist()
+        model_data['c0_time'] = [c0_time]
             
 
-        return _conditioning_model.generate_quantities(model_data, conditioned_model).generated_quantities
+        gqs = _conditioning_model.generate_quantities(model_data, conditioned_model)
+        ypred_col_ix = ['ypred' in j for j in gqs.column_names]
+        initial_conc_col_ix = ['initial_concentration' in j for j in gqs.column_names]
+        
+        ypred = gqs.generated_quantities[:, ypred_col_ix]
+        initial_concentration = gqs.generated_quantities[:, initial_conc_col_ix]
+        
+        return (initial_concentration, ypred)
     
     return pred_func
+
+def make_problem(num_days=2, D = 5):
+
+    doses_per_day = 2
+    hours_per_dose = 12
+    
+    theta = dict(age=40, sex=0, weight=87, creatinine=95, cl=2.07, ke=0.13, ka=0.68)
+
+    dose_times = np.arange(0, num_days*doses_per_day*hours_per_dose + 0.1, hours_per_dose)
+    dose_size = np.tile(D, dose_times.size)
+
+    tobs = np.random.uniform(dose_times[0], dose_times[1], size = (1,))
+    yobs = observe(tobs, theta, dose_times, dose_size, return_truth=False)
+
+    predict = fit(tobs, yobs, theta, dose_times, dose_size)
+
+    return (theta, dose_times, dose_size, tobs, yobs, predict)
+

@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 import pytest
 import pickle
-from ..tools.fit_original_model import fit_original_model
+from scripts.tools.fit_original_model import fit_original_model
 
 
 def test_prior_predictive():

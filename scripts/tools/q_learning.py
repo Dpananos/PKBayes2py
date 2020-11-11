@@ -4,7 +4,7 @@ from typing import Tuple
 
 from .simulation_tools import *
 
-def Yn(predictions: np.ndarray, ll: float=0.10, ul: float=.30) -> np.ndarray:
+def Y_non_differentiable(predictions: np.ndarray, ll: float=0.10, ul: float=.30) -> np.ndarray:
     '''
     Function to measure how long subject stays in range.
     Returns booleans if observation is in range.
@@ -41,6 +41,7 @@ def Y(predictions: np.ndarray, ll: float =0.10, ul: float =.30, beta: int = 5) -
     reward = np.exp(kernel)
     return reward
 
+
 def Q_2(A_2: Tuple, S_2: Tuple) -> float:
     '''
     Q function for second stage.  A_2 first because this is what we optimize over.
@@ -55,18 +56,21 @@ def Q_2(A_2: Tuple, S_2: Tuple) -> float:
     
     # S_2 is the state, which fully determines the prediction function, so just pass the prediction function
     # This cuts down on refitting time.
-    tpred, pred_func, new_dose_times, new_dose_size = S_2
+    tpred, predict, new_dose_times, new_dose_size = S_2
     proposed_dose_mg = A_2
     
     # I think I should make this into a function so that I can test it.
     proposed_dose_times = new_dose_times.copy()
     proposed_dose_size = new_dose_size.copy()
-    proposed_dose_size[np.argwhere(proposed_dose_times>=tpred[0])] = proposed_dose_mg
+
+    # At the half way point, we get to change the decision we make about the dose
+    decision_point = int(len(proposed_dose_times)/2)
+    proposed_dose_size[decision_point:] = proposed_dose_mg
     
     # This is a slow down.  I think I can optimize this by leveraging the fact that the
     # Concentration function is sums of concentration functions and that each time point has some factor of D[i] in it
     # Will optimize later.
-    predictions = pred_func(tpred, proposed_dose_times, proposed_dose_size)
+    predictions = predict(tpred, proposed_dose_times, proposed_dose_size)
     
     
     # Negative because we are going to minimize
@@ -83,20 +87,17 @@ def stage_2_optimization(S_2):
     # V2 is the value; how long we spend in range, max_a Q2(S_2, a)
     
     tobs, yobs, theta, dose_times, dose_size = S_2
-    pred_func = fit(t=tobs, y=yobs, theta=theta, dose_times=dose_times, dose_size=dose_size)
+    predict = fit(t=tobs, y=yobs, theta=theta, dose_times=dose_times, dose_size=dose_size)
     
-    
-    #Hard code for now
-    # TODO: make specifying dose schedule more flexible
-    new_dose_times = dose_times.copy()
-    new_dose_size = dose_size.copy()
-    # Predict over the last 4 days
-    tpred = np.arange(96, 192.05, 0.5)
+    # Predict over the latter half of the time
+    # Assumes that the number of days is even and the same in stage 1 and stage 2.
+    decision_point = int(len(dose_times)/2)
+    tpred = np.arange(dose_times[decision_point], dose_times.max(), 0.5)
 
     
+    # Can't give someone negative mg.  Bound the dose.
     dose_bnds = [(0, None)]
-    # Use powell method since the objective function is not differentiable
-    optim = minimize(Q_2, x0=5.0, args=([tpred, pred_func, new_dose_times, new_dose_size]), bounds=dose_bnds, method = 'L-BFGS-B')
+    optim = minimize(Q_2, x0=5.0, args=([tpred, predict, dose_times, dose_size]), bounds=dose_bnds, method = 'L-BFGS-B')
     
     π_2 = optim.x[0]
     
@@ -126,9 +127,9 @@ def Q_1(A_1, S_1):
         expected_v_2+= V_2 * p
         
     
-    # Now reward under this dose for the first 4 days
-    # 24 * 4 = 96
-    tpred = np.arange(0.5, 96.5, 0.5)
+    # Now reward under this dose for stage 1
+    decision_point = int(len(dose_times)/2)
+    tpred = np.arange(0.5, dose_times[decision_point]+0.5, 0.5)
     prior_predictions = prior_predict(tpred, theta, dose_times, dose_size)
       
     return Y(prior_predictions).mean() + expected_v_2

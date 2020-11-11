@@ -10,7 +10,7 @@ def plot_course(tobs, theta, dose_times, dose_size):
     ax.grid(True, zorder = 0)
 
     # Times over which to plot the predictions.
-    t_predictions = np.arange(0.05, max(dose_times), 0.25)
+    t_predictions = np.arange(0.05, max(dose_times), 0.125)
 
     # What do we expect before observing?
     prior_predictions = prior_predict(t_predictions, theta, dose_times, dose_size)
@@ -23,7 +23,8 @@ def plot_course(tobs, theta, dose_times, dose_size):
     # Fit the model to the subject
 
     posterior_predict = fit(tobs, yobs, theta, dose_times, dose_size)
-    posterior_predictions = posterior_predict(t_predictions, dose_times, dose_size)
+    posterior_predictions_1, posterior_predictions_2 = posterior_predict(t_predictions, dose_times, dose_size)
+    posterior_predictions = posterior_predictions_1 + posterior_predictions_2
 
     posterior_E_y = posterior_predictions.mean(0)
     posterior_Q_5, posterior_Q_95 = np.quantile(posterior_predictions, q=[0.05, 0.95], axis = 0)
