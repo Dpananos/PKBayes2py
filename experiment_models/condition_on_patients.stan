@@ -31,7 +31,14 @@ data{
   int n_doses;
   vector[n_doses] doses;
   vector[n_doses] dose_times;
+  vector[1] c0_time;
   
+  real weight_mean;
+  real age_mean;
+  real creatinine_mean;
+  real weight_sd;
+  real age_sd;
+  real creatinine_sd;
   
   real mean_beta_a_1;
   real mean_beta_a_2;
@@ -83,13 +90,7 @@ data{
   real rate_s_cl;
   real shape_s_cl;
   
-  
-  real weight_mean;
-  real age_mean;
-  real creatinine_mean;
-  real weight_sd;
-  real age_sd;
-  real creatinine_sd;
+
 }
 transformed data{
   real scaled_weight = (weight - weight_mean)/weight_sd;
@@ -159,9 +160,20 @@ model{
   
 }
 generated quantities{
+  vector[1] c0=[0]';
+  vector[nt] initial_concentration = rep_vector(0.0, nt);
   vector[nt] ypred = rep_vector(0.0, nt);
+  
+  for(i in 1:n_doses){
+   c0 += conc(doses[i], c0_time - dose_times[i], cl, ka, ke);
+  }
+  
+  initial_concentration = exp(-ke*prediction_times)*c0[1];
   
   for(i in 1:n_doses){
     ypred += conc(doses[i], prediction_times - dose_times[i], cl, ka, ke);
   }
+  
+
+  
 }
