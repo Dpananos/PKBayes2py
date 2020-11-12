@@ -166,10 +166,10 @@ def fit(t: List, y: List, theta: Dict, dose_times: List, dose_size: List)->calla
         ypred_col_ix = ['ypred' in j for j in gqs.column_names]
         initial_conc_col_ix = ['initial_concentration' in j for j in gqs.column_names]
         
-        ypred = gqs.generated_quantities[:, ypred_col_ix]
-        initial_concentration = gqs.generated_quantities[:, initial_conc_col_ix]
+        dynamics = gqs.generated_quantities[:, ypred_col_ix]
+        initial_condition = gqs.generated_quantities[:, initial_conc_col_ix]
         
-        return (initial_concentration, ypred)
+        return (initial_condition, dynamics)
     
     return pred_func
 

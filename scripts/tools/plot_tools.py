@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from .simulation_tools import prior_predict, observe, fit
 
-def plot_course(tobs, theta, dose_times, dose_size):
+def plot_course(tobs, yobs, theta, dose_times, dose_size, new_dose = np.NaN):
 
     fig, ax = plt.subplots(dpi = 120, figsize = (20, 5))
     ax.set_xlabel('Hours Post Initial Dose')
@@ -17,12 +17,12 @@ def plot_course(tobs, theta, dose_times, dose_size):
     prior_E_y = prior_predictions.mean(0)
     prior_Q_5, prior_Q_95 = np.quantile(prior_predictions, q=[0.05, 0.95], axis = 0)
 
-    # Now. observe the subject at tobs
-    yobs, *_ = observe(tobs, theta, dose_times, dose_size)
 
     # Fit the model to the subject
-
     posterior_predict = fit(tobs, yobs, theta, dose_times, dose_size)
+
+    if not np.isnan(new_dose):
+        dose_size = np.tile(new_dose, dose_times.size)
     posterior_predictions_1, posterior_predictions_2 = posterior_predict(t_predictions, dose_times, dose_size)
     posterior_predictions = posterior_predictions_1 + posterior_predictions_2
 

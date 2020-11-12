@@ -44,38 +44,17 @@ def Y(predictions: np.ndarray, ll: float =0.10, ul: float =.30, beta: int = 5) -
 
 def Q_2(A_2: Tuple, S_2: Tuple) -> float:
     '''
-    Q function for second stage.  A_2 first because this is what we optimize over.
-
-    Inputs:
-    A_2 - proposed new dose (in mg).
-    S_2 - "State" of the environment.  Includes: Times to predict over, prediction function, dose times and dose sizes (i.e. the dose regiment).
-
-    Output:
-    E_Y - Expected reward under proposed dose + state.
+    # TODO: Document
     '''
     
     # S_2 is the state, which fully determines the prediction function, so just pass the prediction function
     # This cuts down on refitting time.
-    tpred, predict, new_dose_times, new_dose_size = S_2
-    proposed_dose_mg = A_2
-    
-    # I think I should make this into a function so that I can test it.
-    proposed_dose_times = new_dose_times.copy()
-    proposed_dose_size = new_dose_size.copy()
-
-    # At the half way point, we get to change the decision we make about the dose
-    decision_point = int(len(proposed_dose_times)/2)
-    proposed_dose_size[decision_point:] = proposed_dose_mg
-    
-    # This is a slow down.  I think I can optimize this by leveraging the fact that the
-    # Concentration function is sums of concentration functions and that each time point has some factor of D[i] in it
-    # Will optimize later.
-    predictions = predict(tpred, proposed_dose_times, proposed_dose_size)
-    
+    initial_condition, dynamics = S_2
+    proposed_dose = A_2
     
     # Negative because we are going to minimize
     # This should compute E(Y|A_2, S_2)
-    E_Y =  -1*Y(predictions).mean()
+    E_Y =  -1*Y(initial_condition + proposed_dose*dynamics).mean()
 
     return E_Y
 
@@ -87,17 +66,29 @@ def stage_2_optimization(S_2):
     # V2 is the value; how long we spend in range, max_a Q2(S_2, a)
     
     tobs, yobs, theta, dose_times, dose_size = S_2
-    predict = fit(t=tobs, y=yobs, theta=theta, dose_times=dose_times, dose_size=dose_size)
-    
-    # Predict over the latter half of the time
-    # Assumes that the number of days is even and the same in stage 1 and stage 2.
-    decision_point = int(len(dose_times)/2)
-    tpred = np.arange(dose_times[decision_point], dose_times.max(), 0.5)
+
 
     
+    predict = fit(t=tobs, y=yobs, theta=theta, dose_times=dose_times, dose_size=dose_size)
+    
+
+
+    # We will be splitting the time into two stages.  E.g 4 days on inital dose, 4 days after, etc.  Same number of days in two stages.
+    # Likely be sampling near the end of the last day in stage 2.  This means I would need to predict over the same length of time.
+    # We observe at t=tobs.  When is the next time a dose is taken?  It would be the first positive element of dose_times-tobs.
+    # Negative values in the past, positive values in the future.
+    next_dose_time_ix = np.argwhere((dose_times - tobs)>0).min()
+    next_dose_time = dose_times[next_dose_time_ix]
+
+    decision_point = int(len(dose_times)/2)
+    tpred = np.arange(0.5, dose_times[decision_point]+0.5, 0.5)
+    initial_condition, dynamics = predict(tpred, dose_times, np.ones_like(dose_times), c0_time=next_dose_time)
+
+
     # Can't give someone negative mg.  Bound the dose.
     dose_bnds = [(0, None)]
-    optim = minimize(Q_2, x0=5.0, args=([tpred, predict, dose_times, dose_size]), bounds=dose_bnds, method = 'L-BFGS-B')
+    D_old = np.unique(dose_size)
+    optim = minimize(Q_2, x0=5.0, args=([D_old*initial_condition, dynamics]), bounds=dose_bnds, method = 'L-BFGS-B')
     
     π_2 = optim.x[0]
     
