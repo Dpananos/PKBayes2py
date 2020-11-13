@@ -148,7 +148,7 @@ def fit(t: List, y: List, theta: Dict, dose_times: List, dose_size: List)->calla
     
     conditioned_model = _conditioning_model.sample(model_data)
     
-    def pred_func(tpred: List, new_dose_times: List, new_dose_size:List, c0_time: float = 0,  with_noise = False)->np.ndarray:
+    def predict(tpred: List, new_dose_times: List, new_dose_size:List, c0_time: float = 0,  with_noise = False)->np.ndarray:
         
         time_pred = validate_input(tpred)
         new_doses = validate_input(new_dose_size)
@@ -171,7 +171,7 @@ def fit(t: List, y: List, theta: Dict, dose_times: List, dose_size: List)->calla
         
         return (initial_condition, dynamics)
     
-    return pred_func
+    return predict
 
 def make_problem(num_days=2, D = 5):
 
@@ -183,7 +183,7 @@ def make_problem(num_days=2, D = 5):
     dose_times = np.arange(0, num_days*doses_per_day*hours_per_dose + 0.1, hours_per_dose)
     dose_size = np.tile(D, dose_times.size)
 
-    tobs = np.random.uniform(dose_times[0], dose_times[1], size = (1,))
+    tobs = np.random.uniform(dose_times[1], dose_times[2], size = (1,))
     yobs = observe(tobs, theta, dose_times, dose_size, return_truth=False)
 
     predict = fit(tobs, yobs, theta, dose_times, dose_size)

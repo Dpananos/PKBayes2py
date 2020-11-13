@@ -19,7 +19,7 @@ sampled_covars = (
     pd.read_csv('data/experiment.csv').
     drop_duplicates(['subjectids']).
     loc[:,['age','sex','weight','creatinine']].
-    sample(1000, replace = True, random_state = 19920908)
+    sample(5, replace = True, random_state = 19920908)
 )
 
 # Convert resampled covars to dict
@@ -37,10 +37,7 @@ sampled_covars['ke'] = fit.stan_variable('ke').squeeze()
 sampled_covars['ka'] = fit.stan_variable('ka').squeeze()
 sampled_covars['alpha'] = fit.stan_variable('alpha').squeeze()
 
-# Split so I can use some for experiments and some for training Q2 estimator.
-for_experiment = sampled_covars.iloc[:500,]
-for_estimating_Q2 = sampled_covars.iloc[500:,]
 
-for_experiment.to_csv('data/sampled_covars_and_pk.csv', index = False)
-for_estimating_Q2.to_csv('data/training_data_for_Q2_estimation.csv', index = False)
+
+sampled_covars.to_csv('data/sampled_covars_and_pk.csv', index=False)
 
