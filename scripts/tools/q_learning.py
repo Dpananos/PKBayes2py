@@ -99,7 +99,7 @@ def stage_2_optimization(S_2):
     # This logic comes from solving the PK ode for an arbitrary inital condition.
     dose_of_1s = np.ones_like(dose_times)
 
-    initial_condition, dynamics = predict(tpred=tpred, new_dose_times=dose_times, new_dose_size=dose_of_1s, c0_time=next_dose_time_after_tobs)
+    initial_condition, dynamics = predict(tpred=tpred, new_dose_times=dose_times, new_dose_size=dose_of_1s, c0_time=next_dose_time)
     # Can't give someone negative mg.  Bound the dose.
     dose_bnds = [(0, None)]
     # Pick a dose size to start with.  Remember to multiplt the initial condition by this dose size so that we are estimating the  concentration at tobs.
