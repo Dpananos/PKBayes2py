@@ -1,12 +1,13 @@
 import cmdstanpy
 import pickle
-
 import pandas as pd
 import numpy as np
 
+N_samples = 100
+
 # This model is capable of generating PK parameters for subjects given the psoterior from the 
 # original model in step 01.  
-generative_model = cmdstanpy.CmdStanModel(stan_file='experiment_models/draw_pk_parameters.stan')
+generative_model = cmdstanpy.CmdStanModel(exe_file='experiment_models/draw_pk_parameters')
 
 # Load the parameters I computed from step 01.
 with open('data/param_summary.pkl', 'rb') as file:
@@ -19,7 +20,7 @@ sampled_covars = (
     pd.read_csv('data/experiment.csv').
     drop_duplicates(['subjectids']).
     loc[:,['age','sex','weight','creatinine']].
-    sample(5, replace = True, random_state = 19920908)
+    sample(N_samples, replace = True, random_state = 19920908)
 )
 
 # Convert resampled covars to dict
