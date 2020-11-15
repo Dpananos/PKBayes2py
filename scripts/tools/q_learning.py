@@ -165,7 +165,7 @@ def stage_1_optimization(S_1: Tuple, dose_max=2, dose_min=20, step=1):
     # Approximate the max of Q_1 using a coarse grid
     coarse_dose_grid = np.arange(dose_max, dose_min, step)
     q_values = []
-    for A_1 in tqdm(coarse_dose_grid, desc="Looping Over Inital Doses", file=sys.stdout):
+    for A_1 in coarse_dose_grid:
         ev = Q_1(A_1, S_1)
         q_values.append(ev)
 

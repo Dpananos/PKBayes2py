@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import sys
 from tools.q_learning import *
-from tqdm import tqdm
+
 
 #cmdstan shhhhh
 import logging
