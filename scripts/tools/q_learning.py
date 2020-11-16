@@ -201,3 +201,36 @@ def perform_q_learning(pk_params, num_days=10, doses_per_day=2, hours_per_dose=1
         tobs_subjects.append(tobs[0])
 
     return (tobs_subjects, best_starting_doses)
+
+
+def score(theta):
+
+    num_days=10
+    doses_per_day=2
+    hours_per_dose=12
+
+    tmax = num_days * doses_per_day * hours_per_dose
+    step_size = 0.5
+
+    dose_times = np.arange(0, tmax, hours_per_dose)
+    t_pred = np.arange(0.5, tmax + step_size , step_size)
+
+    dose_size = np.tile(theta['q_learn_best_starting_dose'], dose_times.size)
+
+    tobs = [theta['tobs']]
+
+    yobs = observe(tobs, theta, dose_times, dose_size, return_truth=False)
+    predict = fit(tobs, yobs, theta, dose_times, dose_size)
+    π,v = stage_2_optimization((tobs, yobs, theta, dose_times, dose_size))
+
+    decision_point = int(len(dose_times)/2)
+    dose_size[decision_point:] = π
+
+    
+    initial_condition, dynamics = predict(t_pred, dose_times, dose_size)
+    y_pred = initial_condition + dynamics
+
+    value = Y(y_pred).mean()
+
+    return value
+
