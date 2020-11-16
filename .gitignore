@@ -3,3 +3,4 @@
 .ipynb_checkpoints
 .DS_Store
 __pycache__
+q_learning_plots

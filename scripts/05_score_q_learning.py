@@ -13,6 +13,6 @@ logging.getLogger("cmdstanpy").setLevel(logging.WARNING)
 df = pd.read_csv('data/covar_only_results.csv')
 pk_params =  df.to_dict(orient='records')
 
-df['q_learning_obsereved_reward'] = [score(theta) for theta in tqdm(pk_params, desc = 'Looping over subjects')]
+df['q_learning_obsereved_reward'] = [score(theta,i) for (i,theta) in tqdm(enumerate(pk_params), desc = 'Looping over subjects')]
 
 df.to_csv('data/final_results.csv', index = False)

@@ -183,10 +183,19 @@ def make_problem(num_days=2, D = 5):
     dose_times = np.arange(0, num_days*doses_per_day*hours_per_dose + 0.1, hours_per_dose)
     dose_size = np.tile(D, dose_times.size)
 
-    tobs = np.random.uniform(dose_times[1], dose_times[2], size = (1,))
+    decision_point = int(len(dose_times)/2)
+    tobs = np.random.uniform(dose_times[decision_point-1], dose_times[decision_point], size = (1,))
     yobs = observe(tobs, theta, dose_times, dose_size, return_truth=False)
 
     predict = fit(tobs, yobs, theta, dose_times, dose_size)
 
     return (theta, dose_times, dose_size, tobs, yobs, predict)
 
+def setup_experiment(num_days=10, doses_per_day=2. hours_per_dose=12):
+
+    # The last time the subejct could take a dose.  End simulation just before this time.
+    tmax = hours_per_dose * doses_per_day * num_days
+    # Spread doses out over time
+    dose_times = np.arange(0, tmax, hours_per_dose)
+    # We get to make a decision about the size of the dose at the half way mark
+    decision_point = int(len(dose_times) / 2)
