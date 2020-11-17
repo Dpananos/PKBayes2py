@@ -3,7 +3,8 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from scipy.integrate import odeint
-from scripts.tools.simulation_tools import repeated_dose_concentration, observe, fit
+from scripts.tools.simulation_tools import repeated_dose_concentration, observe, fit, prior_predict
+from tqdm import tqdm
 
 def test_analytical_repeated_dose_function():
     
@@ -144,3 +145,4 @@ def test_prediction_function():
     y_pred_2 = (5*y_pred_2[0] + 5*y_pred_2[1]).mean(0)
 
     np.testing.assert_allclose(y_pred_1, y_pred_2, rtol=1e-3)
+

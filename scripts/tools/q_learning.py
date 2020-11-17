@@ -4,6 +4,7 @@ from typing import Tuple
 from tqdm import tqdm
 import sys
 from .simulation_tools import *
+from .plot_tools import *
 
 
 def Y_non_differentiable(predictions: np.ndarray, ll: float = 0.10, ul: float = 0.30) -> np.ndarray:
@@ -201,3 +202,37 @@ def perform_q_learning(pk_params, num_days=10, doses_per_day=2, hours_per_dose=1
         tobs_subjects.append(tobs[0])
 
     return (tobs_subjects, best_starting_doses)
+
+
+def score(theta, subject_name):
+
+    num_days=10
+    doses_per_day=2
+    hours_per_dose=12
+
+    tmax = num_days * doses_per_day * hours_per_dose
+    step_size = 0.5
+
+    dose_times = np.arange(0, tmax, hours_per_dose)
+    t_pred = np.arange(0.5, tmax + step_size , step_size)
+
+    dose_size = np.tile(theta['q_learn_best_starting_dose'], dose_times.size)
+
+    tobs = [theta['tobs']]
+
+    yobs = observe(tobs, theta, dose_times, dose_size, return_truth=False)
+    predict = fit(tobs, yobs, theta, dose_times, dose_size)
+    π,v = stage_2_optimization((tobs, yobs, theta, dose_times, dose_size))
+    f = plot_course(tobs, yobs, theta, dose_times, dose_size, subject_name=subject_name, new_dose = π)
+
+
+    decision_point = int(len(dose_times)/2)
+    dose_size[decision_point:] = π
+
+    *_, ytrue = observe(t_pred, theta, dose_times, dose_size, return_truth = True)
+
+    value = Y(ytrue).mean()
+
+
+    return value
+

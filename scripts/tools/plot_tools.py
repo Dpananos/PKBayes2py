@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from .simulation_tools import prior_predict, observe, fit
 
-def plot_course(tobs, yobs, theta, dose_times, dose_size, new_dose = np.NaN):
+def plot_course(tobs, yobs, theta, dose_times, dose_size, subject_name = 0, new_dose = np.NaN):
 
     fig, ax = plt.subplots(dpi = 120, figsize = (20, 5))
     ax.set_xlabel('Hours Post Initial Dose')
@@ -22,7 +22,11 @@ def plot_course(tobs, yobs, theta, dose_times, dose_size, new_dose = np.NaN):
     posterior_predict = fit(tobs, yobs, theta, dose_times, dose_size)
 
     if not np.isnan(new_dose):
-        dose_size = np.tile(new_dose, dose_times.size)
+        new_dose_size = dose_size.copy()
+        decision_point = int(len(new_dose_size)/2)
+        new_dose_size[decision_point:] = new_dose
+        dose_size = new_dose_size
+        
     posterior_predictions_1, posterior_predictions_2 = posterior_predict(t_predictions, dose_times, dose_size)
     posterior_predictions = posterior_predictions_1 + posterior_predictions_2
 
@@ -45,5 +49,8 @@ def plot_course(tobs, yobs, theta, dose_times, dose_size, new_dose = np.NaN):
 
     ax.legend(loc = 'best')
 
+    plt.tight_layout()
+    plt.savefig(f'q_learning_plots/subject_{subject_name}.png')
+    plt.close()
 
     return ax
