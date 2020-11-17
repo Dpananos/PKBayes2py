@@ -121,7 +121,7 @@ def observe(t: List, theta: Dict, dose_times:list , dose_size:list, return_truth
     else:
         return observed_concentrations
         
-def fit(t: List, y: List, theta: Dict, dose_times: List, dose_size: List)->callable:
+def fit(t: List, y: List, theta: Dict, dose_times: List, dose_size: List, return_model = False)->callable:
     
     times = validate_input(t)
     yobs = validate_input(y)
@@ -146,7 +146,7 @@ def fit(t: List, y: List, theta: Dict, dose_times: List, dose_size: List)->calla
     model_data['prediction_times'] = times.tolist()
     model_data['c0_time'] = [0]
     
-    conditioned_model = _conditioning_model.sample(model_data)
+    conditioned_model = _conditioning_model.sample(model_data, adapt_delta=0.99, seed = 19920908)
     
     def predict(tpred: List, new_dose_times: List, new_dose_size:List, c0_time: float = 0,  with_noise = False)->np.ndarray:
         
@@ -162,16 +162,34 @@ def fit(t: List, y: List, theta: Dict, dose_times: List, dose_size: List)->calla
         model_data['c0_time'] = [c0_time]
             
 
-        gqs = _conditioning_model.generate_quantities(model_data, conditioned_model)
+        gqs = _conditioning_model.generate_quantities(model_data, conditioned_model, seed = 19920908)
         ypred_col_ix = ['ypred' in j for j in gqs.column_names]
         initial_conc_col_ix = ['initial_concentration' in j for j in gqs.column_names]
         
         dynamics = gqs.generated_quantities[:, ypred_col_ix]
         initial_condition = gqs.generated_quantities[:, initial_conc_col_ix]
+
+        # There is an enormous bug somewhere.  
+        # On some occassions, initial_condition or dynamics will have Nans. 
+        # I have no explanation for this at the moment.  It appears even when the model fits well 
+        # and diagnostics show no pathological behaviour.
+        # I suspect it might be a problem with Stan, but that is unlikely.
+        # For now, I'm performing a work around by just removing rows from both dynamics and initial_condition
+        # which have nans
+        if np.isnan(initial_condition).any() or np.isnan(dynamics).any():
+            warnings.warn('Caution, one of dynamics or initial_condition has missing values')
+
+        rows_no_nan = (~np.isnan(initial_condition).any(axis=1)) & (~np.isnan(dynamics).any(axis=1))
         
-        return (initial_condition, dynamics)
-    
-    return predict
+        filtered_initial_condition = initial_condition[rows_no_nan]
+        filtered_dynamics = dynamics[rows_no_nan]
+
+        return (filtered_initial_condition, filtered_dynamics)
+
+    if return_model:
+        return predict, conditioned_model
+    else:
+        return predict
 
 def make_problem(num_days=2, D = 5):
 
@@ -191,7 +209,7 @@ def make_problem(num_days=2, D = 5):
 
     return (theta, dose_times, dose_size, tobs, yobs, predict)
 
-def setup_experiment(num_days=10, doses_per_day=2. hours_per_dose=12):
+def setup_experiment(num_days=10, doses_per_day=2, hours_per_dose=12):
 
     # The last time the subejct could take a dose.  End simulation just before this time.
     tmax = hours_per_dose * doses_per_day * num_days
@@ -199,3 +217,5 @@ def setup_experiment(num_days=10, doses_per_day=2. hours_per_dose=12):
     dose_times = np.arange(0, tmax, hours_per_dose)
     # We get to make a decision about the size of the dose at the half way mark
     decision_point = int(len(dose_times) / 2)
+
+    return tmax, dose_times, decision_point
