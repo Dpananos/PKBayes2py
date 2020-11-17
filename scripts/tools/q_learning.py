@@ -193,7 +193,8 @@ def perform_q_learning(pk_params, num_days=10, doses_per_day=2, hours_per_dose=1
 
     for theta in tqdm(pk_params, desc="Looping Over Subjects", file=sys.stdout):
 
-        tobs = np.random.uniform(tobs_min, tobs_max, size=(1,))
+        # tobs = np.random.uniform(tobs_min, tobs_max, size=(1,))
+        tobs = [114]
 
         S_1 = (tobs, theta, dose_times)
         best_dose = stage_1_optimization(S_1, step=dose_step)
