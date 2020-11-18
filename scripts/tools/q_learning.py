@@ -6,6 +6,12 @@ import sys
 from .simulation_tools import *
 from .plot_tools import *
 
+from ax.service.managed_loop import optimize
+
+import logging
+logging.getLogger("ax").setLevel(logging.WARNING)
+logging.getLogger("cmdstanpy").setLevel(logging.WARNING)
+
 
 def Y_non_differentiable(predictions: np.ndarray, ll: float = 0.10, ul: float = 0.30) -> np.ndarray:
     """
@@ -188,18 +194,33 @@ def perform_q_learning(pk_params, num_days=10, doses_per_day=2, hours_per_dose=1
     tobs_min = dose_times[decision_point - 1]
     tobs_max = dose_times[decision_point]
 
+    dose_parameter = {
+            "name":'D',
+            'type':'range',
+            'bounds':[1.0, 20.0],
+             "value_type": "float"}
+
+    tobs_parameter = {
+                "name":'tobs',
+                'type':'range',
+                'bounds':[108.0, 120.0], #Hard code because ax is picky about this
+                "value_type": "float"}
+
     best_starting_doses = []
     tobs_subjects = []
 
     for theta in tqdm(pk_params, desc="Looping Over Subjects", file=sys.stdout):
 
-        tobs = np.random.uniform(tobs_min, tobs_max, size=(1,))
 
-        S_1 = (tobs, theta, dose_times)
-        best_dose = stage_1_optimization(S_1, step=dose_step)
+        best_parameters, values, experiment, model = optimize(
+            parameters=[dose_parameter, tobs_parameter],
+            experiment_name = 'test',
+            objective_name = 'q1',
+            minimize = False,
+            evaluation_function = lambda x: Q_1(x['D'],([x['tobs']], theta, dose_times)))
 
-        best_starting_doses.append(best_dose)
-        tobs_subjects.append(tobs[0])
+        best_starting_doses.append(best_parameters['D'])
+        tobs_subjects.append(best_parameters['tobs'])
 
     return (tobs_subjects, best_starting_doses)
 
