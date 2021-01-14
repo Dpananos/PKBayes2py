@@ -176,8 +176,8 @@ def fit(t: List, y: List, theta: Dict, dose_times: List, dose_size: List, return
         # I suspect it might be a problem with Stan, but that is unlikely.
         # For now, I'm performing a work around by just removing rows from both dynamics and initial_condition
         # which have nans
-        if np.isnan(initial_condition).any() or np.isnan(dynamics).any():
-            warnings.warn('Caution, one of dynamics or initial_condition has missing values')
+        # if np.isnan(initial_condition).any() or np.isnan(dynamics).any():
+            # warnings.warn('Caution, one of dynamics or initial_condition has missing values')
 
         rows_no_nan = (~np.isnan(initial_condition).any(axis=1)) & (~np.isnan(dynamics).any(axis=1))
         
@@ -209,13 +209,16 @@ def make_problem(num_days=2, D = 5):
 
     return (theta, dose_times, dose_size, tobs, yobs, predict)
 
-def setup_experiment(num_days=10, doses_per_day=2, hours_per_dose=12):
+def setup_experiment(dose,num_days=10, doses_per_day=2, hours_per_dose=12):
 
     # The last time the subejct could take a dose.  End simulation just before this time.
     tmax = hours_per_dose * doses_per_day * num_days
+    step = 0.5
+    tpred = np.arange(step, tmax+step, step)
     # Spread doses out over time
     dose_times = np.arange(0, tmax, hours_per_dose)
+    dose_sizes = np.tile(dose, dose_times.size)
     # We get to make a decision about the size of the dose at the half way mark
     decision_point = int(len(dose_times) / 2)
 
-    return tmax, dose_times, decision_point
+    return tpred, dose_times, dose_sizes, decision_point

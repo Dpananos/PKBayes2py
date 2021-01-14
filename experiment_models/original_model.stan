@@ -1,4 +1,4 @@
-data{
+imedata{
   int n; //Total number of observations
   int subjectids[n]; //Subject idendification number as an integer.  Mine go from 1 - 36
   int n_subjectids; //How many unique subjects do I have?
