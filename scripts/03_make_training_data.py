@@ -5,18 +5,12 @@ import numpy as np
 from scripts.tools.simulation_tools import *
 from scripts.tools.scoring_and_opt_tools import *
 from tqdm.notebook import tqdm
-
+from smt.sampling_methods import LHS
 from itertools import product
 
-'''
-Eventually, I will be doing Q learning.  The Q_1 function (the function which returns
-the value of the policty for the first stage decision) calls an optimization prodecure
-10 times.  Each run of the optimization prodecure takes 2 seconds, so a single call of Q_1
-can take 30 seconds.  Not good, especally since i need to call Q_1 many times for 100 subjects.
 
-We can speed it up my learning  model from the results of the optimization.  I need data
-to interpolate, so this script makes that data.
-'''
+
+N_samples = 1000
 
 # This model is capable of generating PK parameters for subjects given the psoterior from the 
 # original model in step 01.  
@@ -26,38 +20,77 @@ generative_model = cmdstanpy.CmdStanModel(exe_file='experiment_models/draw_pk_pa
 with open('data/param_summary.pkl', 'rb') as file:
     params = pickle.load(file)
 
-# First, resample the covars from the data in step 01.
-# Set random state for reproducibility.
-# Can convert into a dictionary and merge with the model parameters
-# Assign a column called "key " so I can do an outer join later.
-covars = (
-    pd.read_csv('data/experiment.csv').
-    loc[:,['age','weight','creatinine','sex']].
-    drop_duplicates().
-    assign(key=1)
-)
- 
+# Set up some limits based on our data.
+# Use Latin Hypercube Sampling to sample the domain to build a model
+# That replaces the optimization of Q_2
+tpred, dose_times, dose_sizes, decision_point = setup_experiment(1,num_days=10, doses_per_day=2, hours_per_dose=12)
 
-# Now, I need to generate a grid of observation times and possible doses.
-possible_observation_times = np.arange(dose_times[decision_point-1], dose_times[decision_point])
-possible_doses = np.arange(1, 20)
+age_lims = [26.0, 70.0]
+weight_lims = [54.7, 136.6]
+creatinine_lims = [50, 95]
+sex_lims = [0, 1]
+tpred_lims = [dose_times[decision_point-1], dose_times[decision_point]]
+dose_lims = [1, 20.0]
+lims = np.array([age_lims, weight_lims, creatinine_lims, sex_lims, tpred_lims, dose_lims])
 
-dose_obs_time_combo = pd.DataFrame([combo for combo in product(possible_doses, possible_observation_times)], columns=['dose','obs_time'])
-dose_obs_time_combo['key'] = 1
+sampling = LHS(xlimits = lims)
+domain = sampling(1000)
+colnames = ['age','weight','creatinine','sex', 'tpred', 'D']
+domain_df = pd.DataFrame(domain, columns=colnames).assign(sex = lambda x: x.sex.round())
 
-covar_time_dose = pd.merge(covars, dose_obs_time_combo, how = 'outer', on = 'key')
 
-dist_of_possible_obs = []
+# Convert resampled covars to dict
+sampled_covars_dict = domain_df.to_dict(orient = 'list')
 
-for theta in tqdm(covar_time_dose.to_dict(orient = 'records')):
+params = {**domain_df.to_dict(orient = 'list'), **params}
+params['n_subjects'] = domain_df.shape[0]
+
+# Now sample
+fit = generative_model.sample(params, fixed_param=True, iter_sampling=1, seed = 19920908)
+
+# Append the pk params.  These are all I need to generate observations and pk curves
+domain_df['cl'] = fit.stan_variable('cl').squeeze()
+domain_df['ke'] = fit.stan_variable('ke').squeeze()
+domain_df['ka'] = fit.stan_variable('ka').squeeze()
+domain_df['alpha'] = fit.stan_variable('alpha').squeeze()
+
+
+possible_outcomes = []
+
+for theta in domain_df.to_dict(orient = 'records'):
     
-    tpred, dose_times, dose_size, decision_point = setup_experiment(theta['dose'],num_days=10, doses_per_day=2, hours_per_dose=12)
-    possible_futures = prior_predict([theta['obs_time']], theta, dose_times, dose_size, with_noise=True)
+    tobs = [theta['tpred']]
+    D = theta['D']
     
-    counts, edges = np.histogram(possible_futures)
-    centers = 0.5 * (edges[1:] + edges[:-1])
-    # Laplace smoothing, just in case.  This should be unneccesary however.
-    probabilities = (counts + 1) / sum(counts + 1)
+    yobs = prior_predict(tobs, theta, dose_times, np.ones_like(dose_times)*D)
+    
+    counts, bin_edges = np.histogram(yobs)
+    
+    centers = 0.5*(bin_edges[1:] + bin_edges[:-1])
+    
+    possible_outcomes.append(centers)
+    
+    
+possible_outcomes_df = pd.DataFrame(np.array(possible_outcomes), columns = [f'y_{j}' for j in range(10)])
 
-    dist_of_possible_obs.append(centers)
+training_df = pd.concat((domain_df, possible_outcomes_df), axis = 1).assign(ID = np.arange(Nsamples))
+
+final_training = pd.melt(training_df, id_vars = [j for j in training_df.columns if 'y_' not in j ], value_name = 'yobs').drop('variable', axis = 1)
+
+outcomes = []
+for theta in tqdm(final_training.to_dict(orient = 'records')):
     
+    tpred, dose_times, dose_size, decision_point = setup_experiment(1,num_days=10, doses_per_day=2, hours_per_dose=12)
+    
+    dose_size = np.ones_like(dose_times)*theta['D']
+    tobs = [theta['tpred']]
+    yobs = [theta['yobs']]
+    
+    S_2 = tobs, yobs, theta, dose_times, dose_size
+    
+    π_2, V_2 = stage_2_optimization(S_2)
+    
+    outcomes.append(V_2)
+
+final_training['outcomes'] = outcomes
+final_training.to_csv('data/stage_2_optimization_training.csv', index = False)

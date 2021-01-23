@@ -7,7 +7,7 @@ new_cols = dict(
 time = df.Time,
 subjectids = pd.Categorical(df.Subject).codes + 1,
 yobs = df.Concentration/1000,
-sex = df.Sex.apply(lambda x: 1 if x=='male' else 0),
+sex = df.Sex.apply(lambda x: 1 if x=='Male' else 0),
 age = df.Age,
 weight = df.Weight,
 creatinine = df.Creatinine,
