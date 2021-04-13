@@ -1,0 +1,8 @@
+data/rf_gscv.txt
+.vscode
+.ipynb_checkpoints
+.DS_Store
+__pycache__
+
+
+.Rproj.user
