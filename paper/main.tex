@@ -1,0 +1,40 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage[noabbrev]{cleveref}
+\usepackage{mathrsfs}
+\usepackage[left=2.00cm, right=2.00cm, top=2.00cm, bottom=2.00cm]{geometry}
+
+%%
+\linespread{1.5}
+
+%Import the natbib package and sets a bibliography  and citation styles
+\usepackage[round, sort, numbers]{natbib}
+\setcitestyle{square}
+\bibliographystyle{unsrtnat}
+
+
+%%
+
+\title{A Framework For Considering Costs and Benefits of Additional Complexities in Personalized Medicine \\
+		\large Working Title Need a New One}
+
+\author{Demetri Pananos, Dan Lizotte}
+
+\date{}
+
+
+\begin{document}
+	\maketitle
+
+	\input{sections/001_introduction.tex}
+	\input{sections/002_dynamic_treatment_regimes.tex}
+
+	\newpage
+	\bibliography{./bibs/introduction,./bibs/dtr}
+
+\end{document}

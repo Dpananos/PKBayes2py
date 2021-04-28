@@ -1,0 +1,97 @@
+\section{Dynamic Treatment Regimes}
+
+
+
+In this section, we discuss the theory of dynamic treatment regimes and how personalization can be thought of as a dynamic treatment regime.  We describe our experiments in the context of dynamic treatment regimes and introduce our reward function.
+
+\subsection{Trajectories}
+
+Our goal is to find the dose or sequences of doses for a subject to keep their blood serum concentration within a desired range for as long as possible given the constraints: a) subject’s blood serum concentrations cannot be measured very frequently, and b) we are limited to pre-dose clinical measurements to make our initial dosing decision.  The theory of dynamic treatment regimes and statistical reinforcement learning offers a framework through which to understand our problem and construct one possible solution.
+
+A dynamic treatment regime (DTR) is a sequence of decision rules for adapting a treatment plan to the time-varying state of an individual subject \cite{chakraborty2013statistical}. In DTRs, and their cousin topic in computer science \textit{reinforcement learning}, an agent (often thought of as a robot in reinforcement learning, but within medicine sometimes thought of as a physician’s computerized decision support system) interacts with a system for a number of stages. At each stage, the agent receives an \textit{observation} of the system and then decides which \textit{action} to take.  This action will result in an observed \textit{reward} which is followed by a new observation of the system after it has been impacted by the action.  This cycle of observation, action, reward then repeats, with the agent aiming to take actions which yield the largest total reward.
+
+Key to our DTR is the concept of a \textit{trajectory}. Define a stage to be a triple containing an observation, chosen action, and resulting reward. Let $O_i$ denote an observation at the ith stage, $ A_i $ be the action at the $ i^{th} $ stage, and $ Y_i $ denote the reward at the $ i^{th}$ stage, denoted in capital letters when considering the observation, action, and reward as random variables.  A  trajectory is then the tuple $ (O_1, A_1, O_2, A_2,  \cdots, O_K, A_K, O_{K+1})$.  Following notation by Chakraborty and Moodie \cite{chakraborty2013statistical}, we will denote a system’s history at stage $ j $ as $ H_j = (O_1, A_1, O_2, A_2, \cdots , O_{j-1}, A_{j-1}, O_j) $.  The reward at stage j is then a function of the system’s history, the action taken, and the next observation $ Y_j = Y_j(H_j, A_j, O_{j+1}) $.
+
+\subsection{Policies, Value Functions, and Q-Learning}
+
+A deterministic policy $ d = (d_1, \cdots, d_k) $ is a vector of decision rules each which take as input the system’s history and output an action to take. The stage $ j $ value function for a policy $ d $ is the expected reward the agent would receive starting from history $ h_j  $(here in lower case since it is an observed quantity) and then choose actions according to $ d $ for every action thereafter.  The value function is written as
+
+\begin{equation}
+	V^d_j(h_j) = E_d\left[ \sum_{k=j}^K Y_k(H_k, A_k, O_{k+1}) \Bigg\lvert H_j = h_j\right] \>.
+\end{equation}
+
+\noindent Here, the expectation is computed over the distribution of trajectories. Importantly, the stage $ j $ 
+value function can be decomposed into the expectation of reward at stage $ j $ plus the stage $ j+1  $ value function  \cite{chakraborty2013statistical}
+
+\begin{equation}
+V^d_j(h_j) = E_d\left[Y_j(H_j, A_j, O_{j+1} + V^d_{j+1}(H_{j+1}) \vert H_j = h_j\right] \>.
+\end{equation}
+
+
+\noindent The optimal stage $ j  $ value function is the value function under a policy which yields maximal value.  Mathematically, 
+
+\begin{equation}
+V^{opt}_j(h_j) = \underset{d \in \mathscr{D}}{\mbox{max}} V^d_j(h_j)
+\end{equation}
+
+\noindent A natural question is “what policy maximizes the value?”. Estimating such a policy can be achieved by estimating the optimal Q function \cite{chakraborty2013statistical}.  The optimal Q function at stage $ j $ is a function of the system’s history $ h_j $ and a proposed action $ a_j $,
+
+\begin{equation}
+ Q_j^{opt} = E \left[ 
+ Y_j(H_j, A_j, O_{j+1}) + V^{opt}_{j+1}(H_{j+1}) \lvert H_j = h_j, A_j = a_j
+ \right]
+\end{equation}
+
+Note that the optimal Q function has similar form and interpretation to the optimal value function (namely, it is the expected reward starting at stage $ j $ but with the added condition that we take action $ a_j $ and then follow the optimal policy thereafter). Due to the decomposition of the reward function at stage $ j $, estimation of the optimal Q function can be performed by choosing the action which yields the largest reward at each stage assuming we act optimally in the future.  Below, we describe how we choose optimal actions using a posterior distribution of a subject’s pharmacokinetics.
+
+\subsection{Experimental Design In Terms of Stages of a DTR}
+
+In our experiments, we develop a DTR for selecting the best dose for keeping a patient’s blood plasma concentration within a desired range. Here, we present details of the experimental design in the DTR framework, leaving simulation details (including how the data were simulated) for our methods section.
+
+Our experiment consists of 1000 simulated subjects taking a dose of apixaban once every 12 hours with perfect adherence for a total of 10 days.  Sometime in the second 12 hour period on the fourth day (between 108 and 120 hours after the initial dose), we have the opportunity to measure  the simulated subject’s blood concentration, should our policy allow for it.  At the start of the fifth day, the dose is adjusted based on all the pre-dose clinical measurements plus the observed concentration. The dose will be adjusted so as to attempt to maximize the time spent between 0.1 mg/L and 0.3 mg/L. Thus, our DTR consists of two stages (the first five days, and the latter five days), however the size of the range may be adapted for different scenarios. We choose this range as it is not so narrow that even optimal doses perform poorly, but not so wide that any dose can achieve high reward. 
+
+In terms of the DTR, the system is the patient for whom a dose is selected, the actions correspond to selection of dose sizes, and the reward is the proportion of time spent within the desired concentration range. The trajectories we will use to estimate the optimal Q functions are of the form
+
+\begin{equation}\label{key}
+O_1, A_1, Y_1, O_2, A_2, Y_2, O_3
+\end{equation}
+
+\noindent The interpretation of a given trajectory is:
+\begin{itemize}
+	\item $ O_1 $ is any pre-dose clinical measurements of the subject.  In our experiments, we consider age in years, renal function (as measured by serum creatinine in mMol/L), weight in kilograms, and dichotmous biological sex (dummy coded so that male=1 and female=0).  We choose these variables as they are known to affect the pharmacokinetics of apixaban \cite{byon2019apixaban}.  
+	\item $ A_1 $ is dual action of initial dose to provide the subject plus a time in the future at which to measure the subject’s blood serum concentration.
+	\item $ Y_1 $ is the proportion of time spent within the concentration range in the first five days.
+	\item $ O_2 $ is the pre clinical measurements of the subject plus the observed concentration made on the fourth day.
+	\item $ A_2 $ is the dose adjustment
+	\item $ Y_2 $ is the proportion of time spent within the concentration range in the last five days after the dose adjustment.
+	\item $ O_3 $ would be pre-dose clinical measurements, the observed concentration made on the fourth day, and the next concentration measurement, were it to be made. As we examine just the two actions $ A_1 $ and $ A_2 $, we do not make use of $ O_3 $ but include it here to adhere with our definition of trajectories above.
+\end{itemize}
+
+The reward function we use depends on the subject’s true latent concentration. Let $ c_j j=1...K $ be the $ j^{th}$ latent concentration value at time $ t_j $.  The reward function is 
+
+\begin{equation}
+Y(c_1, c_2, \cdots, c_k) = \dfrac{1}{k}\sum_{j=1}^K \mathbb{I}(0.1 < c_j < 0.3)
+\end{equation}
+
+\noindent Here, $ \mathbb{I} $ is an indicator function returning 1 if the argument is true, and 0 else.  To leverage off-the-shelf optimization tools, we approximate this reward function with a continuously differentiable function, namely
+\begin{equation}
+Y(c_1, c_2, \cdots, c_k) = \dfrac{1}{k}\sum_{j=1}^K \exp\left( - \left[ \dfrac{c_j-0.15}{0.05} \right]^{2\beta} \right)
+\end{equation}
+
+\noindent Here, $ \beta $is a positive integer.  For sufficiently large beta, our approximation becomes arbitrarily close to our intended reward function.  In practice we set beta=5 to balance between good approximation of our intended reward and vanishing gradients impeding our optimization. We suppress the dependence on the history in the definition of the reward as the reliance on the history is implicit.  The reward depends on the latent concentrations which depend on previous doses (actions) and potentially on the previous dose measurements (observations of the system).
+
+Our stage 2 optimal Q function is then
+
+\begin{equation}
+Q_{2}^{o p t}\left(H_{2}, A_{2}\right)=E\left[Y\left(c_{j+1}, c_{j+2}, \cdots, c_{j+n}\right) \Bigg\vert H_{2}, A_{2}\right] \>,
+\end{equation}
+
+\noindent and our stage 1 optimal Q function is
+
+\begin{equation}
+Q_{1}^{o p t}\left(H_{1}, A_{1}\right)= E \left[Y\left(c_{1}, c_{2}, \cdots, c_{j}\right)+\max _{a_{2}} Q_{2}^{o p t}\left(H_{2}, a_{2}\right) \Bigg\vert H_{1}, A_{1}\right]
+\end{equation}
+
+We seek to maximize the stage 1 optimal Q function to learn the optimal policy for dosing subjects under the constraint we can measure them at most once and are limited to the aforementioned pre-dose clinical variables.  The interpretation of stage 1 optimal Q function is as follows:\textit{ Given the pre-dose clinical variables of the subject and a proposed initial dose and measurement time, the stage 1 optimal Q function gives the proportion of time the subject’s blood serum concentration is between 0.1mg/L and 0.3mg/L assuming that we provide the subject with the best dose possible at the start of the $ 5^{th} $ day.}  The actions $ A_1 $ and $ A_2 $ which maximize these functions constitute the optimal policy.
+
+The concentration values $ c_j $ in the optimal Q functions are latent, meaning we have no direct access to them in practice. Furthermore, obtaining measurements with high enough frequency so that the reward is faithfully estimated would be too burdensome on the patient. What is left to explain is how these concentrations are computed. In the next section, we describe how we use a Bayesian model  to obtain latent concentration predictions and compute the required expectations.

@@ -1,0 +1,59 @@
+\begin{thebibliography}{7}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Morse and Kim(2015)]{morse2015personalized}
+Bridget~L Morse and Richard~B Kim.
+\newblock Is personalized medicine a dream or a reality?
+\newblock \emph{Critical reviews in clinical laboratory sciences}, 52\penalty0
+  (1):\penalty0 1--11, 2015.
+
+\bibitem[Wigle et~al.(2019)Wigle, Povitz, Teft, Legan, Lenehan, Gulilat,
+  Nevison, Kritzinger, Punaganty, Keller, et~al.]{wigle2019prospective}
+Theodore~John Wigle, Brandi Povitz, Wendy Teft, Robin Legan, John~Gordon
+  Lenehan, Markus Gulilat, Stephanie Nevison, Justin Kritzinger, Veera
+  Punaganty, Denise Keller, et~al.
+\newblock Prospective cohort study of the impact of hospital-wide
+  dihydropyrimidine dehydrogenase (dpyd) genotype testing for
+  fluoropyrimidine-based chemotherapy on adverse events and hospital costs.
+\newblock \emph{American Society of Clinical Oncology}, 2019.
+
+\bibitem[Kasztura et~al.(2019)Kasztura, Richard, Bempong, Loncar, and
+  Flahault]{kasztura2019cost}
+Miriam Kasztura, Aude Richard, Nefti-Eboni Bempong, Dejan Loncar, and Antoine
+  Flahault.
+\newblock Cost-effectiveness of precision medicine: a scoping review.
+\newblock \emph{International journal of public health}, 64\penalty0
+  (9):\penalty0 1261--1271, 2019.
+
+\bibitem[Di~Paolo et~al.(2017)Di~Paolo, Sarkozy, Ryll, and
+  Siebert]{di2017personalized}
+Antonello Di~Paolo, Fran{\c{c}}ois Sarkozy, Bettina Ryll, and Uwe Siebert.
+\newblock Personalized medicine in europe: not yet personal enough?
+\newblock \emph{BMC health services research}, 17\penalty0 (1):\penalty0 1--9,
+  2017.
+
+\bibitem[Fr{\"o}hlich et~al.(2018)Fr{\"o}hlich, Balling, Beerenwinkel,
+  Kohlbacher, Kumar, Lengauer, Maathuis, Moreau, Murphy, Przytycka,
+  et~al.]{frohlich2018hype}
+Holger Fr{\"o}hlich, Rudi Balling, Niko Beerenwinkel, Oliver Kohlbacher,
+  Santosh Kumar, Thomas Lengauer, Marloes~H Maathuis, Yves Moreau, Susan~A
+  Murphy, Teresa~M Przytycka, et~al.
+\newblock From hype to reality: data science enabling personalized medicine.
+\newblock \emph{BMC medicine}, 16\penalty0 (1):\penalty0 1--15, 2018.
+
+\bibitem[Chakraborty(2013)]{chakraborty2013statistical}
+Bibhas Chakraborty.
+\newblock \emph{Statistical methods for dynamic treatment regimes}.
+\newblock Springer, 2013.
+
+\bibitem[Byon et~al.(2019)Byon, Garonzik, Boyd, and Frost]{byon2019apixaban}
+Wonkyung Byon, Samira Garonzik, Rebecca~A Boyd, and Charles~E Frost.
+\newblock Apixaban: a clinical pharmacokinetic and pharmacodynamic review.
+\newblock \emph{Clinical pharmacokinetics}, 58\penalty0 (10):\penalty0
+  1265--1279, 2019.
+
+\end{thebibliography}
