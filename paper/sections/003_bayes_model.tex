@@ -1,0 +1,21 @@
+\section{Bayesian Models of Pharmacokinetics}
+
+In order to estimate the optimal Q functions, we need to be able to predict how a subject’s concentrations respond to any given dose.  These predictions can be passed to the reward function to compute the values of $ Q_1 $ and $ Q_2 $. Bayesian models of pharmacokinetics are capable of providing distributions of concentrations and can account for pre-dose clinical variables, as we will describe.  The model we construct takes as inputs pre-dose clinical variables (age, sex, weight, and creatinine) and provides a distribution of plausible concentrations prior to seeing data.  We can pass these prior predictions to our Q function and determine what dose keeps the subject in range for the longest time prior to seeing any data.  Once we observe a concentration measurement from the subject, we can condition our model on that observation, and perform the optimization again to adjust the subject’s dose in light of new information.   For our experiments, we first fit a Bayesian pharmacokinetic model to real pharmacokinetic data collected by our colleagues in clinical pharmacology \cite{tirona2018apixaban} and then use the fitted model to simulate patients and make predictions for our experiments.
+
+We extend a previously proposed one compartment Bayesian pharmacokinetic model \cite{pananos2020comparisons} to include fixed effects of covariates on pharmacokinetic parameters.  The model presented in \cite{pananos2020comparisons} is a hierarchical Bayesian model of apixaban pharmacokinetics, in which the clearance rate (L/hour), time to max concentration (hours), absorption time delay (hours), and ratio between the elimination and absorption rate constants (called alpha, a unitless parameter) are hierarchically modelled.  We extend that model by regressing the latent pharmacokinetic parameters on the aforementioned pre-dose clinical variables.
+
+The model fit to real data, which we refer to as $ M1 $, is 
+
+\begin{align}\label{model_M1}
+	y_{i,j} &\sim \operatorname{Lognormal}  \left(  C_i(t_j)  , \sigma^2_y \right)  \\
+	\sigma^2 &\sim \operatorname{Lognormal} \left( 0.1, 0.2 \right)\\	
+	C_i(t_j) &= \begin{dcases}
+	\frac{D_{i} \cdot F}{C l_{i}} \cdot \frac{k_{e, i} \cdot k_{a, i}}{k_{e, i}-k_{a, i}}\left(e^{-k_{a, i}\left(t_{j}-\delta_{i}\right)}-e^{-k_{e, i}\left(t_{j}-\delta_{i}\right)}\right) & t_j>\delta_i \\
+	0 & \mbox{else}
+	\end{dcases}\\
+	k_{e,i} &= \alpha_i \cdot k_{a,i}\\
+	k_{a,i} &= \dfrac{\log(\alpha_i)}{t_{max}\cdot(\alpha_i-1)}\\
+	\delta_i &\sim \operatorname{Beta}(\phi, \kappa) \\
+	\operatorname{logit}(\alpha_i) \vert \beta_\alpha, \sigma^2_\alpha &\sim \operatorname{Normal}(\mu_\alpha + \mathbf{x}_i^T \beta_\alpha, \sigma^2_\alpha)
+\end{align}
+

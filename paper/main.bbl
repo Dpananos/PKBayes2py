@@ -1,4 +1,4 @@
-\begin{thebibliography}{7}
+\begin{thebibliography}{9}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -55,5 +55,21 @@ Wonkyung Byon, Samira Garonzik, Rebecca~A Boyd, and Charles~E Frost.
 \newblock Apixaban: a clinical pharmacokinetic and pharmacodynamic review.
 \newblock \emph{Clinical pharmacokinetics}, 58\penalty0 (10):\penalty0
   1265--1279, 2019.
+
+\bibitem[Tirona et~al.(2018)Tirona, Kassam, Strapp, Ramu, Zhu, Liu, Schwarz,
+  Kim, Al-Judaibi, and Beaton]{tirona2018apixaban}
+Rommel~G Tirona, Zahra Kassam, Ruth Strapp, Mala Ramu, Catherine Zhu, Melissa
+  Liu, Ute~I Schwarz, Richard~B Kim, Bandar Al-Judaibi, and Melanie~D Beaton.
+\newblock Apixaban and rosuvastatin pharmacokinetics in nonalcoholic fatty
+  liver disease.
+\newblock \emph{Drug Metabolism and Disposition}, 46\penalty0 (5):\penalty0
+  485--492, 2018.
+
+\bibitem[Pananos and Lizotte(2020)]{pananos2020comparisons}
+A~Demetri Pananos and Daniel~J Lizotte.
+\newblock Comparisons between hamiltonian monte carlo and maximum a posteriori
+  for a bayesian model for apixaban induction dose \& dose personalization.
+\newblock In \emph{Machine Learning for Healthcare Conference}, pages 397--417.
+  PMLR, 2020.
 
 \end{thebibliography}
