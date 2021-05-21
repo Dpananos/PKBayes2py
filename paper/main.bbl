@@ -1,4 +1,4 @@
-\begin{thebibliography}{14}
+\begin{thebibliography}{19}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -60,6 +60,15 @@ Antonello Di~Paolo, Fran{\c{c}}ois Sarkozy, Bettina Ryll, and Uwe Siebert.
 \newblock \emph{BMC health services research}, 17\penalty0 (1):\penalty0 1--9,
   2017.
 
+\bibitem[Houts et~al.(1984)Houts, Lipton, Harvey, Martin, Simmonds, Dixon,
+  Longo, Andrews, Gordon, Meloy, et~al.]{houts1984nonmedical}
+Peter~S Houts, Allan Lipton, Harold~A Harvey, Barbara Martin, Mary~A Simmonds,
+  Richard~H Dixon, Santo Longo, Thomas Andrews, Robert~A Gordon, John Meloy,
+  et~al.
+\newblock Nonmedical costs to patients and their families associated with
+  outpatient chemotherapy.
+\newblock \emph{Cancer}, 53\penalty0 (11):\penalty0 2388--2392, 1984.
+
 \bibitem[Lee et~al.(2020)Lee, Shah, and Chino]{lee2020assessment}
 Anna Lee, Kanan Shah, and Fumiko Chino.
 \newblock Assessment of parking fees at national cancer institute--designated
@@ -73,6 +82,28 @@ Rachel~A Elliott, Judith~A Shinogle, Pamela Peele, Monali Bhosle, and Dyfrig~A
 \newblock Understanding medication compliance and persistence from an economics
   perspective.
 \newblock \emph{Value in health}, 11\penalty0 (4):\penalty0 600--610, 2008.
+
+\bibitem[Barocas and Selbst(2016)]{barocas2016big}
+Solon Barocas and Andrew~D Selbst.
+\newblock Big data's disparate impact.
+\newblock \emph{Calif. L. Rev.}, 104:\penalty0 671, 2016.
+
+\bibitem[Lum and Isaac(2016)]{lum2016predict}
+Kristian Lum and William Isaac.
+\newblock To predict and serve?
+\newblock \emph{Significance}, 13\penalty0 (5):\penalty0 14--19, 2016.
+
+\bibitem[Ajunwa(2020)]{ajunwa2020paradox}
+Ifeoma Ajunwa.
+\newblock The paradox of automation as anti-bias intervention, 41 cardozo, l,
+  2020.
+
+\bibitem[Obermeyer et~al.(2019)Obermeyer, Powers, Vogeli, and
+  Mullainathan]{obermeyer2019dissecting}
+Ziad Obermeyer, Brian Powers, Christine Vogeli, and Sendhil Mullainathan.
+\newblock Dissecting racial bias in an algorithm used to manage the health of
+  populations.
+\newblock \emph{Science}, 366\penalty0 (6464):\penalty0 447--453, 2019.
 
 \bibitem[Fr{\"o}hlich et~al.(2018)Fr{\"o}hlich, Balling, Beerenwinkel,
   Kohlbacher, Kumar, Lengauer, Maathuis, Moreau, Murphy, Przytycka,

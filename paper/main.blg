@@ -5,44 +5,44 @@ The style file: unsrtnat.bst
 Database file #1: ./bibs/introduction.bib
 Database file #2: ./bibs/dtr.bib
 Database file #3: ./bibs/bayes.bib
-You've used 14 entries,
+You've used 19 entries,
             2481 wiz_defined-function locations,
-            649 strings with 8079 characters,
-and the built_in function-call counts, 6543 in all, are:
-= -- 478
-> -- 502
-< -- 4
-+ -- 182
-- -- 154
-* -- 605
-:= -- 1108
-add.period$ -- 43
-call.type$ -- 14
-change.case$ -- 27
-chr.to.int$ -- 14
-cite$ -- 14
-duplicate$ -- 277
-empty$ -- 518
-format.name$ -- 172
-if$ -- 1326
+            683 strings with 9001 characters,
+and the built_in function-call counts, 8572 in all, are:
+= -- 635
+> -- 635
+< -- 7
++ -- 232
+- -- 194
+* -- 776
+:= -- 1441
+add.period$ -- 57
+call.type$ -- 19
+change.case$ -- 37
+chr.to.int$ -- 19
+cite$ -- 19
+duplicate$ -- 367
+empty$ -- 695
+format.name$ -- 221
+if$ -- 1745
 int.to.chr$ -- 1
-int.to.str$ -- 15
-missing$ -- 15
-newline$ -- 78
-num.names$ -- 42
-pop$ -- 110
+int.to.str$ -- 20
+missing$ -- 19
+newline$ -- 102
+num.names$ -- 57
+pop$ -- 151
 preamble$ -- 1
-purify$ -- 14
+purify$ -- 19
 quote$ -- 0
-skip$ -- 156
+skip$ -- 212
 stack$ -- 0
-substring$ -- 300
-swap$ -- 38
+substring$ -- 394
+swap$ -- 48
 text.length$ -- 1
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 95
+type$ -- 130
 warning$ -- 0
-while$ -- 51
+while$ -- 68
 width$ -- 0
-write$ -- 188
+write$ -- 250
