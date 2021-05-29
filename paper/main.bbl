@@ -1,4 +1,4 @@
-\begin{thebibliography}{19}
+\begin{thebibliography}{20}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -113,6 +113,15 @@ Holger Fr{\"o}hlich, Rudi Balling, Niko Beerenwinkel, Oliver Kohlbacher,
   Murphy, Teresa~M Przytycka, et~al.
 \newblock From hype to reality: data science enabling personalized medicine.
 \newblock \emph{BMC medicine}, 16\penalty0 (1):\penalty0 1--15, 2018.
+
+\bibitem[Wiens et~al.(2019)Wiens, Saria, Sendak, Ghassemi, Liu, Doshi-Velez,
+  Jung, Heller, Kale, Saeed, et~al.]{wiens2019no}
+Jenna Wiens, Suchi Saria, Mark Sendak, Marzyeh Ghassemi, Vincent~X Liu, Finale
+  Doshi-Velez, Kenneth Jung, Katherine Heller, David Kale, Mohammed Saeed,
+  et~al.
+\newblock Do no harm: a roadmap for responsible machine learning for health
+  care.
+\newblock \emph{Nature medicine}, 25\penalty0 (9):\penalty0 1337--1340, 2019.
 
 \bibitem[Chakraborty(2013)]{chakraborty2013statistical}
 Bibhas Chakraborty.
