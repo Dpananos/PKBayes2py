@@ -14,17 +14,17 @@ Key to our DTR is the concept of a \textit{trajectory}. Define a stage to be a t
 
 \subsection{Policies, Value Functions, and Q-Learning}
 
-A deterministic policy $ d = (d_1, \cdots, d_k) $ is a vector of decision rules each which take as input the system’s history and output an action to take. The stage $ j $ value function for a policy $ d $ is the expected reward the agent would receive starting from history $ h_j  $(here in lower case since it is an observed quantity) and then choose actions according to $ d $ for every action thereafter.  The value function is written as
+A deterministic policy $ d = (d_1, \cdots, d_k) $ is a vector of decision rules each which take as input the system’s history and output an action to take.  Mathematically, $d_j : \mathcal{H}_j \to \mathcal{A}_j$ where $\mathcal{H}_j$ and $\mathcal{A}_j$ are the history and action spaces at stage $j$ respectively.  The stage $ j $ value function for a policy $ d $ is the expected reward the agent would receive starting from history $ h_j  $(here in lower case since it is an observed quantity) and then choose actions according to $ d $ for every action thereafter.  The value function is written as
 
 \begin{equation}
 	V^d_j(h_j) = E_d\left[ \sum_{k=j}^K Y_k(H_k, A_k, O_{k+1}) \Bigg\lvert H_j = h_j\right] \>.
 \end{equation}
 
-\noindent Here, the expectation is computed over the distribution of trajectories. Importantly, the stage $ j $ 
+\noindent Here, the expectation is over the distribution of trajectories. Importantly, the stage $ j $ 
 value function can be decomposed into the expectation of reward at stage $ j $ plus the stage $ j+1  $ value function  \cite{chakraborty2013statistical}
 
 \begin{equation}
-V^d_j(h_j) = E_d\left[Y_j(H_j, A_j, O_{j+1} + V^d_{j+1}(H_{j+1}) \vert H_j = h_j\right] \>.
+V^d_j(h_j) = E_d\left[Y_j(H_j, A_j, O_{j+1}) + V^d_{j+1}(H_{j+1}) \vert H_j = h_j\right] \>.
 \end{equation}
 
 
@@ -67,18 +67,21 @@ O_1, A_1, Y_1, O_2, A_2, Y_2, O_3
 	\item $ O_3 $ would be pre-dose clinical measurements, the observed concentration made on the fourth day, and the next concentration measurement, were it to be made. As we examine just the two actions $ A_1 $ and $ A_2 $, we do not make use of $ O_3 $ but include it here to adhere with our definition of trajectories above.
 \end{itemize}
 
-The reward function we use depends on the subject’s true latent concentration. Let $ c_j j=1...K $ be the $ j^{th}$ latent concentration value at time $ t_j $.  The reward function is 
+The reward function we use depends on the subject’s true latent concentration. Let $ c_j \quad j=1...K $ be the $ j^{th}$ latent concentration value at time $ t_j $.  The reward function is 
 
 \begin{equation}
 Y(c_1, c_2, \cdots, c_k) = \dfrac{1}{k}\sum_{j=1}^K \mathbb{I}(0.1 < c_j < 0.3)
 \end{equation}
 
-\noindent Here, $ \mathbb{I} $ is an indicator function returning 1 if the argument is true, and 0 else.  To leverage off-the-shelf optimization tools, we approximate this reward function with a continuously differentiable function, namely
-\begin{equation}
-Y(c_1, c_2, \cdots, c_k) = \dfrac{1}{k}\sum_{j=1}^K \exp\left( - \left[ \dfrac{c_j-0.15}{0.05} \right]^{2\beta} \right)
-\end{equation}
+\noindent Here, $ \mathbb{I} $ is an indicator function returning 1 if the argument is true, and 0 else.  
+%To leverage off-the-shelf optimization tools, we approximate this reward function with a continuously differentiable function, namely
+%\begin{equation}
+%Y(c_1, c_2, \cdots,  c_k) = \dfrac{1}{k}\sum_{j=1}^K \exp\left( - \left[ \dfrac{c_j-0.15}{0.05} \right]^{2\beta} \right)
+%\end{equation}
+%
+%\noindent Here, $ \beta $is a positive integer.  For sufficiently large beta, our approximation becomes arbitrarily close to our intended reward function.  In practice we set beta=5 to balance between good approximation of our intended reward and vanishing gradients impeding our optimization. 
+We suppress the dependence on the history in the definition of the reward as the reliance on the history is implicit.  The reward depends on the latent concentrations which depend on previous doses (actions) and potentially on the previous dose measurements (observations of the system).  We approximate this reward function with a continuously differentialble function to facilitate optimization.  See the appendix for details.  
 
-\noindent Here, $ \beta $is a positive integer.  For sufficiently large beta, our approximation becomes arbitrarily close to our intended reward function.  In practice we set beta=5 to balance between good approximation of our intended reward and vanishing gradients impeding our optimization. We suppress the dependence on the history in the definition of the reward as the reliance on the history is implicit.  The reward depends on the latent concentrations which depend on previous doses (actions) and potentially on the previous dose measurements (observations of the system).
 
 Our stage 2 optimal Q function is then
 
