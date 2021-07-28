@@ -1,4 +1,4 @@
-\section{Discussion}
+\section{Discussion}\label{ss:discussion}
 
 Including age, sex, weight, and creatinine in our Bayesian model improved the inferences from that model.  Though the predicted concentrations and estimates of uncertainty changed negligibly, the covariates explained residual confounding in the random effects. This results in a model which better explains the observed variation in the data and hence should generate more plausible data for simulation.
 
@@ -10,8 +10,27 @@ Context is crucial, and how we adapt to that context is perhaps a question in ne
 
 Thus, our results are not about apixaban per se.  We don’t offer recommendations on how personalization for apixaban should be done because we can’t anticipate the context.  What we offer is a framework for developing strategies of personalization and evaluating their performance against their implementation and clinic burden.  Context can be changed where needed, either through the reward function, or by adjusting when the clinic is able to take measurements, or by including additional information such as genotype in the Bayesian model.  Using this framework, clinics have flexibility to personalize the personalization.
 
+\textbf{Moved down from introduction.}
 
-\section{Limitations}
+Personalized medicine still faces several barriers to widespread adoption, including economic burden, patient burden, and expertise burden required for new methods of personalization.
+Personalized medicine can increase safety and reduce costs to the healthcare system by identifying patients who are at greater risk for adverse events or dose adjustments.  For example, if personalization enables a patient to avoid an adverse event, then this avoids associated costs to the healthcare system, example from a hospital stay \cite{looff2016economic}.  More ambitiously, personalized medicine has the potential to save the healthcare system costs by more effectively using resources \cite{shabaruddin2015economic}. 
+
+The cost of instruments, technicians, and leadership required to operate a personalized medicine clinic are high burden, and it is not yet clear if personalized medicine is sufficiently cost effective to offset operating costs in all circumstances \cite{kasztura2019cost}.  In their 2019 scoping review of personalized medicine cost effectiveness, Kasztura et. al \cite{kasztura2019cost} found that willingness-to-pay thresholds vary wildy from country to country (citing that cost per quality adjusted life year for some modes of personalized medicine range from \$20, 000 USD per quality adjusted life year in for studies in Europe and the United Kingdom to \$200,000 USD per quality adjusted life year for studies in the United States).  This high variability in cost effectiveness means the burden required for start up may result in a positive return on investment in some areas but not others. This variability should prompt would be adopters to more closely examine if taking on the initial burden is worth the result.
+
+
+% beef up here
+% Examples.  Identifty clear examples from the literature around diagnostics?
+The dominant perspective on personalized medicine focuses on the use of clinical and physiological information (including biomarkers, genotyping, and diagnostic tests) as a means of optimizing treatments, but largely ignore needs, constraints, and utilities of the patient \cite{rogowski2015concepts, di2017personalized}. Patients can be burdened by frequent followup for clinical measurement (as in the case with Warfarin), be burdened by costly expenses related to obtaining care, or may be more risk adverse/tolerant than the ``typical'' patient. As an example, transportation has been found to be a large financial burden for patients recieving cancer treatment \cite{houts1984nonmedical}, and continues to burden patients, with a 2020 study finding that the cost of parking alone can climb as high as \$1600 over the course of treatment in the United States \cite{lee2020assessment}.  Additional visits to a clinic have the potential to further burden patients by requiring them to miss a day of work, and find means of childcare during their absence (if neccesary). Incorporating patient preferences and reducing the burden of personalization on the patient can result in sustained adherence \cite{elliott2008understanding}, thereby increasing effectiveness and further preventing adverse events.
+
+% FInd some machine learning cautinary tales
+
+An additional expertise burden is added as machine learning (used interchangeably with the term “artificial intelligence”) is adopted into personalized medicine initiatives.  Cutting edge machine learning models for prediction or decision making can be prohibitively burdensome to implement effectively. Failure to carefully implement a prediction model may result in pernicious bias inadvertently affecting subpopulations, as was found to be the case in algorithms for credit scoring \cite{barocas2016big}, crime prediction \cite{lum2016predict}, and hiring \cite{ajunwa2020paradox}.  A 2019 study found an instance of this bias in a widely used risk scoring algorithm in healthcare \cite{obermeyer2019dissecting}, demonstrating that despite the best intentions of those involved, the use of a model can lead to worse rather than better care if investigators are not careful in considering what sorts of bias may be present in the data used to train these models.  Implementation of new approaches and methods requires the close collaboration of experts in data science  with physicians, domain experts, and other stakeholders.  Close collaboration should allow for domain experts to identify what kinds of biases the data might have, and for data science experts to implement methods to help ammeliorate that bias (or to admit the data are not fit for purpose).  The result of iterating on this collaborative process (wherein domain experts help inform the appraoches methodologists take, and the methodologists provide model checks which help domain experts decide if decisions from the model are reasonable or suspicious) is a model which more closely aligns with domain expertise, a model which is sufficiently flexible to capture the true data generating mechanism, an effective use of data, a more transparent modelling process, and calibrated expectations surrounding algorithms and their abilities \cite{frohlich2018hype}.  Presently, this form of collaboration between methodologists and domain experts is not the norm, with developement of machine learning solutions in healthcare bdeing developed in silos \cite{wiens2019no}.
+
+These burdens may be surmountable for some, but the question then turns to if the result is worth the expense.  Answering that question is difficult without an idea how the additional burden of collecting data, or implementing new algorithms, will benefit the clinic or the patient subject to inherent constraints. 
+
+
+
+\subsection{Limitations}
 
 We’ve examined six modes for making decisions.  The next mode improves on a deficiency of the previous mode in a natural manner, and so our experiment constitutes a kind of ablation study.  We believe the decision making aspect of our study extracts information in a responsible way and uses the best decision making methodology available.  That being said, the experiment is not without limitations.
 
@@ -19,7 +38,7 @@ The bayesian model of the pharmacokinetics is integral to the methodology we pre
 
 Additionally, the data required to construct a high quality Bayesian model of pharmacokinetics require multiple observations of a single patient over an extended time, preferably over multiple well timed doses with near perfect adherence.  Obtaining such data requires well organized efforts and is high burden for both investigators and participating subjects.  This makes acquiring a robust Bayesian model for use in dose personalization difficult.
 
-\section{Future Work}
+\subsection{Future Work}
 
 Because the data required to build reliable Bayesian pharmacokinetic models are difficult to collect in practice, research into developing these models from observational data may prove fruitful in extending this work. If clinics record data on measured blood concentrations, they may have dozens or hundreds of subjects with only one or two measurements per subject.  Moreover, the subjects in question may be on multiple drugs or have comorbidities which may affect the pharmacokinetics of the drug under study.  Additional research into constructing Bayesian models which can adjust for polypharmacy and comorbidities while learning an individual’s pharmacokinetics from a large but sparse sample would drive this work towards being easier to implement in practice.
 

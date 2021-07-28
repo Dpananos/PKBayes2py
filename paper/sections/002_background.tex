@@ -1,14 +1,14 @@
-\section{Background}
+\section{Background}\label{ss:background}
 
 In the following two subsections we present background material on dynamic treatment regimes, which are used to develop optimal decision-making models, and Bayesian pharmacokinetics, which are used to capture relationships between patient characteristics, measurements, pharmacokinetics, and dose so that optimal dosing decisions can be derived using the dynamic treatment regime framework.
 
 \subsection{Dynamic Treatment Regimes}
 
-In this section, we discuss the theory of dynamic treatment regimes and how dynamic personalization can be formulated using a dynamic treatment regime.  We describe our experiments in the context of dynamic treatment regimes and introduce our reward function.
+In this section, we review the theory of dynamic treatment regimes and how dynamic personalization using pharmacokinetic models can be formulated using a dynamic treatment regime.
 
 \subsubsection{Trajectories}
 
-Our goal is to find the dose or sequences of doses for a subject to keep their blood serum concentration within a desired range for as long as possible given the constraints: a) subject’s blood serum concentrations cannot be measured very frequently, and b) we are limited to pre-dose clinical measurements to make our initial dosing decision.  The theory of dynamic treatment regimes and statistical reinforcement learning offers a framework through which to understand our problem and construct one possible solution.
+Our work considers personalization of a dose or sequences of doses for a patient to keep their blood serum concentration within a desired range for as long as possible given the constraints: a) subject’s blood serum concentrations cannot be measured very frequently, and b) we are limited to pre-dose clinical measurements to make our initial dosing decision.  The theory of dynamic treatment regimes and statistical reinforcement learning offers a framework through which to understand our problem and construct one possible solution.
 
 A dynamic treatment regime (DTR) is a sequence of decision rules for adapting a treatment plan to the time-varying state of an individual subject \cite{chakraborty2013statistical}. In DTRs, and their cousin topic in computer science \textit{reinforcement learning}, an agent (often thought of as a robot in reinforcement learning, but within medicine sometimes thought of as a physician’s computerized decision support system) interacts with a system for a number of stages. At each stage, the agent receives an \textit{observation} of the system and then decides which \textit{action} to take.  This action will result in an observed \textit{reward} which is followed by a new observation of the system after it has been impacted by the action.  This cycle of observation, action, reward then repeats, with the agent aiming to take actions which yield the largest total reward.
 
@@ -44,127 +44,12 @@ V^{opt}_j(h_j) = \underset{d \in \mathscr{D}}{\mbox{max}} V^d_j(h_j)
  \right]
 \end{equation}
 
-Note that the optimal Q function has similar form and interpretation to the optimal value function (namely, it is the expected reward starting at stage $ j $ but with the added condition that we take action $ a_j $ and then follow the optimal policy thereafter). Due to the decomposition of the reward function at stage $ j $, estimation of the optimal Q function can be performed by choosing the action which yields the largest reward at each stage assuming we act optimally in the future.  Below, we describe how we choose optimal actions using a posterior distribution of a subject’s pharmacokinetics.
+Note that the optimal Q function has similar form and interpretation to the optimal value function (namely, it is the expected reward starting at stage $ j $ but with the added condition that we take action $ a_j $ and then follow the optimal policy thereafter). Due to the decomposition of the reward function at stage $ j $, estimation of the optimal Q function can be performed by choosing the action which yields the largest reward at each stage assuming we act optimally in the future. 
 
-\subsubsection{Experimental Design In Terms of Stages of a DTR}
-
-In our experiments, we develop a DTR for selecting the best dose for keeping a patient’s blood plasma concentration within a desired range. Here, we present details of the experimental design in the DTR framework, leaving simulation details (including how the data were simulated) for our methods section.
-
-Our experiment consists of 1000 simulated subjects taking a dose of apixaban once every 12 hours with perfect adherence for a total of 10 days.  Sometime in the second 12 hour period on the fourth day (between 108 and 120 hours after the initial dose), we have the opportunity to measure  the simulated subject’s blood concentration, should our policy allow for it.  At the start of the fifth day, the dose is adjusted based on all the pre-dose clinical measurements plus the observed concentration. The dose will be adjusted so as to attempt to maximize the time spent between 0.1 mg/L and 0.3 mg/L. Thus, our DTR consists of two stages (the first five days, and the latter five days), however the size of the range may be adapted for different scenarios. We choose this range as it is not so narrow that even optimal doses perform poorly, but not so wide that any dose can achieve high reward. 
-
-In terms of the DTR, the system is the patient for whom a dose is selected, the actions correspond to selection of dose sizes, and the reward is the proportion of time spent within the desired concentration range. The trajectories we will use to estimate the optimal Q functions are of the form
-
-\begin{equation}\label{key}
-O_1, A_1, Y_1, O_2, A_2, Y_2, O_3
-\end{equation}
-
-\noindent The interpretation of a given trajectory is:
-\begin{itemize}
-	\item $ O_1 $ is any pre-dose clinical measurements of the subject.  In our experiments, we consider age in years, renal function (as measured by serum creatinine in mMol/L), weight in kilograms, and dichotmous biological sex (dummy coded so that male=1 and female=0).  We choose these variables as they are known to affect the pharmacokinetics of apixaban \cite{byon2019apixaban}.  
-	\item $ A_1 $ is dual action of initial dose to provide the subject plus a time in the future at which to measure the subject’s blood serum concentration.
-	\item $ Y_1 $ is the proportion of time spent within the concentration range in the first five days.
-	\item $ O_2 $ is the pre clinical measurements of the subject plus the observed concentration made on the fourth day.
-	\item $ A_2 $ is the dose adjustment
-	\item $ Y_2 $ is the proportion of time spent within the concentration range in the last five days after the dose adjustment.
-	\item $ O_3 $ would be pre-dose clinical measurements, the observed concentration made on the fourth day, and the next concentration measurement, were it to be made. As we examine just the two actions $ A_1 $ and $ A_2 $, we do not make use of $ O_3 $ but include it here to adhere with our definition of trajectories above.
-\end{itemize}
-
-The reward function we use depends on the subject’s true latent concentration. Let $ c_j \quad j=1...K $ be the $ j^{th}$ latent concentration value at time $ t_j $.  The reward function is 
-
-\begin{equation}
-Y(c_1, c_2, \cdots, c_k) = \dfrac{1}{k}\sum_{j=1}^K \mathbb{I}(0.1 < c_j < 0.3)
-\end{equation}
-
-\noindent Here, $ \mathbb{I} $ is an indicator function returning 1 if the argument is true, and 0 else.  
-%To leverage off-the-shelf optimization tools, we approximate this reward function with a continuously differentiable function, namely
-%\begin{equation}
-%Y(c_1, c_2, \cdots,  c_k) = \dfrac{1}{k}\sum_{j=1}^K \exp\left( - \left[ \dfrac{c_j-0.15}{0.05} \right]^{2\beta} \right)
-%\end{equation}
-%
-%\noindent Here, $ \beta $is a positive integer.  For sufficiently large beta, our approximation becomes arbitrarily close to our intended reward function.  In practice we set beta=5 to balance between good approximation of our intended reward and vanishing gradients impeding our optimization. 
-We suppress the dependence on the history in the definition of the reward as the reliance on the history is implicit.  The reward depends on the latent concentrations which depend on previous doses (actions) and potentially on the previous dose measurements (observations of the system).  We approximate this reward function with a continuously differentialble function to facilitate optimization.  See the appendix for details.  
-
-
-Our stage 2 optimal Q function is then
-
-\begin{equation}
-Q_{2}^{o p t}\left(H_{2}, A_{2}\right)=E\left[Y\left(c_{j+1}, c_{j+2}, \cdots, c_{j+n}\right) \Bigg\vert H_{2}, A_{2}\right] \>,
-\end{equation}
-
-\noindent and our stage 1 optimal Q function is
-
-\begin{equation}
-Q_{1}^{o p t}\left(H_{1}, A_{1}\right)= E \left[Y\left(c_{1}, c_{2}, \cdots, c_{j}\right)+\max _{a_{2} \in \mathscr{A}} Q_{2}^{o p t}\left(H_{2}, a_{2}\right) \Bigg\vert H_{1}, A_{1}\right]
-\end{equation}
-
-We seek to maximize the stage 1 optimal Q function to learn the optimal policy for dosing subjects under the constraint we can measure them at most once and are limited to the aforementioned pre-dose clinical variables.  The interpretation of stage 1 optimal Q function is as follows:\textit{ Given the pre-dose clinical variables of the subject and a proposed initial dose and measurement time, the stage 1 optimal Q function gives the proportion of time the subject’s blood serum concentration is between 0.1mg/L and 0.3mg/L assuming that we provide the subject with the best dose possible at the start of the $ 5^{th} $ day.}  The actions $ A_1 $ and $ A_2 $ which maximize these functions constitute the optimal policy.
-
-The concentration values $ c_j $ in the optimal Q functions are latent, meaning we have no direct access to them in practice. Furthermore, obtaining measurements with high enough frequency so that the reward is faithfully estimated would be too burdensome on the patient. What is left to explain is how these concentrations are computed. In the next section, we describe how we use a Bayesian model  to obtain latent concentration predictions and compute the required expectations.
+To use Q-learning for personalization in the context of optimal dosing and titration, we will define the actions to be possible doses or dose adjustments, and we define the reward to be a function of the resulting concentrations, for example a measurement of how well concentrations are kept in a specified range. The relationship between possible actions and rewards, which Q-learning can use to produce optimal policies, can be captured by Bayesian pharmacokinetic modelling, which we now review.
 
 \subsection{Bayesian Models of Pharmacokinetics}
 
 In order to estimate the optimal Q functions, we need to be able to predict how a patient's concentration is likely to evolve over time in response to a hypothetical dose (action.)  Our approach is to build a Bayesian model of patient pharmacokinetics that can use baseline clinical information, as well as any available concentration measurements, to make tailored predictions of future concentrations that are as accurate as possible given the model structure and available data. The model is flexible in that it can condition on whatever information is available - for example, if previous dose and measurement information is not available for a specific patient, the model will rely on baseline information alone. If it is available, the model will use it to (hopefully) make improved predictions. This allows us to optimize both initial doses and later dose adjustments after additional information about concentration is acquired.
 
-We extend a previously proposed one-compartment Bayesian pharmacokinetic model \cite{pananos2020comparisons} to include fixed effects of covariates on pharmacokinetic parameters in order to incorporate baseline clinical information.  The model presented in \cite{pananos2020comparisons} is a hierarchical Bayesian model of apixaban pharmacokinetics, in which the clearance rate (L/hour), time to max concentration (hours), absorption time delay (hours), and ratio between the elimination and absorption rate constants (called alpha, a unitless parameter) are hierarchically modelled.  We extend that model by regressing the latent pharmacokinetic parameters on baseline clinical variables (age, sex, weight, and creatinine.)  To illustrate how the method works, we fit the model to previously-collected data on apixaban concentration \cite{tirona2018apixaban} and then use the fitted model to simulate patients with known "ground truth" pharmacokinetic parameters. We will then use this population of simulated patients in our experiments to explore different modes of dose personalization and their relative benefits.
-
-The Bayesian model fit to real data, which we refer to as $ \mathcal{M}_1 $, is 
-
-\begin{align}\label{model_M1}
-	y_{i,j} &\sim \Lognormal  \left(  C_i(t_j)  , \sigma^2_y \right)  \\
-	\sigma^2 &\sim \Lognormal \left( 0.1, 0.2 \right)\\	
-	C_i(t_j) &= \begin{dcases}
-	\frac{D_{i} \cdot F}{C l_{i}} \cdot \frac{k_{e, i} \cdot k_{a, i}}{k_{e, i}-k_{a, i}}\left(e^{-k_{a, i}\left(t_{j}-\delta_{i}\right)}-e^{-k_{e, i}\left(t_{j}-\delta_{i}\right)}\right) & t_j>\delta_i \\
-	0 & \mbox{else}
-	\end{dcases}\\
-	k_{e,i} &= \alpha_i \cdot k_{a,i}\\
-	k_{a,i} &= \dfrac{\log(\alpha_i)}{t_{max, i}\cdot(\alpha_i-1)}\\
-	\delta_i &\sim \operatorname{Beta}(\phi, \kappa) \\
-	\operatorname{logit}(\alpha_i) \vert \beta_\alpha, \sigma^2_\alpha &\sim \Normal(\mu_\alpha + \mathbf{x}_i^T \beta_\alpha, \sigma^2_\alpha)\\
-	\log(t_{max, i}) \vert \beta_{t_{max}}, \sigma_{t_{max}} &\sim \Normal(\mu_{t_{max}} + \mathbf{x}^T_i \beta_{t_{max}}, \sigma^2_{t_{max}}) \\
-	\log(Cl_i) \vert \beta_{Cl}, \sigma_{Cl} &\sim \Normal(\mu_{Cl} + \mathbf{x}^T_i \beta_{Cl}, \sigma^2_{Cl}) \\ \nonumber \\
-	p(\phi) &\sim \operatorname{Beta}(20, 20)\\
-	p(\kappa) &\sim \operatorname{Beta}(20, 20)\\
-	p(\mu_{Cl}) &\sim \Normal(\log(3.3), 0.15^2)\\
-	p(\mu_{t_{max}}) &\sim \Normal(\log(3.3), 0.1^2)\\
-	p(\mu_{\alpha}) &\sim \Normal(-0.25, 0.5^2)\\
-	p(\sigma_y) &\sim \Lognormal(\log(0.1), 0.2^2)\\
-	p(\sigma_{CL}) &\sim \Gmma(15, 100)\\
-	p(\sigma_{t_{max}}) &\sim \Gmma(5, 100)\\
-	p(\sigma_{\alpha}) &\sim \Gmma(10, 100)\\
-	p(\beta_{Cl, k}) &\sim \Normal(0, 0.25^2) \quad k = 1 ...	 4\\
-	p(\beta_{t_{max}, k}) &\sim \Normal(0, 0.25^2) \quad k = 1 ... 4\\	
-	p(\beta_{\alpha, k}) &\sim \Normal(0, 0.25^2) \quad k = 1 ... 4
-\end{align}
-
-Here, normal distributions are parameterized by their mean and variance, lognormal distributions are parameterized by the mean and variance of the random variable on the log scale, and gamma distributions are parameterized by their shape and rate.  The $\mu$ in the model above represent population means on either the log or logit scale, the $\beta$ are regression coefficients for the indicated pharmacokinetic parameter, the sigmas are the population level standard deviations on the log or logit scale, $\delta$ is aparameter which relaxes the assumption that the dose is absorbed into the blood immeditately upon ingestion, $F$ is the bioavailability of apixiban (which we fix to 0.5 \cite{byon2019apixaban}) and $D$ si the size of the dose in milligrams.  All continuous variables were standardized using the sample mean and standard deviation prior to being passed to the model.  
-
-Once fit, $ \mathcal{M}_1$ can be used to predict the pharmacokinetics of new patients, using the patient’s covariates as predictors.  To do so, the marginal posterior distributions for $ \mu_{Cl} $, $ \mu_{t_{max}} $, $ \mu_{\alpha}$, $ \beta_{Cl} $, $ \beta_{t_{max}} $, $ \beta_{\alpha} $, $ \sigma_{Cl} $, $ \sigma_{t_{max}} $, $ \sigma_{\alpha} $, and $ \sigma_y $ must be summarized.  We use maximum likelihood on the posterior samples to summarize the marginal posterior distributions. We model the population means  and regression coefficients as normal, and the standard deviations  as gamma.  The maximum likelihood estimates are used to construct priors for a new model, which we call $ \mathcal{M}_2 $. We construct $ \mathcal{M}_2 $ so as to be able to predict plasma concentration after multiple doses (of potentially different sizes) administered over time, and remove the time delay ($ \delta $) to simplify our simulations.  Model priors for $ \mathcal{M}_2 $ are then 
-
-\begin{align}
-	p(\mu_{Cl}) & \sim \Normal(0.5, 0.04) \\
-	p(\mu_{t_{max}}) & \sim \Normal(0.93, 0.05) \\
-	p(\mu_\alpha) &\sim \Normal(-1.35, 0.13)\\
-									\nonumber \\
-	p(\sigma_{Cl}) &\sim \Gmma(69.15, 338.31)\\
-	p(\sigma_{t_{max}}) &\sim \Gmma(74.96, 349.56)\\
-	p(\sigma_{\alpha}) &\sim \Gmma(10.1, 102.07)\\
-									\nonumber\\
-	p(\beta_{Cl, 1}) &\sim \Normal(0.39, 0.08^2)\\
-	p(\beta_{Cl, 2}) &\sim \Normal(0.19,0.04^2)\\
-	p(\beta_{Cl, 3}) &\sim \Normal(0.02,0.04^2)\\
-	p(\beta_{Cl, 4}) &\sim \Normal(0.01,0.04^2)\\
-									\nonumber\\
-	p(\beta_{t_{max}, 1}) &\sim \Normal(-0.01, 0.08^2)\\
-	p(\beta_{t_{max}, 2}) &\sim \Normal(0.09,0.05^2)\\
-	p(\beta_{t_{max}, 3}) &\sim \Normal(-0.05,0.04^2)\\
-	p(\beta_{t_{max}, 4}) &\sim \Normal(-0.01,0.04^2)\\
-										\nonumber\\
-	p(\beta_{\alpha, 1}) &\sim \Normal(-0.19, 0.17^2)\\
-	p(\beta_{\alpha, 2}) &\sim \Normal(0.33,0.11^2)\\
-	p(\beta_{\alpha, 3}) &\sim \Normal(-0.06,0.1^2)\\
-	p(\beta_{\alpha, 4}) &\sim \Normal(-0.09,0.1^2)\\
-\end{align}
-
-For our experiments, we generate the pharmacokinetic parameters of 1000 simulated patients from the prior predictive model of $ \mathcal{M}_2 $. Bayesian models are generative models, meaning they can generate pseudodata by drawing random variables according to the model specification going from top (model priors) to bottom (model likelihood).  To do so, we begin by resampling 1000 tuples of age, sex, weight, and creatinine from the dataset used to fit $ \mathcal{M_1} $. We sample one draw of r $ \mu_{Cl} $, $ \mu_{t_{max}} $, $ \mu_{\alpha}$, $ \beta_{Cl} $, $ \beta_{t_{max}} $, and $ \beta_{\alpha} $  from their respective prior distributions in  $ \mathcal{M}_2 $. The values of these parameters remained fixed for all 1000 patients. Conditioned on the values of these mus and betas, we compute the expectation of the population distribution for each pharmacokinetic parameter by computing $ \mu_{Cl} + \mathbf{x}^T \beta_{Cl} $, $ \mu_{t_{\max}} + \mathbf{x}^T \beta_{t_{max}} $,  $ \mu_{\alpha} + \mathbf{x}^T \beta_{\alpha} $, where $\mathbf{x}^T$ is the resampled tuple.  From the prior distribution of M2, we sample one draw of$ \sigma_{Cl} $, $ \sigma_{t_{max}} $, $ \sigma_{\alpha} $, and $ \sigma_y $.  These remained fixed for all 1000 patients. Using the previously computed expectations and $\sigma$, we sample 1000 tuples of pharmacokinetic parameters, one for each of the simulated patients.  The clearance rate and time to max concentration were sampled assuming a lognormal distribution.  Alpha was sampled using a logitnormal distribution. The pharmacokinetics can then be determined conditional on the pharmacokinetic parameters. Each of simulated patients' pharmacokinetic parameters remained fixed through the experiments.  We simulate the latent concentration using $ C(t) $ as written in $\mathcal{M}_2$, and can simulate observed concentrations by drawing a sample from a lognormal distribution with mean $\ln(C(t))$ and standard deviation $ \sigma_y$
-
-We use Stan, an open source probabilistic programming language, for fitting our Bayesian models via Hamiltonian Monte Carlo (a Markov Chain Monte Carlo technique) and computing markov chain diagnostics. Twelve chains are initialized and run for 2000 iterations each (1000 for warmup allowing the Markov chain the opportunity to find the correct target distribution and 1000 to use as samples from the posterior).
+Bayesian models have another key property that we use in our framework. They are able to simulate the trajectories of patients whose distributions are similar to those that the models were trained on. This allows us to conduct a form of internal validation where we use the simulated patients to assess the relative benefits of different modes of static and dynamic personalization. This is described in detail in the next section, where we present our framework.

@@ -1,20 +1,42 @@
-\section{Modes of Personalization}
+\section{A Framework for Assessing Static and Dynamic Personalization}\label{ss:framework}
 
-Thus far, we have motivated personalization of dose sizes through Q learning.  Q learning is the most complex solution that could be implemented at this time, and its implementation in practice would be burdensome due to this complexity. This makes implementation of Q learning a tall order, especially considering alternative DTRs exist which are not as costly to implement. The cost of implementing Q learning may be worth paying if the benefit of Q learning over these other DTRs is substantial, but we need a framework in which to estimate the size of this benefit. 
+[Words about summary of framework. Should we describe it as "steps" below? Numbered?]
 
+\begin{itemize}
+\item Bayesian Modelling
+\begin{itemize}
+	\item Fit model
+	\item Assess model quality
+	\item Simulate data
+\end{itemize}
+\item Define Possible Modes of Personalization
+\begin{itemize}
+	\item No personalization
+	\item Titration only - no covariates
+	\item Static - covariates only
+	\item Simple dynamic
+	\item Complex dynamic
+\end{itemize}
+\item Evaluate Benefits using Simulated data
+\begin{itemize}
+\item Steps?
+\end{itemize}
+\end{itemize}
 
-Our study considers the following modes of personalization. Each one has different requirements in terms of computation, data needs, clinical overhead, and patient burden. Our study aims to understand, in this particular setting (apixaban with potential PK monitoring) what the relative benefits of these different modes might be in practice. It also presents a general framework for evaluating these different modes of personalization in other settings.  The six modes of personalization we consider are:
+\subsection{Bayesian Modelling}
 
-\begin{enumerate}[1)]
-\item Dose selection using a hierarchical Bayesian model which does not incorporate subject covariates.  This model was presented in Pananos \& Lizotte \cite{pananos2020comparisons}.  We refer to this mode as the “No Covariate Model”.
-\item 1) and conditioning the model on a single sample from the subject taken sometime in the final 12 hours before the half way point.  At the start of the fifth day, a new dose is selected and used for the remaining time.  We refer to this mode as “No Covariate + 1 Sample”.
-\item Dose selection from M2.  A single dose is selected at the start of the regiment and is used throughout the 10 simulated days. We refer to this mode as “Covariate Model”.
-\item 3) and conditioning the model on a single sample from the subject taken sometime in the final 12 hours before the half way point.  At the start of the fifth day, a new dose is selected and used for the remaining time. We refer to this mode as “Covariate model + 1 Sample”.
-\item A two stage DTR, however the initial dose is the result of the procedure in 3).  The best time to sample the patient is then determined via Q learning. We refer to this mode as “Optimal Sampling Time”.
-\item The two stage DTR we describe in the previous sections, estimated via Q learning.  We refer to this mode as “Q Learning”.
+The first step in our framework is to fit a Bayesian model that relates patient covariates and dose to drug concentration as a function of time. For example, previous work \cite{pananos2020comparisons} describes a hierarchical Bayesian model of apixaban pharmacokinetics, in which the clearance rate (L/hour), time to max concentration (hours), absorption time delay (hours), and ratio between the elimination and absorption rate constants (called alpha, a unitless parameter) are hierarchically modelled.  That model by regressing the latent pharmacokinetic parameters on baseline clinical variables (age, sex, weight, and creatinine) to permit personalization.
 
-\end{enumerate}
+Having fit the model, it is important to assess the quality of the result; several diagnostics are commonly used including...\textbf{Go on about this for a little while.}
 
+The model is then used to generate synthetic pharmacokinetic data for use in experiments to compare different forms of personalization. Each generated data point may be thought of as one synthetic patient, with observed covariates and observed pharmacokinetic parameters. These parameters, which are never observed in real data, allow us to compute the effects of any dosing decisions (which are made \textit{without} direct knowledge of the parameters), and thus allow us to evaluate the performance of different modes of personalized dosing on the sampled population. 
+
+\subsection{Modes of Personalization}
+
+The second step in our framework is to identify modes of personalization that we wish to evaluate. This would typically include both static and dynamic modes of personalization. For example, \textbf{go on about this for a while.}
+
+\subsection{Evaluation}
+
+\textbf{Describe training/testing here I think.}
 
 We compare all methods on their achieved reward as well as the difference between the achieved reward and theoretically largest reward the reward we would achieve if we knew the pharmacokinetic parameters exactly).  Because we know the true latent pharmacokinetic parameters of the simulated subjects, we can optimize the reward with the known pharmacokinetics of the subject, thereby yielding the largest reward possible.
-
