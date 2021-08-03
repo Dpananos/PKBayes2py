@@ -1,4 +1,4 @@
-\begin{thebibliography}{20}
+\begin{thebibliography}{21}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -20,6 +20,40 @@ Theodore~John Wigle, Brandi Povitz, Wendy Teft, Robin Legan, John~Gordon
   dihydropyrimidine dehydrogenase (dpyd) genotype testing for
   fluoropyrimidine-based chemotherapy on adverse events and hospital costs.
 \newblock \emph{American Society of Clinical Oncology}, 2019.
+
+\bibitem[Martin et~al.(2016)Martin, Lal, Moodie, Zhu, and Cheng]{Martin2016}
+Janet Martin, Avtar Lal, Jessica Moodie, Fang Zhu, and Davy Cheng.
+\newblock \emph{Hospital-Based HTA and Know4Go at MEDICI in London, Ontario,
+  Canada}, pages 127--152.
+\newblock Springer International Publishing, Cham, 2016.
+\newblock ISBN 978-3-319-39205-9.
+
+\bibitem[Chakraborty(2013)]{chakraborty2013statistical}
+Bibhas Chakraborty.
+\newblock \emph{Statistical methods for dynamic treatment regimes}.
+\newblock Springer, 2013.
+
+\bibitem[Pananos and Lizotte(2020)]{pananos2020comparisons}
+A~Demetri Pananos and Daniel~J Lizotte.
+\newblock Comparisons between hamiltonian monte carlo and maximum a posteriori
+  for a bayesian model for apixaban induction dose \& dose personalization.
+\newblock In \emph{Machine Learning for Healthcare Conference}, pages 397--417.
+  PMLR, 2020.
+
+\bibitem[Tirona et~al.(2018)Tirona, Kassam, Strapp, Ramu, Zhu, Liu, Schwarz,
+  Kim, Al-Judaibi, and Beaton]{tirona2018apixaban}
+Rommel~G Tirona, Zahra Kassam, Ruth Strapp, Mala Ramu, Catherine Zhu, Melissa
+  Liu, Ute~I Schwarz, Richard~B Kim, Bandar Al-Judaibi, and Melanie~D Beaton.
+\newblock Apixaban and rosuvastatin pharmacokinetics in nonalcoholic fatty
+  liver disease.
+\newblock \emph{Drug Metabolism and Disposition}, 46\penalty0 (5):\penalty0
+  485--492, 2018.
+
+\bibitem[Byon et~al.(2019)Byon, Garonzik, Boyd, and Frost]{byon2019apixaban}
+Wonkyung Byon, Samira Garonzik, Rebecca~A Boyd, and Charles~E Frost.
+\newblock Apixaban: a clinical pharmacokinetic and pharmacodynamic review.
+\newblock \emph{Clinical pharmacokinetics}, 58\penalty0 (10):\penalty0
+  1265--1279, 2019.
 
 \bibitem[Looff et~al.(2016)Looff, Wilffert, Boersma, Annemans, Vegter, Boven,
   and Postma]{looff2016economic}
@@ -122,32 +156,5 @@ Jenna Wiens, Suchi Saria, Mark Sendak, Marzyeh Ghassemi, Vincent~X Liu, Finale
 \newblock Do no harm: a roadmap for responsible machine learning for health
   care.
 \newblock \emph{Nature medicine}, 25\penalty0 (9):\penalty0 1337--1340, 2019.
-
-\bibitem[Chakraborty(2013)]{chakraborty2013statistical}
-Bibhas Chakraborty.
-\newblock \emph{Statistical methods for dynamic treatment regimes}.
-\newblock Springer, 2013.
-
-\bibitem[Byon et~al.(2019)Byon, Garonzik, Boyd, and Frost]{byon2019apixaban}
-Wonkyung Byon, Samira Garonzik, Rebecca~A Boyd, and Charles~E Frost.
-\newblock Apixaban: a clinical pharmacokinetic and pharmacodynamic review.
-\newblock \emph{Clinical pharmacokinetics}, 58\penalty0 (10):\penalty0
-  1265--1279, 2019.
-
-\bibitem[Tirona et~al.(2018)Tirona, Kassam, Strapp, Ramu, Zhu, Liu, Schwarz,
-  Kim, Al-Judaibi, and Beaton]{tirona2018apixaban}
-Rommel~G Tirona, Zahra Kassam, Ruth Strapp, Mala Ramu, Catherine Zhu, Melissa
-  Liu, Ute~I Schwarz, Richard~B Kim, Bandar Al-Judaibi, and Melanie~D Beaton.
-\newblock Apixaban and rosuvastatin pharmacokinetics in nonalcoholic fatty
-  liver disease.
-\newblock \emph{Drug Metabolism and Disposition}, 46\penalty0 (5):\penalty0
-  485--492, 2018.
-
-\bibitem[Pananos and Lizotte(2020)]{pananos2020comparisons}
-A~Demetri Pananos and Daniel~J Lizotte.
-\newblock Comparisons between hamiltonian monte carlo and maximum a posteriori
-  for a bayesian model for apixaban induction dose \& dose personalization.
-\newblock In \emph{Machine Learning for Healthcare Conference}, pages 397--417.
-  PMLR, 2020.
 
 \end{thebibliography}
