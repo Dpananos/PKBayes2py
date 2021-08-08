@@ -1,4 +1,4 @@
-\begin{thebibliography}{21}
+\begin{thebibliography}{23}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -39,6 +39,16 @@ A~Demetri Pananos and Daniel~J Lizotte.
   for a bayesian model for apixaban induction dose \& dose personalization.
 \newblock In \emph{Machine Learning for Healthcare Conference}, pages 397--417.
   PMLR, 2020.
+
+\bibitem[Betancourt(2018)]{betancourt2018conceptual}
+Michael Betancourt.
+\newblock A conceptual introduction to hamiltonian monte carlo, 2018.
+
+\bibitem[Brooks et~al.(2011)Brooks, Gelman, Jones, and
+  Meng]{brooks2011handbook}
+Steve Brooks, Andrew Gelman, Galin Jones, and Xiao-Li Meng.
+\newblock \emph{Handbook of markov chain monte carlo}.
+\newblock CRC press, 2011.
 
 \bibitem[Tirona et~al.(2018)Tirona, Kassam, Strapp, Ramu, Zhu, Liu, Schwarz,
   Kim, Al-Judaibi, and Beaton]{tirona2018apixaban}
