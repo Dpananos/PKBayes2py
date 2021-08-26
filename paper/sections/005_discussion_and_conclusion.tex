@@ -1,8 +1,15 @@
 \section{Discussion}\label{ss:discussion}
 
-Including age, sex, weight, and creatinine in our Bayesian model improved the inferences from that model.  Though the predicted concentrations and estimates of uncertainty changed negligibly, the covariates explained residual confounding in the random effects. This results in a model which better explains the observed variation in the data and hence should generate more plausible data for simulation.
+%Including age, sex, weight, and creatinine in our Bayesian model improved the inferences from that model.  Though the predicted concentrations and estimates of uncertainty changed negligibly, the covariates explained residual confounding in the random effects. This results in a model which better explains the observed variation in the data and hence should generate more plausible data for simulation.
 
-That modes of personalization which use more information result in larger reward is ultimately unsurprising. From our perspective, the more pertinent result is the diminishing return on investment observed when using additional information (and consequently, taking on additional implementation burden to effectively use that information).  Were doses to be personalized for the simulated population, we would recommend the covariate model be used, as it is easier to implement, puts smaller burden on the clinic, and results in approximately mean/median rewards as compared to other methods.  Taking an additional sample doesn’t seem to improve the expected mean/median reward appreciably to be worth the burden of having the patient take time to come in, drawing their blood, measuring their concentration in the lab, and reporting results to the decision maker, in which a decision to not adjust the dose might be made anyway. Similar arguments can be made for Q learning, which has even higher implementation burden.
+In the following, we discuss the results of our case study, followed by a discussion of the broader potential implications of personalized medicine policy.
+
+%Working subsection titles - not sure if they stay
+\subsection{Comparing Modes of Personalization}
+
+As expected, modes of personalization which use more information result in larger reward. However, if we consider the expected reward of the different modes, there is diminishing return on investment observed when using additional information (and consequently, taking on additional implementation burden to effectively use that information). 
+
+\textcolor{red}{I wonder if we can make a clearer, more quantitative argument in terms of why. One way is to make it conditional -- if we care about xx the most, then we would do yy. On the other hand, if we care about yy, maybe we would do... This is easier to sell than "I would recommend this." You can even phrase it as like, unless you care super a lot about that last 1\% of reward, realistically you should just do xx. So, this is just about framing.}Were doses to be personalized for the simulated population, we would recommend the covariate model be used, as it is easier to implement, puts smaller burden on the clinic, and results in approximately mean/median rewards as compared to other methods.  Taking an additional sample doesn’t seem to improve the expected mean/median reward appreciably to be worth the burden of having the patient take time to come in, drawing their blood, measuring their concentration in the lab, and reporting results to the decision maker, in which a decision to not adjust the dose might be made anyway. Similar arguments can be made for Q learning, which has even higher implementation burden.
 
 But mean/median reward does not tell the whole story.  As noted, the distribution of differences in reward is right skewed.  Some subjects have a very large difference, and the possibility of these differences might not be acceptable in different contexts with different drugs.  There is a tradeoff between less extreme differences and taking on additional clinic and implementation burden, and that tradeoff should be examined on a case by case basis.
 
@@ -10,13 +17,15 @@ Context is crucial, and how we adapt to that context is perhaps a question in ne
 
 Thus, our results are not about apixaban per se.  We don’t offer recommendations on how personalization for apixaban should be done because we can’t anticipate the context.  What we offer is a framework for developing strategies of personalization and evaluating their performance against their implementation and clinic burden.  Context can be changed where needed, either through the reward function, or by adjusting when the clinic is able to take measurements, or by including additional information such as genotype in the Bayesian model.  Using this framework, clinics have flexibility to personalize the personalization.
 
-\textbf{Moved down from introduction.}
+\textcolor{red}{Would like to add a section that describes what would have produced different results. E.g., if the covariates weren't as helpful in determining underlying parameters, then maybe dynamic personalization would have a bigger advantage relative to static? And if measurement time was very critical we would see an advantage there?}
+
+%Working subsection titles - not sure if they stay
+\subsection{Relating Results to Policy Decisions}
 
 Personalized medicine still faces several barriers to widespread adoption, including economic burden, patient burden, and expertise burden required for new methods of personalization.
 Personalized medicine can increase safety and reduce costs to the healthcare system by identifying patients who are at greater risk for adverse events or dose adjustments.  For example, if personalization enables a patient to avoid an adverse event, then this avoids associated costs to the healthcare system, example from a hospital stay \cite{looff2016economic}.  More ambitiously, personalized medicine has the potential to save the healthcare system costs by more effectively using resources \cite{shabaruddin2015economic}. 
 
 The cost of instruments, technicians, and leadership required to operate a personalized medicine clinic are high burden, and it is not yet clear if personalized medicine is sufficiently cost effective to offset operating costs in all circumstances \cite{kasztura2019cost}.  In their 2019 scoping review of personalized medicine cost effectiveness, Kasztura et. al \cite{kasztura2019cost} found that willingness-to-pay thresholds vary wildy from country to country (citing that cost per quality adjusted life year for some modes of personalized medicine range from \$20, 000 USD per quality adjusted life year in for studies in Europe and the United Kingdom to \$200,000 USD per quality adjusted life year for studies in the United States).  This high variability in cost effectiveness means the burden required for start up may result in a positive return on investment in some areas but not others. This variability should prompt would be adopters to more closely examine if taking on the initial burden is worth the result.
-
 
 % beef up here
 % Examples.  Identifty clear examples from the literature around diagnostics?
@@ -28,7 +37,15 @@ An additional expertise burden is added as machine learning (used interchangeabl
 
 These burdens may be surmountable for some, but the question then turns to if the result is worth the expense.  Answering that question is difficult without an idea how the additional burden of collecting data, or implementing new algorithms, will benefit the clinic or the patient subject to inherent constraints. 
 
+{\color{red}
+I think this would be a good place to explain a bit about how this could feed into tools that are used for policy decisions. Like for example Janet's Know4Go. So a paragraph that says like
 
+- Implementation decisions made at the organizational level need to attend to a broad array of evidence and contextual factors
+
+- Know4Go [cite] is one such framework; broadly it works like this... couple of sentences explaining
+
+- Our framework could produce evidence that is used in this framework to inform organization-level decisions.
+}
 
 \subsection{Limitations}
 
