@@ -8,7 +8,7 @@ theme_set(theme_classic())
 
 kg_labeler = function(x) glue::glue('{x} kg')
 
-experiment_data = read_csv('../data/generated_data/experiment.csv')
+experiment_data = read_csv('../../data/generated_data/experiment.csv') 
 
 old_model_data = list(
   N = nrow(experiment_data),
@@ -32,12 +32,29 @@ new_model_data = list(
   D = distinct(experiment_data, subjectids, .keep_all = T)$D
 )
 
-old_model = cmdstan_model('../experiment_models/tdm_model.stan')
-old_fit = old_model$sample(old_model_data, chains=12, parallel_chains=4)
+old_model = cmdstan_model('../../experiment_models/tdm_model.stan')
+old_fit = old_model$sample(old_model_data, chains=12, parallel_chains=4, seed = 19920908)
 
-new_model = cmdstan_model('../experiment_models/original_model.stan')
+new_model = cmdstan_model('../../experiment_models/original_model.stan')
 new_fit = new_model$sample(new_model_data, chains = 12, parallel_chains=4, seed=19920908)
 
+
+new_pred = new_fit$draws('C') %>% 
+           as_draws_df() %>% 
+           spread_draws(C[i]) %>% 
+           mean_qi()
+
+
+old_pred = old_fit$draws('C') %>% 
+          as_draws_df() %>% 
+          spread_draws(C[i]) %>% 
+          mean_qi()
+
+
+bind_cols(experiment_data, new_pred) %>% 
+  summarise(x=Metrics::rmse(1000*yobs, 1000*C)) %>% 
+  pull(x)
+          
 
 
 z_cl_new = new_fit$draws() %>% 
@@ -147,4 +164,26 @@ new_fit$draws('ke') %>%
   ggplot(aes(age, ke))+
   geom_point()
   
-     
+ 
+# Table for paper    
+
+b_draws %>%
+  mutate(which_pk = str_remove(.variable, 'beta_')) %>% 
+  mutate(
+    which_pk = case_when(
+      which_pk == 'a' ~ 'alpha',
+      which_pk == 'cl' ~ 'Cl',
+      which_pk == 't' ~ 't[max]'
+    )) %>% 
+  inner_join(convert_vars) %>% 
+  ungroup() %>% 
+  group_by(which_pk, covar) %>% 
+  mean_qi(.value) %>% 
+  ungroup %>% 
+  mutate_if(is.numeric, ~round(.x, 2)) %>% 
+  unite(interval, .lower, .upper, sep = ',') %>% 
+  mutate(interval = str_c('(', interval, ')')) %>% 
+  unite(estimate, .value, interval, sep = ' ') %>% 
+  select(1:3) %>% 
+  spread(which_pk, estimate) %>% 
+  knitr::kable('latex')
