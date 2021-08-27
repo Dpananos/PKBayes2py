@@ -13,11 +13,11 @@ To create the necessary model for apixaban personalization, we extend a previous
 	\label{fig:randomeffectschange}
 \end{figure}
 
-We fit M1 to real pharmacokinetic data using the Stan software in R\cite{}.  Stan monitors several markov chain diagnostics, none of which detected problematic markov chain behavior, which indicates that Stan’s sampling algorithm was able to converge to the target distribution (0 divergences, all all Gelman-Rubin diagnostics<1.01, all effective sample size ratios  > 22\%).  
+We fit our model to real pharmacokinetic data using the open source probabalistic programming language, Stan \cite{gelman2015stan}.  Stan monitors several Markov chain diagnostics, none of which detected problematic Markov chain behavior, which indicates that Stan’s sampling algorithm was able to converge to the target distribution (0 divergences, all all Gelman-Rubin diagnostics<1.01, all effective sample size ratios  > 22\%).  
 
 The inclusion of covariates in the model results in a better fit than excluding them. Shown in \cref{fig:randomeffectschange} are the estimated random effects for the clearance pharmacokinetic parameter of each subject as a function of weight.  Subject sex is indicated by color, the overall trend is shown in the black dashed line.  Failing to include subject sex and weight results in males having on average a larger random effect than females of the same weight, and heavier subjects having a larger random effect than lighter subjects.  When covariates are added into the model, the variation in the random effects attenuates, resulting in closer alignment to model assumptions. A better fit to the data means data generate from the model may be closer aligned with the true data generating process.
 
-Examining the posterior distributions of the regression coefficients provides further insights into the relationships between covariates and pharmacokinetics.  Greater subject weight is associated with an increase in the expected value of alpha (which is used to compute the elimination and absorption rates in the first order one compartment PK model.  The parameter $ \alpha $ is the ratio of how fast the drug exists the central compartment to how fast the drug enters the central compartment) as well as the time to max concentration.  There is an estimated effect of sex on $ \alpha $ (males have smaller alpha than females, meaning the drug leaves their central compartment slower or enters the central compartment quicker), however the uncertainty is large (estimated effect -0.2 on the logit scale, 95\% credible interval -0.54 to 0.15). \textcolor{red}{See Table~X} in the Appendix for a full summary of the regression coefficients.
+Examining the posterior distributions of the regression coefficients provides further insights into the relationships between covariates and pharmacokinetics.  Greater subject weight is associated with an increase in the expected value of alpha (which is used to compute the elimination and absorption rates in the first order one compartment PK model.  The parameter $ \alpha $ is the ratio of how fast the drug exists the central compartment to how fast the drug enters the central compartment) as well as the time to max concentration.  There is an estimated effect of sex on $ \alpha $ (males have smaller alpha than females, meaning the drug leaves their central compartment slower or enters the central compartment quicker), however the uncertainty is large (estimated effect -0.2 on the logit scale, 95\% credible interval -0.53 to 0.15). See \cref{tab:coefs} in the Appendix for a full summary of the regression coefficients.
 
 
 %\begin{figure}
@@ -30,21 +30,6 @@ Examining the posterior distributions of the regression coefficients provides fu
 
 Model training error is comparable between the two models; the model without covariates achieves an average error of 8.31 ng/ml as measured by root mean squared error.  The model with covariates achieves a root mean squared error of 8.36  ng/ml.  Estimates of concentration uncertainty remain similar between the two models as well.  We conclude the inclusion of covariates in the model improves model inferences but does not substantially improve the fit of the model in this case.
 
-% Need to clean up the table.
-\begin{tabular}{l|l|l|l}
-\hline
-covar & alpha & Cl & t[max]\\
-\hline
-Age & -0.08 (-0.27,0.1) & 0.01 (-0.06,0.08) & -0.01 (-0.1,0.08)\\
-\hline
-Creatinine & -0.06 (-0.25,0.14) & 0.02 (-0.05,0.09) & -0.05 (-0.14,0.04)\\
-\hline
-Sex & -0.2 (-0.53,0.15) & 0.39 (0.23,0.54) & -0.01 (-0.18,0.15)\\
-\hline
-Weight & 0.32 (0.11,0.55) & 0.2 (0.12,0.27) & 0.09 (0.01,0.18)\\
-\hline
-
-\end{tabular}
 
 
 
@@ -62,11 +47,11 @@ Weight & 0.32 (0.11,0.55) & 0.2 (0.12,0.27) & 0.09 (0.01,0.18)\\
 %\item A two stage DTR estimated via Q learning.  We refer to this mode as “Q Learning”.
 %\end{enumerate}
 
-We consider the  6 modes of personalization as outlined in \cref{ss:framework}.  To evaluate these modes of personalization, we generate 1000 simulated subjects taking a dose of apixaban once every 12 hours with perfect adherence for a total of 10 days. The goal is to maximize the time spent with blood concentration level between between 0.1 mg/L and 0.3 mg/L. For static modes of personalization, the selected initial dose is fixed over the 10 day period. For dynamic modes of personalization, some time in the second 12 hour period on the fourth day (between 108 and 120 hours after the initial dose), the simulated subject’s blood concentration is measured, and then at the start of the fifth day, the dose is adjusted based on all the pre-dose clinical measurements plus the observed concentration. 
+We consider the  6 modes of personalization as outlined in \cref{ss:framework}.  To evaluate these modes of personalization, we generate 1000 simulated subjects taking a dose of apixaban once every 12 hours with perfect adherence for a total of 10 days. The goal is to maximize the time spent with blood concentration level between between 100 ng/ml and 300 ng/ml. We choose this range as it is not so narrow that even optimal doses perform poorly, but not so wide that any dose can achieve high reward. For static modes of personalization, the selected initial dose is fixed over the 10 day period. For dynamic modes of personalization, some time in the second 12 hour period on the fourth day (between 108 and 120 hours after the initial dose), the simulated subject’s blood concentration is measured, and then at the start of the fifth day, the dose is adjusted based on all the pre-dose clinical measurements plus the observed concentration. 
 
 \subsubsection{Defining the Dynamic Treatment Regimes}
 
-To implement the two dynamic modes of personalization, we estimate DTRs with two stages (the first five days, and the latter five days). We choose this range as it is not so narrow that even optimal doses perform poorly, but not so wide that any dose can achieve high reward. For the dynamic personalization policies our experiments, we develop a DTR for selecting the best dose for keeping a patient’s blood plasma concentration within a desired range.  In terms of the DTR, the system is the patient for whom a dose is selected, the actions correspond to selection of dose sizes, and the reward is the proportion of time spent within the desired concentration range. The trajectories we will use to estimate the optimal Q functions are of the form
+To implement the two dynamic modes of personalization, we estimate DTRs with two stages (the first five days, and the latter five days).  For the dynamic personalization policies our experiments, we develop a DTR for selecting the best dose for keeping a patient’s blood plasma concentration within a desired range.  In terms of the DTR, the system is the patient for whom a dose is selected, the actions correspond to selection of dose sizes, and the reward is the proportion of time spent within the desired concentration range. The trajectories we will use to estimate the optimal Q functions are of the form
 
 \begin{equation}\label{key}
 O_1, A_1, Y_1, O_2, A_2, Y_2, O_3
@@ -83,7 +68,7 @@ O_1, A_1, Y_1, O_2, A_2, Y_2, O_3
 	\item $ O_3 $ would be pre-dose clinical measurements, the observed concentration made on the fourth day, and the next concentration measurement, were it to be made. As we examine just the two actions $ A_1 $ and $ A_2 $, we do not make use of $ O_3 $ but include it here to adhere with our definition of trajectories above.
 \end{itemize}
 
-The reward function we use depends on the subject’s true latent concentration. Let $ c_j \quad j=1...K $ be the $ j^{th}$ latent concentration value at time $ t_j $.  The reward function is 
+The reward function we use depends on the subject’s true latent concentration. Let $ c_j \quad j=1...K $ be the $ j^{th}$ latent concentration value at time $ t_j $, which we can estimate with our Bayesian PK model.  The reward function is 
 
 \begin{equation}
 Y(c_1, c_2, \cdots, c_k) = \dfrac{1}{k}\sum_{j=1}^K \mathbb{I}(0.1 < c_j < 0.3)
@@ -110,9 +95,11 @@ Q_{2}^{o p t}\left(H_{2}, A_{2}\right)=E\left[Y\left(c_{j+1}, c_{j+2}, \cdots, c
 Q_{1}^{o p t}\left(H_{1}, A_{1}\right)= E \left[Y\left(c_{1}, c_{2}, \cdots, c_{j}\right)+\max _{a_{2} \in \mathscr{A}} Q_{2}^{o p t}\left(H_{2}, a_{2}\right) \Bigg\vert H_{1}, A_{1}\right]
 \end{equation}
 
-We seek to maximize the stage 1 optimal Q function to learn the optimal policy for dosing subjects under the constraint we can measure them at most once and are limited to the aforementioned pre-dose clinical variables.  The interpretation of stage 1 optimal Q function is as follows:\textit{ Given the pre-dose clinical variables of the subject and a proposed initial dose and measurement time, the stage 1 optimal Q function gives the proportion of time the subject’s blood serum concentration is between 0.1mg/L and 0.3mg/L assuming that we provide the subject with the best dose possible at the start of the $ 5^{th} $ day.}  The actions $ A_1 $ and $ A_2 $ which maximize these functions constitute the optimal policy.
+We seek to maximize the stage 1 optimal Q function to learn the optimal policy for dosing subjects under the constraint we can measure them at most once and are limited to the aforementioned pre-dose clinical variables.  The interpretation of stage 1 optimal Q function is as follows:\textit{ Given the pre-dose clinical variables of the subject and a proposed initial dose and measurement time, the stage 1 optimal Q function gives the proportion of time the subject’s blood serum concentration is between 100 ng/ml and 300 ng/ml assuming that we provide the subject with the best dose possible at the start of the $ 5^{th} $ day.}  The actions $ A_1 $ and $ A_2 $ which maximize these functions constitute the optimal policy.
 
-The concentration values $ c_j $ in the optimal Q functions are latent, meaning we have no direct access to them in practice. Furthermore, obtaining measurements with high enough frequency so that the reward is faithfully estimated would be too burdensome on the patient. 
+
+%
+%The concentration values $ c_j $ in the optimal Q functions are latent, meaning we have no direct access to them in practice. Furthermore, obtaining measurements with high enough frequency so that the reward is faithfully estimated would be too burdensome on the patient. 
 
 
 \subsection{Evaluation}

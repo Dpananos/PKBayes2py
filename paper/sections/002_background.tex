@@ -1,10 +1,10 @@
 \section{Background}\label{ss:background}
 
-In the following two subsections, we present background material on dynamic treatment regimes, which are used to develop optimal decision-making models, and Bayesian pharmacokinetic models, which are used to capture relationships between patient characteristics, measurements, pharmacokinetics, and dose so that optimal dosing decisions can be derived using the dynamic treatment regime framework.
+In the following two subsections, we present background material on dynamic treatment regimes, which are used to develop optimal decision-making models, and Bayesian PK models, which are used to capture relationships between patient characteristics, measurements, pharmacokinetics, and dose so that optimal dosing decisions can be derived using the dynamic treatment regime framework.
 
 \subsection{Dynamic Treatment Regimes}
 
-In this section, we review the theory of dynamic treatment regimes and how dynamic personalization using pharmacokinetic models can be formulated using a dynamic treatment regime.
+In this section, we review the theory of dynamic treatment regimes and how dynamic personalization using PK models can be formulated using a dynamic treatment regime.
 
 \subsubsection{Trajectories}
 
@@ -12,7 +12,7 @@ Our work considers personalization of a dose or sequences of doses for a patient
 
 A dynamic treatment regime (DTR) is a sequence of decision rules for adapting a treatment plan to the time-varying state of an individual subject \cite{chakraborty2013statistical}. In DTRs, and their cousin topic in computer science \textit{reinforcement learning}, an agent (often thought of as a robot in reinforcement learning, but within medicine sometimes thought of as a physician’s computerized decision support system) interacts with a system for a number of stages. At each stage, the agent receives an \textit{observation} of the system and then decides which \textit{action} to take.  This action will result in an observed \textit{reward} which is followed by a new observation of the system after it has been impacted by the action.  This cycle of observation, action, reward then repeats, with the agent aiming to take actions which yield the largest total reward.
 
-Key to our DTR is the concept of a \textit{trajectory}. Define a stage to be a triple containing an observation, chosen action, and resulting reward. Let $O_i$ denote an observation at the ith stage, $ A_i $ be the action at the $ i^{th} $ stage, and $ Y_i $ denote the reward at the $ i^{th}$ stage, denoted in capital letters when considering the observation, action, and reward as random variables.  A  trajectory is then the tuple $ (O_1, A_1, O_2, A_2,  \cdots, O_K, A_K, O_{K+1})$.  Following notation by Chakraborty and Moodie \cite{chakraborty2013statistical}, we will denote a system’s history at stage $ j $ as $ H_j = (O_1, A_1, O_2, A_2, \cdots , O_{j-1}, A_{j-1}, O_j) $.  The reward at stage j is then a function of the system’s history, the action taken, and the next observation $ Y_j = Y_j(H_j, A_j, O_{j+1}) $.
+Key to our DTR is the concept of a \textit{trajectory}. Define a stage to be a triple containing an observation, chosen action, and resulting reward. Let $O_i$ denote an observation at the $i^{th}$ stage, $ A_i $ be the action at the $ i^{th} $ stage, and $ Y_i $ denote the reward at the $ i^{th}$ stage, denoted in capital letters when considering the observation, action, and reward as random variables.  A  trajectory is then the tuple $ (O_1, A_1, O_2, A_2,  \cdots, O_K, A_K, O_{K+1})$.  Following notation by Chakraborty and Moodie \cite{chakraborty2013statistical}, we will denote a system’s history at stage $ j $ as $ H_j = (O_1, A_1, O_2, A_2, \cdots , O_{j-1}, A_{j-1}, O_j) $.  The reward at stage $j$ is then a function of the system’s history, the action taken, and the next observation $ Y_j = Y_j(H_j, A_j, O_{j+1}) $.
 
 \subsubsection{Policies, Value Functions, and Q-Learning}
 
@@ -46,7 +46,7 @@ V^{opt}_j(h_j) = \underset{d \in \mathscr{D}}{\mbox{max}} V^d_j(h_j)
 
 Note that the optimal Q function has similar form and interpretation to the optimal value function (namely, it is the expected reward starting at stage $ j $ but with the added condition that we take action $ a_j $ and then follow the optimal policy thereafter). Due to the decomposition of the reward function at stage $ j $, estimation of the optimal Q function can be performed by choosing the action which yields the largest reward at each stage assuming we act optimally in the future. 
 
-To use Q-learning for personalization in the context of optimal dosing and titration, we will define the actions to be possible doses or dose adjustments, and we define the reward to be a function of the resulting concentrations, for example a measurement of how well concentrations are kept in a specified range. The relationship between possible actions and rewards, which Q-learning can use to produce optimal policies, can be captured by Bayesian pharmacokinetic modelling, which we now review.
+To use Q-learning for personalization in the context of optimal dosing and titration, we will define the actions to be possible doses or dose adjustments, and we define the reward to be a function of the resulting concentrations, for example a measurement of how well concentrations are kept in a specified range. The relationship between possible actions and rewards, which Q-learning can use to produce optimal policies, can be captured by Bayesian PK modelling, which we now review.
 
 \subsection{Bayesian Models of Pharmacokinetics}
 

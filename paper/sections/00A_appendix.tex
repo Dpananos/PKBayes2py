@@ -29,7 +29,25 @@ The Bayesian model used to predict personalized concentration in response to dos
 	p(\beta_{\alpha, k}) &\sim \Normal(0, 0.25^2) \quad k = 1 ... 4
 \end{align}
 
-Here, normal distributions are parameterized by their mean and variance, lognormal distributions are parameterized by the mean and variance of the random variable on the log scale, and gamma distributions are parameterized by their shape and rate.  The $\mu$ in the model above represent population means on either the log or logit scale, the $\beta$ are regression coefficients for the indicated pharmacokinetic parameter, the sigmas are the population level standard deviations on the log or logit scale, $\delta$ is aparameter which relaxes the assumption that the dose is absorbed into the blood immeditately upon ingestion, $F$ is the bioavailability of apixiban (which we fix to 0.5 \cite{byon2019apixaban}) and $D$ si the size of the dose in milligrams.  All continuous variables were standardized using the sample mean and standard deviation prior to being passed to the model.  
+Here, normal distributions are parameterized by their mean and variance, lognormal distributions are parameterized by the mean and variance of the random variable on the log scale, and gamma distributions are parameterized by their shape and rate.  The $\mu$ in the model above represent population means on either the log or logit scale, the $\beta$ are regression coefficients for the indicated pharmacokinetic parameter, the sigmas are the population level standard deviations on the log or logit scale, $\delta$ is aparameter which relaxes the assumption that the dose is absorbed into the blood immeditately upon ingestion, $F$ is the bioavailability of apixiban (which we fix to 0.5 \cite{byon2019apixaban}) and $D$ si the size of the dose in milligrams.  All continuous variables were standardized using the sample mean and standard deviation prior to being passed to the model. 
+
+
+
+\begin{table}\label{tab:coefs}
+	\centering
+	\begin{tabular}[t]{rccc}
+		\toprule
+		& $\beta_\alpha$ & $\beta_{Cl}$ & $\beta_{t_{max}}$\\
+		\midrule
+		\cellcolor{gray!6}{Age} & \cellcolor{gray!6}{-0.08 (-0.27,0.1)} & \cellcolor{gray!6}{0.01 (-0.06,0.08)} & \cellcolor{gray!6}{-0.01 (-0.1,0.08)}\\
+		Creatinine & -0.06 (-0.25,0.14) & 0.02 (-0.05,0.09) & -0.05 (-0.14,0.04)\\
+		\cellcolor{gray!6}{Sex} & \cellcolor{gray!6}{-0.2 (-0.53,0.15)} & \cellcolor{gray!6}{0.39 (0.23,0.54)} & \cellcolor{gray!6}{-0.01 (-0.18,0.15)}\\
+		Weight & 0.32 (0.11,0.55) & 0.2 (0.12,0.27) & 0.09 (0.01,0.18)\\
+		\bottomrule
+	\end{tabular}
+	\caption{Posterior means for coefficients for each covariate in our pharmacokinetic model.  In parantheses are 95\% credible interval estimates.}
+\end{table}
+
 
 Once fit, $ \mathcal{M}_1$ can be used to predict the pharmacokinetics of new patients, using the patient’s covariates as predictors.  To do so, the marginal posterior distributions for $ \mu_{Cl} $, $ \mu_{t_{max}} $, $ \mu_{\alpha}$, $ \beta_{Cl} $, $ \beta_{t_{max}} $, $ \beta_{\alpha} $, $ \sigma_{Cl} $, $ \sigma_{t_{max}} $, $ \sigma_{\alpha} $, and $ \sigma_y $ must be summarized.  We use maximum likelihood on the posterior samples to summarize the marginal posterior distributions. We model the population means  and regression coefficients as normal, and the standard deviations  as gamma.  The maximum likelihood estimates are used to construct priors for a new model, which we call $ \mathcal{M}_2 $. We construct $ \mathcal{M}_2 $ so as to be able to predict plasma concentration after multiple doses (of potentially different sizes) administered over time, and remove the time delay ($ \delta $) to simplify our simulations.  Model priors for $ \mathcal{M}_2 $ are then 
 

@@ -7,45 +7,45 @@ Database file #2: ./bibs/dtr.bib
 Database file #3: ./bibs/bayes.bib
 Warning--I didn't find a database entry for ""
 Warning--can't use both author and editor fields in Martin2016
-You've used 23 entries,
+You've used 24 entries,
             2481 wiz_defined-function locations,
-            708 strings with 9920 characters,
-and the built_in function-call counts, 10377 in all, are:
-= -- 764
-> -- 771
+            715 strings with 10163 characters,
+and the built_in function-call counts, 10789 in all, are:
+= -- 800
+> -- 792
 < -- 9
-+ -- 282
-- -- 236
-* -- 928
-:= -- 1739
-add.period$ -- 69
-call.type$ -- 23
-change.case$ -- 43
-chr.to.int$ -- 23
-cite$ -- 24
-duplicate$ -- 448
-empty$ -- 841
-format.name$ -- 267
-if$ -- 2121
++ -- 290
+- -- 242
+* -- 965
+:= -- 1804
+add.period$ -- 72
+call.type$ -- 24
+change.case$ -- 45
+chr.to.int$ -- 24
+cite$ -- 25
+duplicate$ -- 467
+empty$ -- 879
+format.name$ -- 274
+if$ -- 2207
 int.to.chr$ -- 1
-int.to.str$ -- 24
-missing$ -- 24
-newline$ -- 122
-num.names$ -- 69
-pop$ -- 194
+int.to.str$ -- 25
+missing$ -- 25
+newline$ -- 127
+num.names$ -- 72
+pop$ -- 201
 preamble$ -- 1
-purify$ -- 23
+purify$ -- 24
 quote$ -- 0
-skip$ -- 263
+skip$ -- 273
 stack$ -- 0
-substring$ -- 465
-swap$ -- 66
+substring$ -- 492
+swap$ -- 68
 text.length$ -- 2
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 152
+type$ -- 159
 warning$ -- 1
-while$ -- 81
+while$ -- 85
 width$ -- 0
-write$ -- 301
+write$ -- 314
 (There were 2 warnings)

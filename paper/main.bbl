@@ -1,4 +1,4 @@
-\begin{thebibliography}{23}
+\begin{thebibliography}{24}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -58,6 +58,13 @@ Rommel~G Tirona, Zahra Kassam, Ruth Strapp, Mala Ramu, Catherine Zhu, Melissa
   liver disease.
 \newblock \emph{Drug Metabolism and Disposition}, 46\penalty0 (5):\penalty0
   485--492, 2018.
+
+\bibitem[Gelman et~al.(2015)Gelman, Lee, and Guo]{gelman2015stan}
+Andrew Gelman, Daniel Lee, and Jiqiang Guo.
+\newblock Stan: A probabilistic programming language for bayesian inference and
+  optimization.
+\newblock \emph{Journal of Educational and Behavioral Statistics}, 40\penalty0
+  (5):\penalty0 530--543, 2015.
 
 \bibitem[Byon et~al.(2019)Byon, Garonzik, Boyd, and Frost]{byon2019apixaban}
 Wonkyung Byon, Samira Garonzik, Rebecca~A Boyd, and Charles~E Frost.

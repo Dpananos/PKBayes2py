@@ -186,4 +186,7 @@ b_draws %>%
   unite(estimate, .value, interval, sep = ' ') %>% 
   select(1:3) %>% 
   spread(which_pk, estimate) %>% 
-  knitr::kable('latex')
+  kableExtra::kbl(format='latex', booktabs = T) %>% 
+  kableExtra::kable_styling(latex_options = c('striped'))
+
+
