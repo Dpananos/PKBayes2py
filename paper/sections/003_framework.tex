@@ -26,17 +26,17 @@ Static modes of personalization seek to inform the dose at one point in time (us
 
 \begin{enumerate}
 	\item \textbf{One size fits all}.  This mode of personalization is not very personal at all.  All patients receive the same dose size at the onset of treatment.
-	\item \textbf{ Dose based on clinical variables}.  In this mode of personalization, the patient's covariates, for example age, sex, weight, creatinine measurements, and possibly genetic or biomarker information, are provided to the pharmacokinetic model.  A dose size is then selected using the model to maximize the reward function conditional on these measurements.
+	\item \textbf{Dose based on clinical variables}.  In this mode of personalization, the patient's covariates, for example age, sex, weight, creatinine measurements, and possibly genetic or biomarker information, are provided to the pharmacokinetic model.  A dose size is then selected using the model to maximize the reward function conditional on these measurements.
 \end{enumerate}
 
 \noindent Dynamic modes of personalization seek to personalize the initial doses but also the titration process.  We consider four modes of dynamic personalization for our case study:
 
 \begin{enumerate}
-	\item \textbf{One size fits all dose \textit{and} one dose adjustment}.  This mode of personalization provides patients the same dose to start, but requires a concentration measurement to be made sometime in the future, which is then used to adjust the dose.  For example, in our case study, subjects take their initial dose once every 12 hours with perfect adherence for five days.  Our pharmacokinetic model conditions on this measurement, and the dose is adjusted in order to maximize the reward for another five days.
+	\item \textbf{One size fits all initial dose \textit{and} one dose adjustment}.  This mode of personalization provides patients the same dose to start, but requires a concentration measurement to be made sometime in the future, which is then used to adjust the dose.  For example, in our case study, subjects take their initial dose once every 12 hours with perfect adherence for five days.  Our pharmacokinetic model conditions on this measurement, and the dose is adjusted in order to maximize the reward for another five days.
 	
-	\item \textbf{Dose based on clinical variables \textit{and} one dose adjustment}.  Here, the initial dose provided to the patient is determined by the patient's clinical measurements. For example, in our case study, in the second half of the fifth day, a concentration measurement is made at a random time. The model is conditioned on this concentration and the dose is adjusted to optimize the reward.
+	\item \textbf{Initial dose based on clinical variables \textit{and} one dose adjustment}.  Here, the initial dose provided to the patient is determined by the patient's clinical measurements. For example, in our case study, in the second half of the fifth day, a concentration measurement is made at a random time. The model is conditioned on this concentration and the dose is adjusted to optimize the reward.
 	
-	\item \textbf{Dose based on clinical variables \textit{and} optimally-timed dose adjustment}.  Similar to the previous mode of personalization, but the time at which the measurement is made is under our control and tuned to maximize reward. However, the initial dose and the timing of the adjustment are optimized independently. The time at which the sample is taken can yield more or less information about particular parameters in the model. For example, much later after the dose is taken yields more information about the elimination rate constant $k_e$ than it does about the absorption rate constant $k_a$ because later in time, the majority of the dose has been absorped and is now being eliminated by the body.
+	\item \textbf{Initial dose based on clinical variables \textit{and} optimally-timed dose adjustment}.  Similar to the previous mode of personalization, but the time at which the measurement is made is under our control and tuned to maximize reward. The time at which the sample is taken can yield more or less information about particular parameters in the model. For example, much later after the dose is taken yields more information about the elimination rate constant $k_e$ than it does about the absorption rate constant $k_a$ because later in time, the majority of the dose has been absorbed and is now being eliminated by the body. In this mode of personalization, the initial dose and the timing of the adjustment are optimized independently. 
 	
 	\item \textbf{Optimal sequential dosing policy}. The approach of this mode is the same as the previous mode, except that the initial dose and the timing of the adjustment are \textit{jointly optimized} using Q-learning to maximize the expected reward.
 \end{enumerate}
@@ -50,9 +50,9 @@ To evaluate the potential for personalization, we compare all of the modes ident
 In reality, at the time of dose adjustment, the actual reward is not known.  However, because a Bayesian model is a generative model, samples generated from that model can be used to compute the expected reward achieved by any choice of dose.  The steps for computing the expected reward for a given dose are as follows:
 
 \begin{enumerate}
-	\item Condition the model on available information if the mode of personalization permits so.  For some modes of personalization, this might be clinical measurements, blood concentration measurements, both or neither.
+	\item Condition the model on available patient information if the mode of personalization permits. For some modes of personalization, this might be clinical measurements, blood concentration measurements, both, or neither.
 	
-	\item Draw several sets of of pharmacokinetic parameters from the posterior distribution. Each of this represents a possible underlying truth for the patient  under consideration. Choosing any one of these sets of pharmacokinetic parameters as ``the truth'', in conjunction with the dose schedule considered, completely determines the concentration profile and allows us to make a prediction of the patient's concentration into the future. Each set of parameters thus corresponds to a concentration, resulting in a distribution over possible future trajectories of concentrations.
+	\item Draw several sets of of pharmacokinetic parameters from the posterior distribution. Each of these sets represents a possible underlying truth for the patient  under consideration. Choosing one of these sets of pharmacokinetic parameters as ``the truth'', in conjunction with the dose schedule considered, completely determines the concentration profile and allows us to make a prediction of the patient's concentration into the future. Each set of parameters thus corresponds to a concentration, resulting in a distribution over possible future trajectories of concentrations.
 	
 	\item Compute the concentration profile on a grid of times.  The grid must be sufficiently fine to capture changes in the concentration over time.  We make a prediction at 15 minute intervals.
 	
@@ -61,7 +61,7 @@ In reality, at the time of dose adjustment, the actual reward is not known.  How
 	\item Update the proposed dose and recompute the reward.
 \end{enumerate}
 
-The concentration profile scales linearly with dose size; double the dose, double the concentration at a given time.  This relationship allows for off-the-shelf optimizers to be used in the selection of dose size in this processes.
+The concentration profile scales linearly with dose size; double the dose, double the concentration at a given time.  This relationship allows for off-the-shelf optimizers to be used in the selection of dose size in this process.
 
 \begin{figure}
 	\centering
