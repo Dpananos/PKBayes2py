@@ -1,4 +1,4 @@
-\begin{thebibliography}{24}
+\begin{thebibliography}{26}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -20,6 +20,16 @@ Theodore~John Wigle, Brandi Povitz, Wendy Teft, Robin Legan, John~Gordon
   dihydropyrimidine dehydrogenase (dpyd) genotype testing for
   fluoropyrimidine-based chemotherapy on adverse events and hospital costs.
 \newblock \emph{American Society of Clinical Oncology}, 2019.
+
+\bibitem[Gong et~al.(2011)Gong, Tirona, Schwarz, Crown, Dresser, LaRue,
+  Langlois, Lazo-Langner, Zou, Roden, et~al.]{gong2011prospective}
+Inna~Y Gong, Rommel~G Tirona, Ute~I Schwarz, Natalie Crown, George~K Dresser,
+  Samantha LaRue, Nicole Langlois, Alejandro Lazo-Langner, Guangyong Zou, Dan~M
+  Roden, et~al.
+\newblock Prospective evaluation of a pharmacogenetics-guided warfarin loading
+  and maintenance dose regimen for initiation of therapy.
+\newblock \emph{Blood, The Journal of the American Society of Hematology},
+  118\penalty0 (11):\penalty0 3163--3171, 2011.
 
 \bibitem[Martin et~al.(2016)Martin, Lal, Moodie, Zhu, and Cheng]{Martin2016}
 Janet Martin, Avtar Lal, Jessica Moodie, Fang Zhu, and Davy Cheng.
@@ -49,6 +59,16 @@ Michael Betancourt.
 Steve Brooks, Andrew Gelman, Galin Jones, and Xiao-Li Meng.
 \newblock \emph{Handbook of markov chain monte carlo}.
 \newblock CRC press, 2011.
+
+\bibitem[Gulilat et~al.(2020)Gulilat, Keller, Linton, Pananos, Lizotte,
+  Dresser, Alfonsi, Tirona, Kim, and Schwarz]{gulilat2020drug}
+Markus Gulilat, Denise Keller, Bradley Linton, A~Demetri Pananos, Daniel
+  Lizotte, George~K Dresser, Jeffrey Alfonsi, Rommel~G Tirona, Richard~B Kim,
+  and Ute~I Schwarz.
+\newblock Drug interactions and pharmacogenetic factors contribute to variation
+  in apixaban concentration in atrial fibrillation patients in routine care.
+\newblock \emph{Journal of thrombosis and thrombolysis}, 49\penalty0
+  (2):\penalty0 294--303, 2020.
 
 \bibitem[Tirona et~al.(2018)Tirona, Kassam, Strapp, Ramu, Zhu, Liu, Schwarz,
   Kim, Al-Judaibi, and Beaton]{tirona2018apixaban}

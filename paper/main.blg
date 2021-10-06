@@ -5,47 +5,46 @@ The style file: unsrtnat.bst
 Database file #1: ./bibs/introduction.bib
 Database file #2: ./bibs/dtr.bib
 Database file #3: ./bibs/bayes.bib
-Warning--I didn't find a database entry for ""
 Warning--can't use both author and editor fields in Martin2016
-You've used 24 entries,
+You've used 26 entries,
             2481 wiz_defined-function locations,
-            715 strings with 10163 characters,
-and the built_in function-call counts, 10789 in all, are:
-= -- 800
-> -- 792
+            728 strings with 11033 characters,
+and the built_in function-call counts, 12019 in all, are:
+= -- 874
+> -- 924
 < -- 9
-+ -- 290
-- -- 242
-* -- 965
-:= -- 1804
-add.period$ -- 72
-call.type$ -- 24
-change.case$ -- 45
-chr.to.int$ -- 24
-cite$ -- 25
-duplicate$ -- 467
-empty$ -- 879
-format.name$ -- 274
-if$ -- 2207
++ -- 336
+- -- 284
+* -- 1099
+:= -- 2026
+add.period$ -- 78
+call.type$ -- 26
+change.case$ -- 49
+chr.to.int$ -- 26
+cite$ -- 27
+duplicate$ -- 505
+empty$ -- 957
+format.name$ -- 318
+if$ -- 2443
 int.to.chr$ -- 1
-int.to.str$ -- 25
-missing$ -- 25
-newline$ -- 127
-num.names$ -- 72
-pop$ -- 201
+int.to.str$ -- 27
+missing$ -- 27
+newline$ -- 137
+num.names$ -- 78
+pop$ -- 215
 preamble$ -- 1
-purify$ -- 24
+purify$ -- 26
 quote$ -- 0
-skip$ -- 273
+skip$ -- 293
 stack$ -- 0
-substring$ -- 492
-swap$ -- 68
+substring$ -- 552
+swap$ -- 72
 text.length$ -- 2
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 159
+type$ -- 173
 warning$ -- 1
-while$ -- 85
+while$ -- 93
 width$ -- 0
-write$ -- 314
-(There were 2 warnings)
+write$ -- 340
+(There was 1 warning)
