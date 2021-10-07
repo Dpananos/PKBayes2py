@@ -20,7 +20,7 @@ d = d %>%
 d %>% 
   ggplot(aes(delta, fct_rev(method_rename)))+
   geom_boxplot(aes(fill = fct_rev(type)), notch = T, outlier.size = 1, outlier.alpha = 0.5)+
-  labs(x = expression(paste(Delta,'Reward')),
+  labs(x = 'Maximum Return - Achieved Return',
        y = 'Mode of Personalization',
        fill = 'Personalization Type')+
   theme(
@@ -36,7 +36,7 @@ d %>%
   d %>% 
     ggplot(aes(val, fct_rev(method_rename)))+
     geom_boxplot(aes(fill = fct_rev(type)), notch = T, outlier.size = 1, outlier.alpha = 0.5)+
-    labs(x = expression(paste(Delta,'Reward')),
+    labs(x = 'Maximum Return - Achieved Return',
          y = 'Mode of Personalization',
          fill = 'Personalization Type')+
     theme(
