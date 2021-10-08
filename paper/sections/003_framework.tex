@@ -49,8 +49,10 @@ Each simulated patient has their dose(s) selected under each mode of personaliza
 
 \begin{figure}
 	\centering
-	\includegraphics[width=0.85\linewidth]{figures/viz_of_process.png}
-	\caption{}
+	\includegraphics[width=1\linewidth]{figures/viz_of_process.png}
+	\caption{
+	Visual representation of the steps in our framework.	\textbf{A}  Using only clinical information, the model is used to select a dose to keep the patient in the desired range for as long as possible. The blue ribbon indicates 90\% credible interval for the latent concentration.  \textbf{B} Some time later, the patient's blood serum concentration is measured (black dot). \textbf{C}  The observation is incorporated into the model and a new dose is selected to keep the patient in range for as long as possible. The red ribbon indicates 90\% credible interval for the latent concentration after adjusting the dose. \textbf{D} The black line indicates the true latent concentration under each dose.  Note the observation (black dot) is not on the black line (true concentration) because there is measurement error, which the model accounts for.  Black exes indicate a discretization use to compute the reward function in each stage.
+}
 	\label{fig:processfiguresingle}
 \end{figure}
 

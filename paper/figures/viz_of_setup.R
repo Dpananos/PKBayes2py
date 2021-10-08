@@ -1,32 +1,47 @@
 library(tidyverse)
+library(patchwork)
 d <- read_csv('../../data/generated_data/process_figure_data.csv')
 
+theme_set(theme_light(base_size = 8))
 
-prior_plot<-ggplot(data=d)+
-  geom_ribbon(aes(x=seq(0, 240, length.out = 240), ymin=0.1, ymax = 0.3), fill = 'light gray')+
-  geom_ribbon(aes(x=tpre, ymin=prior_low, ymax=prior_high), fill = 'blue', alpha = 0.5)+
-  geom_line(aes(x=tpre, y=ytrue_prior))+
-  geom_point(aes(tobs, yobs))+
-  geom_point(data=d[seq(1, nrow(d), 4),], aes(x=tpre, y=ytrue_prior), shape=4)
+styling<-ggplot(data=d)+
+         scale_x_continuous(labels = function(x) x/24, breaks = seq(0, 240, 24*2)) +
+         scale_y_continuous(labels = function(x) 1000*x, limits = c(0, .45))+
+         labs(x='Time (Days)', y = 'Concentration (ng/ml)')
 
-full_plot<-prior_plot+
-  geom_ribbon(aes(x=tpost, ymin=post_low, ymax=post_high), fill = 'red', alpha = 0.5)+
-  geom_line(aes(x=tpost, y=ytrue_post))+
-  geom_point(data=d[seq(1, nrow(d), 4),], aes(x=tpost, y=ytrue_post), shape=4)
-
-
+prior_plot<-styling+
+  geom_rect(aes(xmin=0, xmax=240, ymin=0.1, ymax = 0.3), fill = 'light gray', color = 'black')+
+  geom_ribbon(aes(x=tpre, ymin=prior_low, ymax=prior_high), fill = 'blue', alpha = 0.5)
   
 
+plot_a<-prior_plot + 
+        geom_text(aes(x=7.5*24, y=.290, label = 'Desired Range'), vjust=1, size = 4, color = 'black') + 
+        geom_label(aes(x=2*24, y=.400, label = 'Stage 1'), vjust=0, size = 4, color = 'black') + 
+        labs(title='Predictions Under Optimal Dose')
 
-final_plot<-full_plot +
-  theme_classic()+
-  theme(aspect.ratio = 1/1.61,
-        panel.grid.major = element_line(color='light grey'))+
-  scale_x_continuous(labels = function(x) x/24, breaks = 24*seq(0, 10, 2))+
-  scale_y_continuous(labels = function(x) x*1000, breaks = seq(0, 0.4, 0.1))+
-  labs(x='Time (Days)',
-       y='Concentration ng/ml')
+plot_b<-prior_plot + 
+        geom_point(aes(tobs, yobs)) +
+        geom_label(aes(x=2*24, y=.400, label = 'Stage 1'), vjust=0, size = 4, color = 'black') + 
+        labs(title = 'An Observation is Made')
 
+plot_c<-plot_b + 
+        geom_ribbon(aes(x=tpost, ymin=post_low, ymax=post_high), fill = 'red', alpha = 0.5) +
+        geom_label(aes(x=2*24, y=.400, label = 'Stage 1'), vjust=0, size = 4, color = 'black') + 
+        geom_label(aes(x=8*24, y=.400, label = 'Stage 2'), vjust=0, size = 4, color = 'black') + 
+        labs(title = 'Updated Predictions Under Adjusted Dose')
+
+
+slicer = seq(1, nrow(d), 5)
+plot_d<-plot_c + 
+        geom_line(aes(tpre, ytrue_prior)) + 
+        geom_point(data =slice(d, slicer),  aes(tpre, ytrue_prior), shape=4) + 
+        geom_line(aes(tpost, ytrue_post)) + 
+        geom_point(data =slice(d, slicer),  aes(tpost, ytrue_post), shape=4) + 
+        labs(title='True Concentration Function')
+
+
+final_plot <- (plot_a | plot_b) / (plot_c + plot_d) + plot_annotation(tag_levels = 'A')
 
 final_plot
-ggsave('viz_of_process.png', height = 4, width = 4*1.61)
+
+ggsave('viz_of_process.png', dpi = 240, height = 5, width = 8)
