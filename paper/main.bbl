@@ -1,4 +1,4 @@
-\begin{thebibliography}{26}
+\begin{thebibliography}{28}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -42,6 +42,19 @@ Janet Martin, Avtar Lal, Jessica Moodie, Fang Zhu, and Davy Cheng.
 Bibhas Chakraborty.
 \newblock \emph{Statistical methods for dynamic treatment regimes}.
 \newblock Springer, 2013.
+
+\bibitem[Davidian et~al.(2017)Davidian, Everitt, Kenett, Molenberghs,
+  Piegorsch, and Ruggeri]{lizotte17reinforcement}
+Marie Davidian, Brian Everitt, Ron~S. Kenett, Geert Molenberghs, Walter
+  Piegorsch, and Fabrizio Ruggeri, editors.
+\newblock \emph{Wiley StatsRef}, chapter Reinforcement Learning.
+\newblock Wiley, 2017.
+\newblock 3000 words.
+
+\bibitem[Berger(2013)]{berger2013statistical}
+James~O Berger.
+\newblock \emph{Statistical decision theory and Bayesian analysis}.
+\newblock Springer Science \& Business Media, 2013.
 
 \bibitem[Pananos and Lizotte(2020)]{pananos2020comparisons}
 A~Demetri Pananos and Daniel~J Lizotte.

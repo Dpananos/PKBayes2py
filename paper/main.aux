@@ -7,6 +7,7 @@
 \citation{Martin2016}
 \@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}\protected@file@percent }
 \citation{chakraborty2013statistical}
+\citation{lizotte17reinforcement,chakraborty2013statistical}
 \@writefile{toc}{\contentsline {section}{\numberline {2}Background}{2}\protected@file@percent }
 \newlabel{ss:background}{{2}{2}}
 \newlabel{ss:background@cref}{{[section][2][]2}{[1][2][]2}}
@@ -16,42 +17,48 @@
 \citation{chakraborty2013statistical}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {2.1.1}Trajectories}{3}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {2.1.2}Policies, Value Functions, and Q-Learning}{3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Bayesian Models of Pharmacokinetics}{4}\protected@file@percent }
+\citation{berger2013statistical}
+\citation{berger2013statistical}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Similarity to Statistical Decision Theory}{4}\protected@file@percent }
+\newlabel{reimann_stieltjes}{{7}{4}}
+\newlabel{reimann_stieltjes@cref}{{[equation][7][]7}{[1][4][]4}}
 \citation{pananos2020comparisons}
-\citation{betancourt2018conceptual}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}Bayesian Models of Pharmacokinetics}{5}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {3}A Framework for Assessing Static and Dynamic Personalization}{5}\protected@file@percent }
 \newlabel{ss:framework}{{3}{5}}
-\newlabel{ss:framework@cref}{{[section][3][]3}{[1][4][]5}}
+\newlabel{ss:framework@cref}{{[section][3][]3}{[1][5][]5}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Bayesian Modelling}{5}\protected@file@percent }
+\citation{betancourt2018conceptual}
 \citation{brooks2011handbook}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Modes of Personalization \& Assessment of Personalization}{6}\protected@file@percent }
+\citation{vehtari2019rank}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Modes of Personalization \& Assessment of Personalization}{7}\protected@file@percent }
 \citation{gulilat2020drug}
-\citation{pananos2020comparisons}
-\citation{tirona2018apixaban}
-\citation{gelman2015stan}
 \@writefile{toc}{\contentsline {section}{\numberline {4}Case Study}{8}\protected@file@percent }
 \newlabel{ss:casestudy}{{4}{8}}
 \newlabel{ss:casestudy@cref}{{[section][4][]4}{[1][8][]8}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Bayesian Modelling}{8}\protected@file@percent }
 \@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces  Visual representation of the steps in our framework. \textbf  {A} Using only clinical information, the model is used to select a dose to keep the patient in the desired range for as long as possible. The blue ribbon indicates 90\% credible interval for the latent concentration. \textbf  {B} Some time later, the patient's blood serum concentration is measured (black dot). \textbf  {C} The observation is incorporated into the model and a new dose is selected to keep the patient in range for as long as possible. The red ribbon indicates 90\% credible interval for the latent concentration after adjusting the dose. \textbf  {D} The black line indicates the true latent concentration under each dose. Note the observation (black dot) is not on the black line (true concentration) because there is measurement error, which the model accounts for. Black exes indicate a discretization use to compute the reward function in each stage. }}{9}\protected@file@percent }
 \newlabel{fig:processfiguresingle}{{1}{9}}
 \newlabel{fig:processfiguresingle@cref}{{[figure][1][]1}{[1][8][]9}}
-\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Random effects estimates for clearance $ CL_i $ and 95\% credible intervals (left). Random effects estimates are colored by patient sex. Prior to adjusting for covariates, a general trend in weight can be seen in the random effects. Subjects who are heavier tend to have larger random effect, and males tend to have larger random effects than females of the same weight. Patterns such as these indicate that weight and sex can be used to explain variation in the random effects. After adjusting for sex and weight (right), the random effects have no discernable pattern.}}{10}\protected@file@percent }
-\newlabel{fig:randomeffectschange}{{2}{10}}
-\newlabel{fig:randomeffectschange@cref}{{[figure][2][]2}{[1][8][]10}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Modes of Personalization}{11}\protected@file@percent }
+\citation{pananos2020comparisons}
+\citation{tirona2018apixaban}
+\citation{gelman2015stan}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Bayesian Modelling}{10}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Random effects estimates for clearance $ CL_i $ and 95\% credible intervals (left). Random effects estimates are colored by patient sex. Prior to adjusting for covariates, a general trend in weight can be seen in the random effects. Subjects who are heavier tend to have larger random effect, and males tend to have larger random effects than females of the same weight. Patterns such as these indicate that weight and sex can be used to explain variation in the random effects. After adjusting for sex and weight (right), the random effects have no discernable pattern.}}{11}\protected@file@percent }
+\newlabel{fig:randomeffectschange}{{2}{11}}
+\newlabel{fig:randomeffectschange@cref}{{[figure][2][]2}{[1][10][]11}}
 \citation{byon2019apixaban}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Modes of Personalization}{12}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.1}Defining the Dynamic Treatment Regimes}{12}\protected@file@percent }
-\newlabel{key}{{6}{12}}
-\newlabel{key@cref}{{[equation][6][]6}{[1][12][]12}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Evaluation}{13}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Boxplots of the difference between theoretically largest return and achieved return for each of the 1000 simulated subjects. Subjects who achieve a reward close to their maximium return have a difference on 0, subjects who achieve a return less than their maximum have larger differences, with the largest difference being 1.}}{14}\protected@file@percent }
-\newlabel{fig:modelsofpersonalizationdifferences}{{3}{14}}
-\newlabel{fig:modelsofpersonalizationdifferences@cref}{{[figure][3][]3}{[1][13][]14}}
+\newlabel{key}{{8}{12}}
+\newlabel{key@cref}{{[equation][8][]8}{[1][12][]12}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Evaluation}{14}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {5}Discussion}{14}\protected@file@percent }
 \newlabel{ss:discussion}{{5}{14}}
 \newlabel{ss:discussion@cref}{{[section][5][]5}{[1][14][]14}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Comparing Modes of Personalization}{14}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Boxplots of the difference between theoretically largest return and achieved return for each of the 1000 simulated subjects. Subjects who achieve a reward close to their maximium return have a difference on 0, subjects who achieve a return less than their maximum have larger differences, with the largest difference being 1.}}{15}\protected@file@percent }
+\newlabel{fig:modelsofpersonalizationdifferences}{{3}{15}}
+\newlabel{fig:modelsofpersonalizationdifferences@cref}{{[figure][3][]3}{[1][14][]15}}
 \citation{looff2016economic}
 \citation{shabaruddin2015economic}
 \citation{kasztura2019cost}
@@ -66,43 +73,45 @@
 \citation{obermeyer2019dissecting}
 \citation{frohlich2018hype}
 \citation{wiens2019no}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Relating Results to Policy Decisions}{16}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Relating Results to Policy Decisions}{17}\protected@file@percent }
 \citation{pananos2020comparisons}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}Limitations}{17}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.4}Future Work}{18}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}Limitations}{18}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.4}Future Work}{19}\protected@file@percent }
 \bibdata{./bibs/introduction,./bibs/dtr,./bibs/bayes}
 \bibcite{morse2015personalized}{{1}{2015}{{Morse and Kim}}{{}}}
 \bibcite{wigle2019prospective}{{2}{2019}{{Wigle et~al.}}{{Wigle, Povitz, Teft, Legan, Lenehan, Gulilat, Nevison, Kritzinger, Punaganty, Keller, et~al.}}}
 \bibcite{gong2011prospective}{{3}{2011}{{Gong et~al.}}{{Gong, Tirona, Schwarz, Crown, Dresser, LaRue, Langlois, Lazo-Langner, Zou, Roden, et~al.}}}
 \bibcite{Martin2016}{{4}{2016}{{Martin et~al.}}{{Martin, Lal, Moodie, Zhu, and Cheng}}}
 \bibcite{chakraborty2013statistical}{{5}{2013}{{Chakraborty}}{{}}}
-\bibcite{pananos2020comparisons}{{6}{2020}{{Pananos and Lizotte}}{{}}}
-\bibcite{betancourt2018conceptual}{{7}{2018}{{Betancourt}}{{}}}
-\bibcite{brooks2011handbook}{{8}{2011}{{Brooks et~al.}}{{Brooks, Gelman, Jones, and Meng}}}
-\bibcite{gulilat2020drug}{{9}{2020}{{Gulilat et~al.}}{{Gulilat, Keller, Linton, Pananos, Lizotte, Dresser, Alfonsi, Tirona, Kim, and Schwarz}}}
-\bibcite{tirona2018apixaban}{{10}{2018}{{Tirona et~al.}}{{Tirona, Kassam, Strapp, Ramu, Zhu, Liu, Schwarz, Kim, Al-Judaibi, and Beaton}}}
-\bibcite{gelman2015stan}{{11}{2015}{{Gelman et~al.}}{{Gelman, Lee, and Guo}}}
-\bibcite{byon2019apixaban}{{12}{2019}{{Byon et~al.}}{{Byon, Garonzik, Boyd, and Frost}}}
-\bibcite{looff2016economic}{{13}{2016}{{Looff et~al.}}{{Looff, Wilffert, Boersma, Annemans, Vegter, Boven, and Postma}}}
-\bibcite{shabaruddin2015economic}{{14}{2015}{{Shabaruddin et~al.}}{{Shabaruddin, Fleeman, and Payne}}}
-\bibcite{kasztura2019cost}{{15}{2019}{{Kasztura et~al.}}{{Kasztura, Richard, Bempong, Loncar, and Flahault}}}
-\bibcite{rogowski2015concepts}{{16}{2015}{{Rogowski et~al.}}{{Rogowski, Payne, Schnell-Inderst, Manca, Rochau, Jahn, Alagoz, Leidl, and Siebert}}}
-\bibcite{di2017personalized}{{17}{2017}{{Di~Paolo et~al.}}{{Di~Paolo, Sarkozy, Ryll, and Siebert}}}
-\bibcite{houts1984nonmedical}{{18}{1984}{{Houts et~al.}}{{Houts, Lipton, Harvey, Martin, Simmonds, Dixon, Longo, Andrews, Gordon, Meloy, et~al.}}}
-\bibcite{lee2020assessment}{{19}{2020}{{Lee et~al.}}{{Lee, Shah, and Chino}}}
-\bibcite{elliott2008understanding}{{20}{2008}{{Elliott et~al.}}{{Elliott, Shinogle, Peele, Bhosle, and Hughes}}}
-\bibcite{barocas2016big}{{21}{2016}{{Barocas and Selbst}}{{}}}
-\bibcite{lum2016predict}{{22}{2016}{{Lum and Isaac}}{{}}}
-\bibcite{ajunwa2020paradox}{{23}{2020}{{Ajunwa}}{{}}}
-\bibcite{obermeyer2019dissecting}{{24}{2019}{{Obermeyer et~al.}}{{Obermeyer, Powers, Vogeli, and Mullainathan}}}
-\bibcite{frohlich2018hype}{{25}{2018}{{Fr{\"o}hlich et~al.}}{{Fr{\"o}hlich, Balling, Beerenwinkel, Kohlbacher, Kumar, Lengauer, Maathuis, Moreau, Murphy, Przytycka, et~al.}}}
-\bibcite{wiens2019no}{{26}{2019}{{Wiens et~al.}}{{Wiens, Saria, Sendak, Ghassemi, Liu, Doshi-Velez, Jung, Heller, Kale, Saeed, et~al.}}}
+\bibcite{lizotte17reinforcement}{{6}{2017}{{Davidian et~al.}}{{Davidian, Everitt, Kenett, Molenberghs, Piegorsch, and Ruggeri}}}
+\bibcite{berger2013statistical}{{7}{2013}{{Berger}}{{}}}
+\bibcite{pananos2020comparisons}{{8}{2020}{{Pananos and Lizotte}}{{}}}
+\bibcite{betancourt2018conceptual}{{9}{2018}{{Betancourt}}{{}}}
+\bibcite{brooks2011handbook}{{10}{2011}{{Brooks et~al.}}{{Brooks, Gelman, Jones, and Meng}}}
+\bibcite{gulilat2020drug}{{11}{2020}{{Gulilat et~al.}}{{Gulilat, Keller, Linton, Pananos, Lizotte, Dresser, Alfonsi, Tirona, Kim, and Schwarz}}}
+\bibcite{tirona2018apixaban}{{12}{2018}{{Tirona et~al.}}{{Tirona, Kassam, Strapp, Ramu, Zhu, Liu, Schwarz, Kim, Al-Judaibi, and Beaton}}}
+\bibcite{gelman2015stan}{{13}{2015}{{Gelman et~al.}}{{Gelman, Lee, and Guo}}}
+\bibcite{byon2019apixaban}{{14}{2019}{{Byon et~al.}}{{Byon, Garonzik, Boyd, and Frost}}}
+\bibcite{looff2016economic}{{15}{2016}{{Looff et~al.}}{{Looff, Wilffert, Boersma, Annemans, Vegter, Boven, and Postma}}}
+\bibcite{shabaruddin2015economic}{{16}{2015}{{Shabaruddin et~al.}}{{Shabaruddin, Fleeman, and Payne}}}
+\bibcite{kasztura2019cost}{{17}{2019}{{Kasztura et~al.}}{{Kasztura, Richard, Bempong, Loncar, and Flahault}}}
+\bibcite{rogowski2015concepts}{{18}{2015}{{Rogowski et~al.}}{{Rogowski, Payne, Schnell-Inderst, Manca, Rochau, Jahn, Alagoz, Leidl, and Siebert}}}
+\bibcite{di2017personalized}{{19}{2017}{{Di~Paolo et~al.}}{{Di~Paolo, Sarkozy, Ryll, and Siebert}}}
+\bibcite{houts1984nonmedical}{{20}{1984}{{Houts et~al.}}{{Houts, Lipton, Harvey, Martin, Simmonds, Dixon, Longo, Andrews, Gordon, Meloy, et~al.}}}
+\bibcite{lee2020assessment}{{21}{2020}{{Lee et~al.}}{{Lee, Shah, and Chino}}}
+\bibcite{elliott2008understanding}{{22}{2008}{{Elliott et~al.}}{{Elliott, Shinogle, Peele, Bhosle, and Hughes}}}
+\bibcite{barocas2016big}{{23}{2016}{{Barocas and Selbst}}{{}}}
+\bibcite{lum2016predict}{{24}{2016}{{Lum and Isaac}}{{}}}
+\bibcite{ajunwa2020paradox}{{25}{2020}{{Ajunwa}}{{}}}
+\bibcite{obermeyer2019dissecting}{{26}{2019}{{Obermeyer et~al.}}{{Obermeyer, Powers, Vogeli, and Mullainathan}}}
+\bibcite{frohlich2018hype}{{27}{2018}{{Fr{\"o}hlich et~al.}}{{Fr{\"o}hlich, Balling, Beerenwinkel, Kohlbacher, Kumar, Lengauer, Maathuis, Moreau, Murphy, Przytycka, et~al.}}}
+\bibcite{wiens2019no}{{28}{2019}{{Wiens et~al.}}{{Wiens, Saria, Sendak, Ghassemi, Liu, Doshi-Velez, Jung, Heller, Kale, Saeed, et~al.}}}
 \citation{byon2019apixaban}
-\@writefile{toc}{\contentsline {section}{\numberline {A}Appendix}{22}\protected@file@percent }
-\newlabel{ap:appendix}{{A}{22}}
-\newlabel{ap:appendix@cref}{{[appendix][1][2147483647]A}{[1][22][]22}}
-\newlabel{model_M1}{{11}{22}}
-\newlabel{model_M1@cref}{{[equation][11][2147483647]11}{[1][22][]22}}
-\newlabel{tab:coefs}{{A}{23}}
-\newlabel{tab:coefs@cref}{{[appendix][1][2147483647]A}{[1][23][]23}}
-\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Posterior means for coefficients for each covariate in our pharmacokinetic model. In parantheses are 95\% credible interval estimates.}}{23}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {A}Appendix}{23}\protected@file@percent }
+\newlabel{ap:appendix}{{A}{23}}
+\newlabel{ap:appendix@cref}{{[appendix][1][2147483647]A}{[1][23][]23}}
+\newlabel{model_M1}{{13}{23}}
+\newlabel{model_M1@cref}{{[equation][13][2147483647]13}{[1][23][]23}}
+\newlabel{tab:coefs}{{A}{24}}
+\newlabel{tab:coefs@cref}{{[appendix][1][2147483647]A}{[1][24][]24}}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Posterior means for coefficients for each covariate in our pharmacokinetic model. In parantheses are 95\% credible interval estimates.}}{24}\protected@file@percent }
