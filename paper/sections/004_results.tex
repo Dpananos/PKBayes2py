@@ -58,7 +58,7 @@ O_1, A_1, Y_1, O_2, A_2, Y_2
 
 \noindent The interpretation of a given trajectory is:
 \begin{itemize}
-	\item $ O_1 $ is any pre-dose clinical measurements of the subject.  In our experiments, we consider age in years, renal function (as measured by serum creatinine in mMol/L), weight in kilograms, and dichotmous biological sex (dummy coded so that male=1 and female=0).  We choose these variables as they are known to affect the pharmacokinetics of apixaban \cite{byon2019apixaban}.  
+	\item $ O_1 $ is any pre-dose clinical measurements of the subject.  In our experiments, we consider age in years, renal function (as measured by serum creatinine in mMol/L), weight in kilograms, and dichotomous biological sex (dummy coded so that male=1 and female=0).  We choose these variables as they are known to affect the pharmacokinetics of apixaban \cite{byon2019apixaban}.  
 	\item $ A_1 $ is the initial dose to provide the subject.  If the DTR allows us to specify a time in the future at which to measure the subject’s blood serum concentration, then $A_1$ is the dual action of initial dose plus a time in the future at which to measure.
 	\item $ Y_1 $ is the proportion of time spent within the concentration range in the first five days.
 	\item $ O_2 $ is the pre clinical measurements of the subject plus the observed concentration made on the fourth day.
@@ -66,7 +66,7 @@ O_1, A_1, Y_1, O_2, A_2, Y_2
 	\item $ Y_2 $ is the proportion of time spent within the concentration range in the final five days after the dose adjustment.
 \end{itemize}
 
-The actions $A_j$ effect the reward $Y_j$ by directly changing the concentrations at a given time.  For example, a larger dose will elicit larger concentrations which may put the patient in range for longer (more reward) or make take them out of range for some time (less reward).  Thus, our reward function can be thought of as a composition of the reward function and the concentration function.  In our experiments, we create a mesh of $2K$ times at which we can evaluate the latent concentration and compute the reward function.  Each stage in our DTR consists of $K=240$ times (equivalent to evaluating the latent concentration function every 30 minutes after ingestion).  Let $ c_i \>,  i=1...2K \>, $ be the $ i^{th}$ latent concentration value at time $ t_i $.  The reward function in the first stage is
+The actions $A_j$ effect the reward $Y_j$ by directly changing the concentrations at a given time.  For example, a larger dose will elicit larger concentrations which may put the patient in range for longer (more reward) or  take them out of range for some time (less reward).  Thus, our reward function can be thought of as a composition of the reward function and the concentration function.  In our experiments, we create a mesh of $2K$ times at which we can evaluate the latent concentration and compute the reward function.  Each stage in our DTR consists of $K=240$ times (equivalent to evaluating the latent concentration function every 30 minutes after ingestion).  Let $ c_i \>,  i=1...2K \>, $ be the $ i^{th}$ latent concentration value at time $ t_i $.  The reward function in the first stage is
 
 \begin{equation}
 Y_1(H_1, A_1) = Y_1(c_1(A_1), \dots, c_K(A_1)) = \dfrac{1}{K}\sum_{i=1}^K \mathbb{I}(0.1 < c_i(A_1) < 0.3)
@@ -102,7 +102,7 @@ Q_{2}^{o p t}\left(H_{2}, A_{2}\right)=E\left[Y_2\left(c_{K+1}(A_2), \cdots, c_{
 Q_{1}^{o p t}\left(H_{1}, A_{1}\right)= E \left[Y_1\left(c_{1}(A_1),  \cdots, c_{K}(A_1)\right)+\max _{a_{2} \in \mathscr{A}} Q_{2}^{o p t}\left(H_{2}, a_{2}\right) \Bigg\vert H_{1}, A_{1}\right]
 \end{equation}
 
-We seek to maximize the stage 1 optimal Q function to learn the optimal policy for dosing subjects under the constraint we can measure them at most once and are limited to the aforementioned pre-dose clinical variables.  The interpretation of stage 1 optimal Q function is as follows:\textit{ Given the pre-dose clinical variables of the subject and a proposed initial dose and measurement time, the stage 1 optimal Q function gives the proportion of time the subject’s blood serum concentration is between 100 ng/ml and 300 ng/ml assuming that we provide the subject with the best dose possible at the start of the $ 5^{th} $ day.}  The actions $ A_1 $ and $ A_2 $ which maximize these functions constitute the optimal policy.
+We seek to maximize the stage 1 optimal Q function to learn the optimal policy for dosing subjects under the constraint we can measure them at most once and are limited to the aforementioned pre-dose clinical variables.  The interpretation of stage 1 optimal Q function is as follows:\textit{ Given the pre-dose clinical variables of the subject and a proposed initial dose and measurement time, the stage 1 optimal Q function gives the expected proportion of time the subject’s blood serum concentration is between 100 ng/ml and 300 ng/ml assuming that we provide the subject with the best dose possible at the start of the $ 5^{th} $ day.}  The actions $ A_1 $ and $ A_2 $ which maximize these functions constitute the optimal policy.
 
 
 %

@@ -59,12 +59,14 @@ def covariate_dose_selection(theta, loss_func):
 
 def myopic_dose_selection(theta, yobs, loss_func, tobs = None, start_dose = None):
     
+
     if start_dose is not None:
         optimal_dose = start_dose
     else:
         optimal_dose, value = covariate_dose_selection(theta, loss_func)
 
-    
+    tpred, dose_times, dose_sizes, decision_point = setup_experiment(optimal_dose)
+
     if not tobs:
         # These are the times the doses are taken right before the halfway point
         ts, tf = dose_times[(decision_point-1):(decision_point+1)]

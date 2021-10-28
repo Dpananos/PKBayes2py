@@ -1,4 +1,4 @@
-\begin{thebibliography}{28}
+\begin{thebibliography}{29}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -72,6 +72,14 @@ Michael Betancourt.
 Steve Brooks, Andrew Gelman, Galin Jones, and Xiao-Li Meng.
 \newblock \emph{Handbook of markov chain monte carlo}.
 \newblock CRC press, 2011.
+
+\bibitem[Vehtari et~al.(2019)Vehtari, Gelman, Simpson, Carpenter, and
+  Burkner]{vehtari2019rank}
+Aki Vehtari, Andrew Gelman, Daniel Simpson, Bob Carpenter, and Paul-Christian
+  Burkner.
+\newblock Rank-normalization, folding, and localization: An improved r-hat for
+  assessing convergence of mcmc.
+\newblock \emph{arXiv preprint arXiv:1903.08008}, 2019.
 
 \bibitem[Gulilat et~al.(2020)Gulilat, Keller, Linton, Pananos, Lizotte,
   Dresser, Alfonsi, Tirona, Kim, and Schwarz]{gulilat2020drug}
