@@ -6,7 +6,7 @@ theme_set(theme_light(base_size = 8))
 
 styling<-ggplot(data=d)+
          scale_x_continuous(labels = function(x) x/24, breaks = seq(0, 240, 24*2)) +
-         scale_y_continuous(labels = function(x) 1000*x, limits = c(0, .45))+
+         scale_y_continuous(labels = function(x) 1000*x, limits = c(0, .6))+
          labs(x='Time (Days)', y = 'Concentration (ng/ml)')
 
 prior_plot<-styling+
@@ -16,27 +16,25 @@ prior_plot<-styling+
 
 plot_a<-prior_plot + 
         geom_text(aes(x=7.5*24, y=.290, label = 'Desired Range'), vjust=1, size = 4, color = 'black') + 
-        geom_label(aes(x=2*24, y=.400, label = 'Stage 1'), vjust=0, size = 4, color = 'black') + 
+        geom_label(aes(x=2*24, y=.600, label = 'Stage 1'), vjust=1, size = 4, color = 'black') + 
         labs(title='Predictions Under Optimal Dose')
 
 plot_b<-prior_plot + 
         geom_point(aes(tobs, yobs)) +
-        geom_label(aes(x=2*24, y=.400, label = 'Stage 1'), vjust=0, size = 4, color = 'black') + 
+        geom_label(aes(x=2*24, y=.600, label = 'Stage 1'), vjust=1, size = 4, color = 'black') + 
+        geom_line(aes(tpre, ytrue_prior+.125))+
         labs(title = 'An Observation is Made')
 
 plot_c<-plot_b + 
         geom_ribbon(aes(x=tpost, ymin=post_low, ymax=post_high), fill = 'red', alpha = 0.5) +
-        geom_label(aes(x=2*24, y=.400, label = 'Stage 1'), vjust=0, size = 4, color = 'black') + 
-        geom_label(aes(x=8*24, y=.400, label = 'Stage 2'), vjust=0, size = 4, color = 'black') + 
+        geom_label(aes(x=2*24, y=.600, label = 'Stage 1'), vjust=1, size = 4, color = 'black') + 
+        geom_label(aes(x=8*24, y=.600, label = 'Stage 2'), vjust=1, size = 4, color = 'black') + 
         labs(title = 'Updated Predictions Under Adjusted Dose')
 
 
 slicer = seq(1, nrow(d), 5)
 plot_d<-plot_c + 
-        geom_line(aes(tpre, ytrue_prior)) + 
-        geom_point(data =slice(d, slicer),  aes(tpre, ytrue_prior), shape=4) + 
-        geom_line(aes(tpost, ytrue_post)) + 
-        geom_point(data =slice(d, slicer),  aes(tpost, ytrue_post), shape=4) + 
+        geom_line(aes(tpost, ytrue_post+0.025)) + 
         labs(title='True Concentration Function')
 
 
