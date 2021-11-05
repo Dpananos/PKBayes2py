@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2020.4.7)  28 OCT 2021 17:51
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2020.4.7)  5 NOV 2021 14:02
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -505,27 +505,27 @@ File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
 
 {/usr/local/texlive/2020/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]) (./sec
 tions/002_background.tex [2] [3] [4])
-(./sections/003_framework.tex [5] [6] [7]
-<figures/viz_of_process.png, id=43, 1927.2pt x 1204.5pt>
+(./sections/003_framework.tex [5] [6]
+<figures/viz_of_process.png, id=39, 1927.2pt x 1204.5pt>
 File: figures/viz_of_process.png Graphic file (type png)
 <use figures/viz_of_process.png>
-Package pdftex.def Info: figures/viz_of_process.png  used on input line 51.
+Package pdftex.def Info: figures/viz_of_process.png  used on input line 41.
 (pdftex.def)             Requested size: 469.75502pt x 293.5888pt.
-) (./sections/004_results.tex [8]
-[9 <./figures/viz_of_process.png>]
+) (./sections/004_results.tex
 Overfull \hbox (4.15703pt too wide) in paragraph at lines 6--7
 \T1/cmr/m/n/10 To cre-ate the nec-es-sary model for apix-a-ban per-son-al-iza-t
 ion, we ex-tend a pre-vi-ously pro-posed one-compartment
  []
 
-<figures/random_effects_change.png, id=52, 3034.33624pt x 1706.375pt>
+[7] [8 <./figures/viz_of_process.png>]
+<figures/random_effects_change.png, id=49, 3034.33624pt x 1706.375pt>
 File: figures/random_effects_change.png Graphic file (type png)
 <use figures/random_effects_change.png>
 Package pdftex.def Info: figures/random_effects_change.png  used on input line 
 10.
 (pdftex.def)             Requested size: 469.75502pt x 264.14691pt.
-[10] [11 <./figures/random_effects_change.png>] [12] [13]
-<figures/models_of_personalization_differences.png, id=71, 3034.33624pt x 1706.
+ [9 <./figures/random_effects_change.png>] [10] [11]
+<figures/models_of_personalization_differences.png, id=61, 3034.33624pt x 1706.
 375pt>
 File: figures/models_of_personalization_differences.png Graphic file (type png)
 
@@ -533,47 +533,46 @@ File: figures/models_of_personalization_differences.png Graphic file (type png)
 Package pdftex.def Info: figures/models_of_personalization_differences.png  use
 d on input line 123.
 (pdftex.def)             Requested size: 469.75502pt x 264.14691pt.
-)
-(./sections/005_discussion_and_conclusion.tex [14] [15 <./figures/models_of_per
-sonalization_differences.png>] [16] [17] [18]) [19] (./main.bbl [20] [21])
-[22] (./sections/00A_appendix.tex [23] [24] [25]) [26] (./main.aux) ) 
+ [12]) (./sections/005_discussion_and_conclusion.tex [13 <./figures/models_of_p
+ersonalization_differences.png>] [14] [15] [16]) [17] (./main.bbl
+[18] [19]) [20] (./sections/00A_appendix.tex [21] [22] [23] [24]) [25]
+(./main.aux) ) 
 Here is how much of TeX's memory you used:
- 8195 strings out of 480608
- 129849 string characters out of 5903631
- 388020 words of memory out of 5000000
- 23895 multiletter control sequences out of 15000+600000
+ 8204 strings out of 480608
+ 130107 string characters out of 5903631
+ 388284 words of memory out of 5000000
+ 23904 multiletter control sequences out of 15000+600000
  549646 words of font info for 76 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 34i,18n,37p,2544b,269s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/loca
-l/texlive/2020/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}{/usr/local
-/texlive/2020/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc}</usr/local/t
-exlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/te
-xlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx7.pfb></usr/local/texl
-ive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texli
-ve/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texliv
-e/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/local/texlive/
-2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/20
-20/texmf-dist/fonts/type1/public/amsfonts/cm/cmmib10.pfb></usr/local/texlive/20
-20/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2020
-/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/local/texlive/2020/te
-xmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2020/texmf
--dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2020/texmf-
-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2020/texmf-di
-st/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2020/texm
-f-dist/fonts/type1/public/rsfs/rsfs7.pfb></usr/local/texlive/2020/texmf-dist/fo
-nts/type1/public/cm-super/sfbi1000.pfb></usr/local/texlive/2020/texmf-dist/font
-s/type1/public/cm-super/sfbx1000.pfb></usr/local/texlive/2020/texmf-dist/fonts/
-type1/public/cm-super/sfbx1200.pfb></usr/local/texlive/2020/texmf-dist/fonts/ty
-pe1/public/cm-super/sfbx1440.pfb></usr/local/texlive/2020/texmf-dist/fonts/type
-1/public/cm-super/sfrm1000.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/
-public/cm-super/sfrm1200.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/pu
-blic/cm-super/sfrm1728.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/publ
-ic/cm-super/sfti1000.pfb>
-Output written on main.pdf (26 pages, 1093641 bytes).
+ 34i,18n,37p,2544b,271s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/local/texlive/2020/texmf-dist/fonts/enc/dvips/cm-super/cm-s
+uper-ts1.enc}{/usr/local/texlive/2020/texmf-dist/fonts/enc/dvips/cm-super/cm-su
+per-t1.enc}</usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/c
+mbx10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cm
+bx7.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmex
+10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi1
+0.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.
+pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pf
+b></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmmib10.pf
+b></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb>
+</usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></u
+sr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/
+local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/l
+ocal/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/loc
+al/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr
+/local/texlive/2020/texmf-dist/fonts/type1/public/rsfs/rsfs7.pfb></usr/local/te
+xlive/2020/texmf-dist/fonts/type1/public/cm-super/sfbi1000.pfb></usr/local/texl
+ive/2020/texmf-dist/fonts/type1/public/cm-super/sfbx1000.pfb></usr/local/texliv
+e/2020/texmf-dist/fonts/type1/public/cm-super/sfbx1200.pfb></usr/local/texlive/
+2020/texmf-dist/fonts/type1/public/cm-super/sfbx1440.pfb></usr/local/texlive/20
+20/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb></usr/local/texlive/2020
+/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb></usr/local/texlive/2020/t
+exmf-dist/fonts/type1/public/cm-super/sfrm1728.pfb></usr/local/texlive/2020/tex
+mf-dist/fonts/type1/public/cm-super/sfti1000.pfb>
+Output written on main.pdf (25 pages, 1083012 bytes).
 PDF statistics:
- 188 PDF objects out of 1000 (max. 8388607)
- 130 compressed objects within 2 object streams
+ 185 PDF objects out of 1000 (max. 8388607)
+ 128 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
  16 words of extra memory for PDF output out of 10000 (max. 10000000)
 

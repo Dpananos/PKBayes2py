@@ -1,4 +1,4 @@
-\begin{thebibliography}{29}
+\begin{thebibliography}{32}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -31,11 +31,27 @@ Inna~Y Gong, Rommel~G Tirona, Ute~I Schwarz, Natalie Crown, George~K Dresser,
 \newblock \emph{Blood, The Journal of the American Society of Hematology},
   118\penalty0 (11):\penalty0 3163--3171, 2011.
 
-\bibitem[Martin et~al.(2016)Martin, Lal, Moodie, Zhu, and Cheng]{Martin2016}
+\bibitem[Zhang et~al.(2021)Zhang, Wang, Du, Chu, Celi, Kindle, and
+  Doshi-Velez]{zhang2021identifying}
+Kristine Zhang, Yuanheng Wang, Jianzhun Du, Brian Chu, Leo~Anthony Celi, Ryan
+  Kindle, and Finale Doshi-Velez.
+\newblock Identifying decision points for safe and interpretable reinforcement
+  learning in hypotension treatment, 2021.
+
+\bibitem[Engelhardt et~al.(2021)Engelhardt, Prasad, Cheng, Chivers, Draugelis,
+  Li, and Doshi-Velez]{engelhardt2021importance}
+Barbara~E Engelhardt, Niranjani Prasad, Li-Fang Cheng, Corey Chivers, Michael
+  Draugelis, Kai Li, and Finale Doshi-Velez.
+\newblock The importance of modeling patient state in reinforcement learning
+  for precision medicine.
+\newblock 2021.
+
+\bibitem[Martin et~al.(2016{\natexlab{a}})Martin, Lal, Moodie, Zhu, and
+  Cheng]{Martin2016}
 Janet Martin, Avtar Lal, Jessica Moodie, Fang Zhu, and Davy Cheng.
 \newblock \emph{Hospital-Based HTA and Know4Go at MEDICI in London, Ontario,
   Canada}, pages 127--152.
-\newblock Springer International Publishing, Cham, 2016.
+\newblock Springer International Publishing, Cham, 2016{\natexlab{a}}.
 \newblock ISBN 978-3-319-39205-9.
 
 \bibitem[Chakraborty(2013)]{chakraborty2013statistical}
@@ -214,5 +230,12 @@ Jenna Wiens, Suchi Saria, Mark Sendak, Marzyeh Ghassemi, Vincent~X Liu, Finale
 \newblock Do no harm: a roadmap for responsible machine learning for health
   care.
 \newblock \emph{Nature medicine}, 25\penalty0 (9):\penalty0 1337--1340, 2019.
+
+\bibitem[Martin et~al.(2016{\natexlab{b}})Martin, Lal, Moodie, Zhu, and
+  Cheng]{martin2016hospital}
+Janet Martin, Avtar Lal, Jessica Moodie, Fang Zhu, and Davy Cheng.
+\newblock Hospital-based hta and know4go at medici in london, ontario, canada.
+\newblock In \emph{Hospital-Based Health Technology Assessment}, pages
+  127--152. Springer, 2016{\natexlab{b}}.
 
 \end{thebibliography}
