@@ -111,16 +111,15 @@ We seek to maximize the stage 1 optimal Q function to learn the optimal policy f
 
 \subsection{Evaluation}
 
-We present the results of our simulation in \cref{fig:modelsofpersonalizationdifferences} below in terms of difference between theoretically largest possible return and the achieved return by each mode of personalization.  The results are ordered from least amount of information and burden (top) to most amount of information and burden (bottom) and colored by their personalization strategy (static or dynamic).
+We measure the performance of different modes in terms of \textit{regret}, the difference between theoretically largest possible return if the individual's PK parameters were precisely known and the achieved return by each mode of personalization. The results are shown in \cref{fig:modelsofpersonalizationdifferences}, ordered from least amount of information and burden (top) to most amount of information and burden (bottom) and colored by their personalization strategy (static or dynamic).
 
-Modes of personalization which use less information have a larger difference (i.e. yield smaller return on average than what is theoretically possible).  The One Size Fits All approach (which uses no information about the subject) performs worst with a median difference of 0.145.  The distribution of differences for this mode is right skewed with some differences exceeding 0.95, meaning the subject could have been in range for nearly the entire time but the mode selected a dose which failed to put the subject in range. 
+Modes of personalization which use less information have larger regret.  The One Size Fits All approach (which uses no information about the subject) performs worst with a median regret of 0.145.  The distribution of regrets for this mode is right skewed with some exceeding 0.95, meaning the subject could have been in range for nearly the entire time if the correct PK parameters were known, but the mode selected a dose which failed to put the subject in range. 
 
-The use of clinical variables in the model nearly cuts the difference in half, achieving a median difference of 0.086 with smaller right skew.  There is a diminishing in the difference in returns as additional burden is undertaken. Modes which use observed concentration information (Clinical Variables + One Sample, Optimal Sampling Time, and Optimal Sequential Dosing) lead to marginally lower median differences  (0.075, 0.076, 0.079 respectively) as compared to the use of clinical variables alone.
-
+The Clinical Variables mode nearly cuts the regret in half, achieving a median regret of 0.086 with smaller right skew.  Modes which use observed concentration information (Clinical Variables + One Sample, Optimal Sampling Time, and Optimal Sequential Dosing) lead to slightly lower median regrets  (0.075, 0.076, 0.079 respectively) as compared to the Clinical Variables mode.
 
 \begin{figure}
 	\centering
 	\includegraphics[width=1\linewidth]{figures/models_of_personalization_differences}
-	\caption{Boxplots of the difference between theoretically largest return and achieved return for each of the 1000 simulated subjects. Subjects who achieve a reward close to their maximium return have a difference on 0, subjects who achieve a return less than their maximum have larger differences, with the largest difference being 1.}
+	\caption{Boxplots of the \textit{regret} -- the difference between the largest possible return and the achieved return for each of the 1000 simulated subjects. Subjects who achieve a return close to their maximum possible return have a regret near 0, while subjects who achieve a return less than their maximum possible have larger regrets, with the largest possible regret being 1.}
 	\label{fig:modelsofpersonalizationdifferences}
 \end{figure}
