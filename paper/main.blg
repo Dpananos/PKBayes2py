@@ -1,4 +1,4 @@
-This is BibTeX, Version 0.99d (TeX Live 2020)
+This is BibTeX, Version 0.99d (TeX Live 2021)
 Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: main.aux
 The style file: unsrtnat.bst
@@ -7,45 +7,45 @@ Database file #2: ./bibs/dtr.bib
 Database file #3: ./bibs/bayes.bib
 Warning--empty journal in engelhardt2021importance
 Warning--can't use both author and editor fields in Martin2016
-You've used 32 entries,
+You've used 27 entries,
             2481 wiz_defined-function locations,
-            751 strings with 12143 characters,
-and the built_in function-call counts, 14519 in all, are:
-= -- 1040
-> -- 1127
-< -- 12
-+ -- 411
-- -- 346
-* -- 1304
-:= -- 2449
-add.period$ -- 97
-call.type$ -- 32
-change.case$ -- 59
-chr.to.int$ -- 31
-cite$ -- 34
-duplicate$ -- 629
-empty$ -- 1162
-format.name$ -- 386
-if$ -- 2962
+            719 strings with 11206 characters,
+and the built_in function-call counts, 12283 in all, are:
+= -- 882
+> -- 952
+< -- 9
++ -- 347
+- -- 292
+* -- 1100
+:= -- 2075
+add.period$ -- 86
+call.type$ -- 27
+change.case$ -- 48
+chr.to.int$ -- 26
+cite$ -- 29
+duplicate$ -- 539
+empty$ -- 980
+format.name$ -- 323
+if$ -- 2512
 int.to.chr$ -- 2
-int.to.str$ -- 33
-missing$ -- 33
-newline$ -- 167
-num.names$ -- 97
-pop$ -- 285
+int.to.str$ -- 28
+missing$ -- 30
+newline$ -- 145
+num.names$ -- 82
+pop$ -- 245
 preamble$ -- 1
-purify$ -- 32
+purify$ -- 27
 quote$ -- 0
-skip$ -- 360
+skip$ -- 303
 stack$ -- 0
-substring$ -- 596
-swap$ -- 95
+substring$ -- 486
+swap$ -- 85
 text.length$ -- 4
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 209
+type$ -- 171
 warning$ -- 2
-while$ -- 108
+while$ -- 89
 width$ -- 0
-write$ -- 414
+write$ -- 356
 (There were 2 warnings)

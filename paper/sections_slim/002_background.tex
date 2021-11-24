@@ -4,7 +4,7 @@ We briefly review dynamic treatment regimes, which are used to develop optimal d
 
 \subsection{Dynamic Treatment Regimes}
 
-A \textit{dynamic treatment regime} (DTR) is a mathematical formalism intended to model the practise of evaluating a patient, choosing a treatment, and observing a response. A DTR is defined as a sequence of decision rules $d = (d_1, \cdots, d_K)$, each of which is a function that takes information about a patient produces an \textit{action}, like a dose initiation or change, that is intended to affect the status of the patient, like their plasma concentration \cite{chakraborty2013statistical,lizotte17reinforcement}. The application of each decision rule is called a \textit{stage} in the DTR, and applying a DTR generates a \textit{trajectory} of data $O_1, A_1, O_2, A_2, ..., O_K, A_K, O_{K+1}$; these are are represented in upper case to emphasize that they are random variables. Following notation of Chakraborty and Moodie \cite{chakraborty2013statistical}, we define the \textit{history} of the patient at stage $j$ to be $ H_j = (O_1, A_1, O_2, A_2, \cdots , O_{j-1}, A_{j-1}, O_j)$; this encompasses all information available for decision-making at stage $j$. 
+A \textit{dynamic treatment regime} (DTR) is a mathematical formalism intended to model the practise of evaluating a patient, choosing a treatment, and observing a response. A DTR is defined as a sequence of decision rules $d = (d_1, \cdots, d_K)$, each of which is a function that takes information about a patient produces an \textit{action}, like a dose initiation or change, that is intended to affect the status of the patient, like their plasma concentration \cite{chakraborty2013statistical,lizotte17reinforcement,tsiatis2019dynamic}. The application of each decision rule is called a \textit{stage} in the DTR, and applying a DTR generates a \textit{trajectory} of data $O_1, A_1, O_2, A_2, ..., O_K, A_K, O_{K+1}$; these are are represented in upper case to emphasize that they are random variables which represent potentially noisy observations of a patient and actions which depend on the observations. We define the \textit{history} of the patient at stage $j$ to be $ H_j = (O_1, A_1, O_2, A_2, \cdots , O_{j-1}, A_{j-1}, O_j)$; this encompasses all information available for decision-making at stage $j$. 
 
 \subsubsection{Defining and Estimating Optimal DTRs}
 
@@ -14,29 +14,27 @@ To define the performance of a decision rule (and of a DTR) we also define a \te
 \end{equation}
 which is the expectation of the return if we follow DTR $d$. Typically, a DTR is defined to be optimal if it achieves the highest possible value among those under consideration; this corresponds to the concept of maximizing utility or minimizing expected loss in statistical decision theory \cite{berger2013statistical}.
 
-There are many ways to estimate an optimal DTR \todo[inline]{Find and cite newer DTR primer maybe?}. One way, called ``Q-learning'' relies on estimating the optimal Q function. We give an overview of Q-learning for DTRs here, and refer the reader to other sources for more detail \cite{chakraborty2013statistical}.
-
-The optimal Q function at stage $j < K$ is a function of the history $ h_j $ and a proposed action $ a_j $ given by
+There are different ways of estimating an optimal DTR \cite{tsiatis2019dynamic}. One way, called ``Q-learning'' relies on estimating the optimal Q function. We give an overview of Q-learning for DTRs here, and refer the reader to other sources for more detail \cite{chakraborty2013statistical}. The optimal Q function at stage $j < K$ is a function of the observed history $ h_j $ and a proposed action $ a_j $ given by
 \begin{equation}\label{eq:Qfunction}
- Q_j^{opt}(h_j, a_j) = E \left[ Y_j(h_j, a_j, O_{j+1}) + \max_a Q_{j+1}^{opt}(H_{j+1}, a) | H_j = h_j, A_j = a_j
+ Q_j^{\mathsf{opt}}(h_j, a_j) = \mathbb{E} \left[ Y_j(h_j, a_j, O_{j+1}) + \max_a Q_{j+1}^{\mathsf{opt}}(H_{j+1}, a) | H_j = h_j, A_j = a_j
  \right].
 \end{equation}
-and $Q_K^{opt}(h_K, a_K) = E[ Y_j(h_K, a_K, O_{K+1}) | H_K = h_K, A_K = a_K]$. The function $Q_j^{opt}$ represents the expected return if we choose action $a_j$ when history is $h_j$ and subsequently always choose actions that are optimal, that is, give highest expected return. Given the optimal Q function, an optimal DTR is given by choosing the action that maximizes it:
+and $Q_K^{\mathsf{opt}}(h_K, a_K) = \mathbb{E}[ Y_j(h_K, a_K, O_{K+1}) | H_K = h_K, A_K = a_K]$. The function $Q_j^{\mathsf{opt}}$ represents the expected return if we choose action $a_j$ when history is $h_j$ and subsequently always choose actions that are optimal, that is, give highest expected return. Given the optimal Q function, an optimal DTR is given by choosing the action that maximizes it:
 \begin{equation}
-d_j^{opt}(h_j) = \arg\max_{a\in \mathcal{A}} \left\{Q_j^{opt}(h_j,a)\right\} \>.
+d_j^{\mathsf{opt}}(h_j) = \arg\max_{a\in \mathcal{A}} \left\{Q_j^{\mathsf{opt}}(h_j,a)\right\} \>.
 \end{equation}
 
-The Q-learning algorithm proceeds by first estimating $Q_K^{opt}$, often by acquiring a dataset of tuples of the form $(h_K, a_K, y_K)$ and regressing the $y_K$ on the $h_K$ and $a_K$. The resulting $\hat{Q}_K^{opt}$ can estimate the expected reward for any choice of $h_K$ and $a_K$. It is then used to estimate $Q_{K-1}$, which is in turn used to estimate $Q_{K-2}$, and so on. This ``backward induction'' approach emphasizes that the optimal decision rule at earlier stages depends on the decision rules at later stages, and that they cannot in general be optimized independently.
+The Q-learning algorithm proceeds by first estimating $Q_K^{\mathsf{opt}}$, often by acquiring a dataset of tuples of the form $(h_K, a_K, y_K)$ and regressing the $y_K$ on the $h_K$ and $a_K$. The resulting $\hat{Q}_K^{\mathsf{opt}}$ can estimate the expected reward for any choice of $h_K$ and $a_K$. It is then used to estimate $Q_{K-1}$, which is in turn used to estimate $Q_{K-2}$, and so on. This ``backward induction'' approach emphasizes that the optimal decision rule at earlier stages depends on the decision rules at later stages, and that they cannot in general be optimized independently.
 
 %To use Q-learning for personalization in the context of optimal dosing and titration, we will define the actions to be possible doses or dose adjustments, and we define the reward to be a function of the resulting concentrations which implicitly rely on the actions, for example a measurement of how well concentrations are kept in a specified therapeutic range. The relationship between possible actions and rewards, which Q-learning can use to produce optimal policies, can be captured by Bayesian PK modelling. We review Bayesian PK modelling after the next section.
 
 %\subsection{Similarity to Statistical Decision Theory}
 
-%Dynamic treatment regimes and reinforcement learning concern learning a policy to obtain maximal value.  Thus, they are concerned with multi-stage decision making under uncertainty.  These frameworks bear a resemblance to statistical decision theory, in which a single decision is to be made under uncertainty. Following \cite{berger2013statistical}, there exists an unknown quantity or quantities $\boldsymbol{\theta} \in \boldsymbol{\Theta}$ called \textit{the state of nature} which affects the decision process and  which may require estimation using data, $\mathbf{X}$ .  Associated with every state of nature and decision (more commonly called an \textit{action}), $a$, is an associated loss incurred, $\mathcal{L}(\boldsymbol{\theta}, a)$.  From a Bayesian perspective, the goal is then to determine the action, $a^{opt}$ which minimizes the Bayesian expected loss 
+%Dynamic treatment regimes and reinforcement learning concern learning a policy to obtain maximal value.  Thus, they are concerned with multi-stage decision making under uncertainty.  These frameworks bear a resemblance to statistical decision theory, in which a single decision is to be made under uncertainty. Following \cite{berger2013statistical}, there exists an unknown quantity or quantities $\boldsymbol{\theta} \in \boldsymbol{\Theta}$ called \textit{the state of nature} which affects the decision process and  which may require estimation using data, $\mathbf{X}$ .  Associated with every state of nature and decision (more commonly called an \textit{action}), $a$, is an associated loss incurred, $\mathcal{L}(\boldsymbol{\theta}, a)$.  From a Bayesian perspective, the goal is then to determine the action, $a^{\mathsf{opt}}$ which minimizes the Bayesian expected loss 
 
 
 %\begin{align}
-%	a^{opt} &=  \arg\min_{a \in \mathcal{A}} \left\{ 	E^{\pi}\left[ \mathcal{L}(\boldsymbol{\theta},a) \right] \right\} \\
+%	a^{\mathsf{opt}} &=  \arg\min_{a \in \mathcal{A}} \left\{ 	E^{\pi}\left[ \mathcal{L}(\boldsymbol{\theta},a) \right] \right\} \\
 %	E^{\pi}\left[ \mathcal{L}(\boldsymbol{\theta},a) \right] &= \int_{\boldsymbol{\Theta}} \mathcal{L}(\boldsymbol{\theta}, a)  \pi(\theta) \, d\theta\label{reimann_stieltjes}
 %\end{align}
 

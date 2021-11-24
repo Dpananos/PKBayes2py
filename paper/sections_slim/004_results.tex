@@ -1,6 +1,6 @@
 \section{Case Study}\label{ss:casestudy}
 
-In this section, we present the results of applying our framework to investigate the potential benefits of static and dynamic personalization of apixaban dosing. Apixaban is a direct acting anticoagulant medication used to treat active blood clots occurring with deep venous thrombosis or pulmonary embolism, or to prevent stroke in patients with atrial fibrillation. Prescribing an apixaban dose that achieves blood concentrations within an optimal range is expected to provide optimal treatment benefits while minimizing harms (e.g., serious bleeding) for a drug considered to have a narrow therapeutic index \todo[inline]{need cite for narrow therapeutic index}. Clinical variables such as age>80 years-old, weight <60 kg, kidney dysfunction are routinely used for dosing, and female sex, comedications and genetic factors are known to contribute to higher circulating apixaban concentrations \cite{gulilat2020drug}. However, these variables only explain 35\% of the pharmacokinetic variability in apixaban, which serves as rationale for considering dynamic dose optimization supported by post-initiation blood concentration monitoring. 
+We present a case study of applying our framework to investigate the potential benefits of static and dynamic personalization of apixaban dosing. Apixaban is a direct acting anticoagulant medication used to treat active blood clots occurring with deep venous thrombosis or pulmonary embolism, or to prevent stroke in patients with atrial fibrillation. Prescribing an apixaban dose that achieves blood concentrations within an optimal range is expected to provide optimal treatment benefits while minimizing harms (e.g., serious bleeding) for a drug considered to have a narrow therapeutic index \todo[inline]{need cite for narrow therapeutic index}. Clinical variables measuring age, weight, and kidney function are routinely used for dosing, and female sex, co-medications and genetic factors are known to contribute to higher circulating apixaban concentrations \cite{gulilat2020drug}. However, these variables only explain 35\% of the pharmacokinetic variability in apixaban, which serves as rationale for considering dynamic dose optimization supported by post-initiation blood concentration monitoring. 
 
 \subsection{Bayesian Modelling}
 
@@ -10,15 +10,15 @@ To create the necessary model for apixaban personalization, we extend a previous
 
 %\textcolor{red}{Make these descriptions "line up" with modes in Section 3? Break out into "static" and "dynamic"?}
 %\begin{enumerate}[1)]
-%\item Dose selection using a hierarchical Bayesian model which does not incorporate subject covariates.  This model was presented in Pananos \& Lizotte \cite{pananos2020comparisons}.  We refer to this mode as the “No Covariate Model”.
-%\item 1) and conditioning the model on a single sample from the subject taken sometime in the final 12 hours before the half way point.  At the start of the fifth day, a new dose is selected and used for the remaining time.  We refer to this mode as “No Covariate + 1 Sample”.
+%\item Dose selection using a hierarchical Bayesian model which does not incorporate patient covariates.  This model was presented in Pananos \& Lizotte \cite{pananos2020comparisons}.  We refer to this mode as the “No Covariate Model”.
+%\item 1) and conditioning the model on a single sample from the patient taken sometime in the final 12 hours before the half way point.  At the start of the fifth day, a new dose is selected and used for the remaining time.  We refer to this mode as “No Covariate + 1 Sample”.
 %\item Dose selection from M2.  A single dose is selected at the start of the regimen and is used throughout the 10 simulated days. We refer to this mode as “Covariate Model”.
-%\item 3) and conditioning the model on a single sample from the subject taken sometime in the final 12 hours before the half way point.  At the start of the fifth day, a new dose is selected and used for the remaining time. We refer to this mode as “Covariate model + 1 Sample”.
+%\item 3) and conditioning the model on a single sample from the patient taken sometime in the final 12 hours before the half way point.  At the start of the fifth day, a new dose is selected and used for the remaining time. We refer to this mode as “Covariate model + 1 Sample”.
 %\item A two stage DTR, however the initial dose is the result of the procedure in 3).  The best time to sample the patient is then determined via Q learning. We refer to this mode as “Optimal Sampling Time”.
 %\item A two stage DTR estimated via Q learning.  We refer to this mode as “Q Learning”.
 %\end{enumerate}
 
-We consider the 6 modes of personalization as outlined in \cref{ss:framework}.  To evaluate these modes of personalization, we generate 1000 simulated subjects taking a dose of apixaban once every 12 hours with perfect adherence for a total of 10 days. The goal is to maximize the time spent with blood concentration level between between 100 ng/ml and 300 ng/ml. We choose this range as it is not so narrow that even optimal doses perform poorly, but not so wide that any dose can achieve high reward. For static modes of personalization, the selected initial dose is fixed over the 10 day period. For dynamic modes of personalization, some time in the second 12 hour period on the fourth day (between 108 and 120 hours after the initial dose), the simulated subject’s blood concentration is measured, and then at the start of the fifth day, the dose is adjusted based on all the pre-dose clinical measurements plus the observed concentration by incorporating the new information into the Bayesian model. 
+We consider the 6 modes of personalization as outlined in \cref{ss:framework}.  To evaluate these modes of personalization, we generate 1000 simulated patients taking a dose of apixaban once every 12 hours with perfect adherence for a total of 10 days. The goal is to maximize the time spent with blood concentration level between between 100 ng/ml and 300 ng/ml. We choose this range as it is not so narrow that even optimal doses perform poorly, but not so wide that any dose can achieve high reward. For static modes of personalization, the selected initial dose is fixed over the 10 day period. For dynamic modes of personalization, some time in the second 12 hour period on the fourth day (between 108 and 120 hours after the initial dose), the simulated patient's blood concentration is measured, and then at the start of the fifth day, the dose is adjusted based on all the pre-dose clinical measurements plus the observed concentration by incorporating the new information into the Bayesian model. 
 
 \subsubsection{Defining the Dynamic Treatment Regimes}
 
@@ -30,21 +30,19 @@ O_1, A_1, Y_1, O_2, A_2, Y_2
 
 \noindent The interpretation of a given trajectory is:
 \begin{itemize}
-	\item $ O_1 $ is any pre-dose clinical measurements of the subject.  In our experiments, we consider age in years, renal function (as measured by serum creatinine in mMol/L), weight in kilograms, and dichotomous biological sex (dummy coded so that male=1 and female=0).  We choose these variables as they are known to affect the pharmacokinetics of apixaban \cite{byon2019apixaban}.  
-	\item $ A_1 $ is the initial dose to provide the subject.  If the DTR allows us to specify a time in the future at which to measure the subject’s blood serum concentration, then $A_1$ is the dual action of initial dose plus a time in the future at which to measure.
+	\item $ O_1 $ is any pre-dose clinical measurements of the patient.  In our experiments, we consider age in years, renal function (as measured by serum creatinine in mMol/L), weight in kilograms, and dichotomous biological sex (dummy coded so that male=1 and female=0).  We choose these variables as they are known to affect the pharmacokinetics of apixaban \cite{byon2019apixaban}.  
+	\item $ A_1 $ is the initial dose to provide the patient.  If the DTR allows us to specify a time in the future at which to measure the patient’s blood serum concentration, then $A_1$ is the dual action of initial dose plus a time in the future at which to measure.
 	\item $ Y_1 $ is the proportion of time spent within the concentration range in the first five days.
-	\item $ O_2 $ is the pre clinical measurements of the subject plus the observed concentration made on the fourth day.
+	\item $ O_2 $ is the pre clinical measurements of the patient plus the observed concentration made on the fourth day.
 	\item $ A_2 $ is the dose adjustment
 	\item $ Y_2 $ is the proportion of time spent within the concentration range in the final five days after the dose adjustment.
 \end{itemize}
 
-The actions $A_j$ effect the reward $Y_j$ by directly changing the concentrations at a given time.  For example, a larger dose will elicit larger concentrations which may put the patient in range for longer (more reward) or  take them out of range for some time (less reward).  Thus, our reward function can be thought of as a composition of the reward function and the concentration function.  In our experiments, we create a mesh of $2K$ times at which we can evaluate the latent concentration and compute the reward function.  Each stage in our DTR consists of $K=240$ times (equivalent to evaluating the latent concentration function every 30 minutes after ingestion).  Let $ c_i \>,  i=1...2K \>, $ be the $ i^{th}$ latent concentration value at time $ t_i $.  The reward function in the first stage is
+The actions $A_j$ affect the reward $Y_j$ mediated by their effects on concentration.  For example, a larger dose will elicit larger concentrations which may put the patient in range for longer (more reward) or take them out of range for some time (less reward).  Thus, our reward function can be thought of as a composition of the reward function and the concentration function.  In our experiments, we create a mesh of $2K$ times at which we can evaluate the latent concentration and compute the reward function.  Each stage in our DTR consists of $K=240$ times (equivalent to evaluating the latent concentration function every 30 minutes after ingestion).  Let $ c_i \>,  i=1...2K \>, $ be the $ i^{th}$ latent concentration value at time $ t_i $.  The reward function in the first stage is
 
 \begin{equation}
 Y_1(H_1, A_1) = Y_1(c_1(A_1), \dots, c_K(A_1)) = \dfrac{1}{K}\sum_{i=1}^K \mathbb{I}(0.1 < c_i(A_1) < 0.3)
 \end{equation}
-
-
 
 \noindent Here, $ \mathbb{I} $ is an indicator function returning 1 if $c_i$ is between 100 ng/ml and 300 ng/ml and 0 else.
 %To leverage off-the-shelf optimization tools, we approximate this reward function with a continuously differentiable function, namely
@@ -60,37 +58,34 @@ Y_1(H_1, A_1) = Y_1(c_1(A_1), \dots, c_K(A_1)) = \dfrac{1}{K}\sum_{i=1}^K \mathb
 Y_2(H_2, A_2) = Y_1(c_{K+1}(A_2), \dots, c_{2K}(A_2)) = \dfrac{1}{K}\sum_{i=1}^K \mathbb{I}(0.1 < c_{K+i}(A_2) < 0.3)
 \end{equation}
 
-
-
 Our stage 2 optimal Q function is then
 
 \begin{equation}
-Q_{2}^{o p t}\left(H_{2}, A_{2}\right)=E\left[Y_2\left(c_{K+1}(A_2), \cdots, c_{2K}(A_2)\right) \Bigg\vert H_{2}, A_{2}\right] \>,
+Q_{2}^{\mathsf{opt}}\left(H_{2}, A_{2}\right)=E\left[Y_2\left(c_{K+1}(A_2), \cdots, c_{2K}(A_2)\right) \Bigg\vert H_{2}, A_{2}\right] \>,
 \end{equation}
 
 \noindent and our stage 1 optimal Q function is
 
 \begin{equation}
-Q_{1}^{o p t}\left(H_{1}, A_{1}\right)= E \left[Y_1\left(c_{1}(A_1),  \cdots, c_{K}(A_1)\right)+\max _{a_{2}} Q_{2}^{o p t}\left(H_{2}, a_{2}\right) \Bigg\vert H_{1}, A_{1}\right]
+Q_{1}^{\mathsf{opt}}\left(H_{1}, A_{1}\right)= E \left[Y_1\left(c_{1}(A_1),  \cdots, c_{K}(A_1)\right)+\max _{a_{2}} Q_{2}^{\mathsf{opt}}\left(H_{2}, a_{2}\right) \Bigg\vert H_{1}, A_{1}\right]
 \end{equation}
 
-We seek to maximize the stage 1 optimal Q function to learn the optimal DTR for dosing subjects under the constraint we can measure them at most once and are limited to the aforementioned pre-dose clinical variables.  The interpretation of stage 1 optimal Q function is as follows:\textit{ Given the pre-dose clinical variables of the subject and a proposed initial dose and measurement time, the stage 1 optimal Q function gives the expected proportion of time the subject’s blood serum concentration is between 100 ng/ml and 300 ng/ml assuming that we provide the subject with the best dose possible at the start of the $ 5^{th} $ day.}  The decision rules which choose $ A_1 $ and $ A_2 $ to maximize these functions constitutes the estimated optimal DTR.
-
+We seek to maximize the stage 1 optimal Q function to learn the optimal DTR for dosing patients under the constraint we can measure them at most once and are limited to the aforementioned pre-dose clinical variables.  The interpretation of stage 1 optimal Q function is as follows:\textit{ Given the pre-dose clinical variables of the patient and a proposed initial dose and measurement time, the stage 1 optimal Q function gives the expected proportion of time the patient’s blood serum concentration is between 100 ng/ml and 300 ng/ml assuming that we provide the patient with the best dose possible at the start of the $ 5^{th} $ day.}  The decision rules which choose $ A_1 $ and $ A_2 $ to maximize these functions constitutes the estimated optimal DTR.
 
 %
 %The concentration values $ c_j $ in the optimal Q functions are latent, meaning we have no direct access to them in practice. Furthermore, obtaining measurements with high enough frequency so that the reward is faithfully estimated would be too burdensome on the patient. 
 
-\subsection{Evaluation}
+\subsection{Evaluating Modes of Personalization}
 
 We measure the performance of different modes in terms of \textit{regret}, the difference between theoretically largest possible return if the individual's PK parameters were precisely known and the achieved return by each mode of personalization. The results are shown in \cref{fig:modelsofpersonalizationdifferences}, ordered from least amount of information and burden (top) to most amount of information and burden (bottom) and colored by their personalization strategy (static or dynamic).
 
-Modes of personalization which use less information have larger regret.  The One Size Fits All approach (which uses no information about the subject) performs worst with a median regret of 0.145.  The distribution of regrets for this mode is right skewed with some exceeding 0.95, meaning the subject could have been in range for nearly the entire time if the correct PK parameters were known, but the mode selected a dose which failed to put the subject in range. 
+Modes of personalization which use less information have larger regret.  The One Size Fits All approach (which uses no information about the patient) performs worst with a median regret of 0.145.  The distribution of regrets for this mode is right skewed with some exceeding 0.95, meaning the patient could have been in range for nearly the entire time if the correct PK parameters were known, but the mode selected a dose which failed to put the patient in range. 
 
 The Clinical Variables mode nearly cuts the regret in half, achieving a median regret of 0.086 with smaller right skew.  Modes which use observed concentration information (Clinical Variables + One Sample, Optimal Sampling Time, and Optimal Sequential Dosing) lead to slightly lower median regrets  (0.075, 0.076, 0.079 respectively) as compared to the Clinical Variables mode.
 
 \begin{figure}
 	\centering
 	\includegraphics[width=1\linewidth]{figures/models_of_personalization_differences}
-	\caption{Boxplots of the \textit{regret} -- the difference between the largest possible return and the achieved return for each of the 1000 simulated subjects. Subjects who achieve a return close to their maximum possible return have a regret near 0, while subjects who achieve a return less than their maximum possible have larger regrets, with the largest possible regret being 1.}
+	\caption{Boxplots of the \textit{regret} -- the difference between the largest possible return and the achieved return for each of the 1000 simulated patients. patients who achieve a return close to their maximum possible return have a regret near 0, while patients who achieve a return less than their maximum possible have larger regrets, with the largest possible regret being 1.}
 	\label{fig:modelsofpersonalizationdifferences}
 \end{figure}

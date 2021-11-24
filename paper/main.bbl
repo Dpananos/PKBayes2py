@@ -1,4 +1,4 @@
-\begin{thebibliography}{32}
+\begin{thebibliography}{27}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -67,6 +67,16 @@ Marie Davidian, Brian Everitt, Ron~S. Kenett, Geert Molenberghs, Walter
 \newblock Wiley, 2017.
 \newblock 3000 words.
 
+\bibitem[Tsiatis et~al.(2019)Tsiatis, Davidian, Holloway, and
+  Laber]{tsiatis2019dynamic}
+A.A. Tsiatis, M.~Davidian, S.T. Holloway, and E.B. Laber.
+\newblock \emph{Dynamic Treatment Regimes: Statistical Methods for Precision
+  Medicine}.
+\newblock Chapman \& Hall/CRC Monographs on Statistics \& Applied Probability.
+  CRC Press, 2019.
+\newblock ISBN 9781498769785.
+\newblock URL \url{https://books.google.ca/books?id=FD0PEAAAQBAJ}.
+
 \bibitem[Berger(2013)]{berger2013statistical}
 James~O Berger.
 \newblock \emph{Statistical decision theory and Bayesian analysis}.
@@ -78,24 +88,6 @@ A~Demetri Pananos and Daniel~J Lizotte.
   for a bayesian model for apixaban induction dose \& dose personalization.
 \newblock In \emph{Machine Learning for Healthcare Conference}, pages 397--417.
   PMLR, 2020.
-
-\bibitem[Betancourt(2018)]{betancourt2018conceptual}
-Michael Betancourt.
-\newblock A conceptual introduction to hamiltonian monte carlo, 2018.
-
-\bibitem[Brooks et~al.(2011)Brooks, Gelman, Jones, and
-  Meng]{brooks2011handbook}
-Steve Brooks, Andrew Gelman, Galin Jones, and Xiao-Li Meng.
-\newblock \emph{Handbook of markov chain monte carlo}.
-\newblock CRC press, 2011.
-
-\bibitem[Vehtari et~al.(2019)Vehtari, Gelman, Simpson, Carpenter, and
-  Burkner]{vehtari2019rank}
-Aki Vehtari, Andrew Gelman, Daniel Simpson, Bob Carpenter, and Paul-Christian
-  Burkner.
-\newblock Rank-normalization, folding, and localization: An improved r-hat for
-  assessing convergence of mcmc.
-\newblock \emph{arXiv preprint arXiv:1903.08008}, 2019.
 
 \bibitem[Gulilat et~al.(2020)Gulilat, Keller, Linton, Pananos, Lizotte,
   Dresser, Alfonsi, Tirona, Kim, and Schwarz]{gulilat2020drug}
@@ -115,13 +107,6 @@ Rommel~G Tirona, Zahra Kassam, Ruth Strapp, Mala Ramu, Catherine Zhu, Melissa
   liver disease.
 \newblock \emph{Drug Metabolism and Disposition}, 46\penalty0 (5):\penalty0
   485--492, 2018.
-
-\bibitem[Gelman et~al.(2015)Gelman, Lee, and Guo]{gelman2015stan}
-Andrew Gelman, Daniel Lee, and Jiqiang Guo.
-\newblock Stan: A probabilistic programming language for bayesian inference and
-  optimization.
-\newblock \emph{Journal of Educational and Behavioral Statistics}, 40\penalty0
-  (5):\penalty0 530--543, 2015.
 
 \bibitem[Byon et~al.(2019)Byon, Garonzik, Boyd, and Frost]{byon2019apixaban}
 Wonkyung Byon, Samira Garonzik, Rebecca~A Boyd, and Charles~E Frost.
@@ -191,51 +176,36 @@ Rachel~A Elliott, Judith~A Shinogle, Pamela Peele, Monali Bhosle, and Dyfrig~A
   perspective.
 \newblock \emph{Value in health}, 11\penalty0 (4):\penalty0 600--610, 2008.
 
-\bibitem[Barocas and Selbst(2016)]{barocas2016big}
-Solon Barocas and Andrew~D Selbst.
-\newblock Big data's disparate impact.
-\newblock \emph{Calif. L. Rev.}, 104:\penalty0 671, 2016.
-
-\bibitem[Lum and Isaac(2016)]{lum2016predict}
-Kristian Lum and William Isaac.
-\newblock To predict and serve?
-\newblock \emph{Significance}, 13\penalty0 (5):\penalty0 14--19, 2016.
-
-\bibitem[Ajunwa(2020)]{ajunwa2020paradox}
-Ifeoma Ajunwa.
-\newblock The paradox of automation as anti-bias intervention, 41 cardozo, l,
-  2020.
-
-\bibitem[Obermeyer et~al.(2019)Obermeyer, Powers, Vogeli, and
-  Mullainathan]{obermeyer2019dissecting}
-Ziad Obermeyer, Brian Powers, Christine Vogeli, and Sendhil Mullainathan.
-\newblock Dissecting racial bias in an algorithm used to manage the health of
-  populations.
-\newblock \emph{Science}, 366\penalty0 (6464):\penalty0 447--453, 2019.
-
-\bibitem[Fr{\"o}hlich et~al.(2018)Fr{\"o}hlich, Balling, Beerenwinkel,
-  Kohlbacher, Kumar, Lengauer, Maathuis, Moreau, Murphy, Przytycka,
-  et~al.]{frohlich2018hype}
-Holger Fr{\"o}hlich, Rudi Balling, Niko Beerenwinkel, Oliver Kohlbacher,
-  Santosh Kumar, Thomas Lengauer, Marloes~H Maathuis, Yves Moreau, Susan~A
-  Murphy, Teresa~M Przytycka, et~al.
-\newblock From hype to reality: data science enabling personalized medicine.
-\newblock \emph{BMC medicine}, 16\penalty0 (1):\penalty0 1--15, 2018.
-
-\bibitem[Wiens et~al.(2019)Wiens, Saria, Sendak, Ghassemi, Liu, Doshi-Velez,
-  Jung, Heller, Kale, Saeed, et~al.]{wiens2019no}
-Jenna Wiens, Suchi Saria, Mark Sendak, Marzyeh Ghassemi, Vincent~X Liu, Finale
-  Doshi-Velez, Kenneth Jung, Katherine Heller, David Kale, Mohammed Saeed,
-  et~al.
-\newblock Do no harm: a roadmap for responsible machine learning for health
-  care.
-\newblock \emph{Nature medicine}, 25\penalty0 (9):\penalty0 1337--1340, 2019.
-
 \bibitem[Martin et~al.(2016{\natexlab{b}})Martin, Lal, Moodie, Zhu, and
   Cheng]{martin2016hospital}
 Janet Martin, Avtar Lal, Jessica Moodie, Fang Zhu, and Davy Cheng.
 \newblock Hospital-based hta and know4go at medici in london, ontario, canada.
 \newblock In \emph{Hospital-Based Health Technology Assessment}, pages
   127--152. Springer, 2016{\natexlab{b}}.
+
+\bibitem[Betancourt(2018)]{betancourt2018conceptual}
+Michael Betancourt.
+\newblock A conceptual introduction to hamiltonian monte carlo, 2018.
+
+\bibitem[Brooks et~al.(2011)Brooks, Gelman, Jones, and
+  Meng]{brooks2011handbook}
+Steve Brooks, Andrew Gelman, Galin Jones, and Xiao-Li Meng.
+\newblock \emph{Handbook of markov chain monte carlo}.
+\newblock CRC press, 2011.
+
+\bibitem[Vehtari et~al.(2019)Vehtari, Gelman, Simpson, Carpenter, and
+  Burkner]{vehtari2019rank}
+Aki Vehtari, Andrew Gelman, Daniel Simpson, Bob Carpenter, and Paul-Christian
+  Burkner.
+\newblock Rank-normalization, folding, and localization: An improved r-hat for
+  assessing convergence of mcmc.
+\newblock \emph{arXiv preprint arXiv:1903.08008}, 2019.
+
+\bibitem[Gelman et~al.(2015)Gelman, Lee, and Guo]{gelman2015stan}
+Andrew Gelman, Daniel Lee, and Jiqiang Guo.
+\newblock Stan: A probabilistic programming language for bayesian inference and
+  optimization.
+\newblock \emph{Journal of Educational and Behavioral Statistics}, 40\penalty0
+  (5):\penalty0 530--543, 2015.
 
 \end{thebibliography}
