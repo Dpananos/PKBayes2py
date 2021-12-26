@@ -1,4 +1,5 @@
-\documentclass[10pt,letterpaper]{article}
+
+\documentclass[10pt,letterpaper, titlepage]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{amsmath}
@@ -11,7 +12,7 @@
 \usepackage{enumerate}
 \usepackage[margin=1in]{geometry}
 \usepackage{color}
-
+\usepackage{authblk}
 \usepackage{booktabs}
 \usepackage{longtable}
 \usepackage{array}
@@ -43,13 +44,34 @@
 
 \title{Developing and Evaluating Pharmacokinetics-Driven \\Dynamic Personalized Medicine: A Framework and Case Study}
 
-\author{A. Demetri Pananos, Rommel G. Tirona, Simon Bonner,  Daniel J. Lizotte}
-
+%\author{A. Demetri Pananos M.Math, Rommel G. Tirona Ph.D, Simon Bonner Ph.D,  Daniel J. Lizotte Ph.D}
+\author[1]{A. Demetri Pananos, M.Math}
+\author[2]{Rommel G. Tirona Ph.D}
+\author[3]{Simon Bonner Ph.D}
+\author[1,4]{Daniel J, Lizotte, Ph.D}
+\affil[1]{Department of Epidemiology and Biostatsitics, Western University}
+\affil[2]{Department of Physiology and Pharmacology, Western University}
+\affil[3]{Department of Statistics and Actuarial Sciences, Western University}
+\affil[4]{Department of Computer Science, Western University}
+\setcounter{Maxaffil}{0}
 \date{}
 
 
 \begin{document}
 	\maketitle
+	
+	% Second title page
+	\begin{titlepage}
+		\centering
+		\vskip 60pt
+		\topskip0pt
+		\vspace*{\fill}
+		\LARGE Developing and Evaluating Pharmacokinetics-Driven \\Dynamic Personalized Medicine: A Framework and Case Study \par
+		\vskip 3em
+		\vspace*{\fill}
+		\large %Author A, Author B \par
+		%\vskip 1.5em
+	\end{titlepage}
 
 	\input{sections_slim/001_introduction.tex}
 	\input{sections_slim/002_background.tex}
