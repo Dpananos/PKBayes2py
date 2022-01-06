@@ -1,5 +1,5 @@
 
-\documentclass[10pt,letterpaper, titlepage]{article}
+\documentclass[10pt,letterpaper, notitlepage]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{amsmath}
@@ -45,7 +45,7 @@
 \title{Developing and Evaluating Pharmacokinetics-Driven \\Dynamic Personalized Medicine: A Framework and Case Study}
 
 %\author{A. Demetri Pananos M.Math, Rommel G. Tirona Ph.D, Simon Bonner Ph.D,  Daniel J. Lizotte Ph.D}
-\author[1]{A. Demetri Pananos, M.Math}
+\author[1, *]{A. Demetri Pananos, M.Math}
 \author[2]{Rommel G. Tirona Ph.D}
 \author[3]{Simon Bonner Ph.D}
 \author[1,4]{Daniel J, Lizotte, Ph.D}
@@ -53,12 +53,18 @@
 \affil[2]{Department of Physiology and Pharmacology, Western University}
 \affil[3]{Department of Statistics and Actuarial Sciences, Western University}
 \affil[4]{Department of Computer Science, Western University}
+\affil[*]{Corresponding Author}
+
 \setcounter{Maxaffil}{0}
 \date{}
 
 
 \begin{document}
+	\begin{titlepage}
 	\maketitle
+	Financial support for this study was provided by Ontario Research Fund and Natural Sciences and Engineering Research Council of Canada. The funding agreement ensured the authors’ independence in designing the study, interpreting the data, writing, and publishing the report.
+	\end{titlepage}
+
 	
 	% Second title page
 	\begin{titlepage}
@@ -71,6 +77,7 @@
 		\vspace*{\fill}
 		\large %Author A, Author B \par
 		%\vskip 1.5em
+		
 	\end{titlepage}
 
 	\input{sections_slim/001_introduction.tex}
