@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2020.4.7)  27 JAN 2022 16:32
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2020.4.7)  27 JAN 2022 17:12
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -831,10 +831,11 @@ LaTeX Font Info:    Trying to load font information for U+rsfs on input line 66
 File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
 ) [1
 
-{/usr/local/texlive/2020/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] [1]
+{/usr/local/texlive/2020/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] [1] [1]
+
 (./sections_slim/001_introduction.tex [1]) (./sections_slim/002_background.tex
 [2] [3]) (./sections_slim/003_framework.tex [4] [5]
-<figures/viz_of_process.png, id=74, 1927.2pt x 1204.5pt>
+<figures/viz_of_process.png, id=77, 1927.2pt x 1204.5pt>
 File: figures/viz_of_process.png Graphic file (type png)
 <use figures/viz_of_process.png>
 Package pdftex.def Info: figures/viz_of_process.png  used on input line 38.
@@ -847,7 +848,7 @@ ion, we ex-tend a pre-vi-ously pro-posed one-compartment
  []
 
 [6] [7 <./figures/viz_of_process.png>] [8] [9]
-<figures/models_of_personalization_differences.png, id=91, 3034.33624pt x 1706.
+<figures/models_of_personalization_differences.png, id=94, 3034.33624pt x 1706.
 375pt>
 File: figures/models_of_personalization_differences.png Graphic file (type png)
 
@@ -882,7 +883,7 @@ Underfull \hbox (badness 5022) in paragraph at lines 72--79
  []
 
 [14] [15]) [16] (./sections_slim/00A_appendix.tex [17] [18] [19] [20]
-<figures/random_effects_change.png, id=131, 3034.33624pt x 1706.375pt>
+<figures/random_effects_change.png, id=134, 3034.33624pt x 1706.375pt>
 File: figures/random_effects_change.png Graphic file (type png)
 <use figures/random_effects_change.png>
 Package pdftex.def Info: figures/random_effects_change.png  used on input line 
@@ -927,10 +928,10 @@ cm-super/sfrm1200.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/cm
 -super/sfrm1728.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/cm-s
 uper/sfti1000.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/cm-sup
 er/sftt1000.pfb>
-Output written on main.pdf (25 pages, 1178357 bytes).
+Output written on main.pdf (26 pages, 1178351 bytes).
 PDF statistics:
- 228 PDF objects out of 1000 (max. 8388607)
- 151 compressed objects within 2 object streams
+ 231 PDF objects out of 1000 (max. 8388607)
+ 153 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
  124 words of extra memory for PDF output out of 10000 (max. 10000000)
 
