@@ -55,6 +55,8 @@
 \affil[4]{Department of Computer Science, Western University}
 \affil[*]{Corresponding Author}
 
+
+
 \setcounter{Maxaffil}{0}
 \date{}
 
@@ -62,8 +64,15 @@
 \begin{document}
 	\begin{titlepage}
 	\maketitle
+	\noindent \textbf{Corresponding author contact:} apananos@uwo.ca
 	
-	Word count: 4496
+	\noindent \textbf{Social Media Content:}  Additional control in when and how many measurements are made can lead to better outcomes in personalized medicine.  However, additional control comes at a cost. We present a framework for assessing if the juice is worth the squeeze using Bayesian pharmacokientic models and dynamic treatment regimes in our latest paper!
+	
+	\noindent \textbf{Authors' twitter name:} @PhDemetri @danlizotte
+	
+	\noindent \textbf{Preffered hashtags and organizational tags: }\#Statstwitter \#Bayesstats \#WesternUniversity
+	
+    \noindent \textbf{Word count:} 4496
 	\footnote{Financial support for this study was provided by Ontario Research Fund and Natural Sciences and Engineering Research Council of Canada. The funding agreement ensured the authors’ independence in designing the study, interpreting the data, writing, and publishing the report.}
 	\end{titlepage}
 
@@ -83,10 +92,14 @@
 	\end{titlepage}
 
 \begin{abstract}
-\textbf{Background}: One goal of personalized medicine is to select the right dose for a drug by considering factors which may explain variability in effectiveness or toxicity. Most efforts to personalize dose size seek to inform dose selection at a single time, with the goal of eliminating the need for dose adjustments (titration). We refer to this as static personalization. Despite progress, the need for titration has not been eliminated and thus there is an opportunity to personalize the titration process as well. We refer to this as dynamic personalization. Despite its potential to improve care, dynamic personalization imposes additional burden on the patient and provider, because it requires ongoing monitoring, for example by gathering lab results and requiring additional clinic visits. It is natural to ask:  is the additional control over dose worth the additional burden?\textbf{Objective}: To develop a framework for the simulation based evaluation of static and dynamic personalization based on pharmacokinetic modelling.Methods: We frame dynamic personalization as a dynamic treatment regime and describe how Bayesian pharmacokinetic models can be used to estimate the optimal policy with Q learning, and we propose a simulation-based strategy for internal evaluation. \textbf{Results}: We demonstrate the use of our framework to investigate the potential benefits of static and dynamic personalization for apixaban dosing. \textbf{Conclusions}: The proposed framework can help compare potential burden and benefits of different modes of personalized dosing and it can be integrated with other system level decision making frameworks in order to evaluate whether such a personalized medicine program should be implemented into a particular health care system.
-
-
+\textbf{Background}: One goal of personalized medicine is to select the right dose for a drug by considering factors which may explain variability in effectiveness or toxicity. Most efforts to personalize dose size seek to inform dose selection at a single time, with the goal of eliminating the need for dose adjustments (titration). We refer to this as static personalization. Despite progress, the need for titration has not been eliminated and thus there is an opportunity to personalize the titration process as well. We refer to this as dynamic personalization. Despite its potential to improve care, dynamic personalization imposes additional burden on the patient and provider, because it requires ongoing monitoring, for example by gathering lab results and requiring additional clinic visits. It is natural to ask:  is the additional control over dose worth the additional burden?
+\textbf{Objective}: To develop a framework for the simulation based evaluation of static and dynamic personalization based on pharmacokinetic modelling.Methods: We frame dynamic personalization as a dynamic treatment regime and describe how Bayesian pharmacokinetic models can be used to estimate the optimal policy with Q learning, and we propose a simulation-based strategy for internal evaluation.
+ \textbf{Results}: We demonstrate the use of our framework to investigate the potential benefits of static and dynamic personalization for apixaban dosing.
+ \textbf{Conclusions}: The proposed framework can help compare potential burden and benefits of different modes of personalized dosing and it can be integrated with other system level decision making frameworks in order to evaluate whether such a personalized medicine program should be implemented into a particular health care system.
 \end{abstract}
+
+{\small \textbf{Highlights}: Bayesian pharmacokinetic models can enable personalized dosing strategies by making tailored predictions of drug concentration as a function of dose and patient characteristics. These models can also be updated with new measurements to adjust dose over time. We frame this process as a dynamic treatment regime, describe how Bayesian pharmacokinetic models can be used to estimate the optimal policy with Q learning, and propose a simulation-based strategy for internal evaluation. The proposed framework can help assess potential benefits of personalization to help decide whether it should be considered for further evaluation and deployment.
+}
 
 	\input{sections_slim/001_introduction.tex}
 	\input{sections_slim/002_background.tex}
